@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.ArticleComment">
+
+	<typeAlias alias="ArticleComment" type="com.lunchtasting.server.po.lt.ArticleComment" />
+
+	<resultMap id="ArticleCommenttResult" class="com.lunchtasting.server.po.lt.ArticleComment">
+		<result property="id" column="id"  jdbcType="BIGINT" />
+		<result property="userId"  column="user_id" jdbcType="BIGINT" />
+		<result property="articleId" column="article_id" jdbcType="BIGINT" />
+		<result property="content" column="content" jdbcType="VARCHAR" />
+		<result property="imgUrl" column="img_url" jdbcType="VARCHAR" />
+		<result property="parentId" column="parent_id" jdbcType="BIGINT" />
+        <result property="parentUserId" column="parent_user_id" jdbcType="BIGINT" />
+		<result property="createTime" column="create_time" jdbcType="DATETIME" />
+	</resultMap>
+	
+    <insert id="create" parameterClass="ArticleComment">
+    <![CDATA[
+        INSERT INTO article_comment (
+        user_id
+        , article_id
+        , content
+        , img_url
+        , parent_id
+        , parent_user_id
+        , create_time
+        ) VALUES (
+        #userId#
+        , #articleId#
+        , #content#
+        , #imgUrl#
+        , #parentId#
+        , #parentUserId#
+        , now()
+        )
+    ]]>
+    <selectKey resultClass="long" keyProperty="id">
+       SELECT @@IDENTITY
+       AS id
+    </selectKey>
+    </insert>
+    
+    <select id="getCommentCount"  parameterClass="map" resultClass="java.lang.Integer" >
+        SELECT COUNT(id) FROM article_comment WHERE article_id = #articleId# 
+    </select>
+    
+    <select id="queryCommentList"  parameterClass="map" resultClass="java.util.HashMap" >
+       SELECT a.id AS comment_id,a.user_id,IFNULL(a.content,"") AS content
+               ,IFNULL(a.parent_id,"") AS parent_id
+               ,IFNULL(a.img_url,"") AS comment_img_url,a.create_time
+               ,b.name AS user_name,IFNULL(b.img_url,"") AS user_img_url
+               ,c.name AS parent_user_name,IFNULL(b.img_url,"") AS parent_user_img_url
+           FROM(SELECT * FROM article_comment WHERE article_id = #articleId#  ORDER BY create_time DESC LIMIT #page#, #pageSize#) a
+           JOIN user b ON(a.user_id = b.id)
+           JOIN user c ON(a.parent_user_id = b.id)
+    </select>
+	
+</sqlMap>

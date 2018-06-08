@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.CourseOrder">
+
+	<typeAlias alias="CourseOrder" type="com.lunchtasting.server.po.lt.CourseOrder" />
+
+	<resultMap id="CourseOrderResult" class="com.lunchtasting.server.po.lt.CourseOrder">
+		<result property="id" column="id"  jdbcType="BIGINT" />
+		<result property="userId" column="user_id"  jdbcType="BIGINT" />
+		<result property="courseId"  column="course_id" jdbcType="BIGINT" />
+		<result property="courseMealId"  column="course_meal_id" jdbcType="BIGINT" />
+		<result property="gymId"  column="gym_id" jdbcType="BIGINT" />
+		<result property="price"  column="price" jdbcType="DOUBLE" />
+		<result property="payPrice"  column="pay_price" jdbcType="DOUBLE" />
+		<result property="phone"  column="phone" jdbcType="VARCHAR" />
+		<result property="code"  column="code" jdbcType="VARCHAR" />
+		<result property="payType"  column="pay_type" jdbcType="INT" />
+		<result property="status" column="status" jdbcType="INT" />
+		<result property="createTime"  column="create_time" jdbcType="DATETIME" />
+	</resultMap>
+	
+	
+	<insert id="create" parameterClass="CourseOrder">
+    <![CDATA[
+        INSERT INTO course_order (
+        id
+        , user_id
+        , course_id
+        , course_meal_id
+        , gym_id
+        , price
+        , pay_price
+        , phone
+        , sex
+        , code
+        , pay_type
+        , status
+        , create_time
+        ) VALUES (
+        #id#
+        , #userId#
+        , #courseId#
+        , #courseMealId#
+        , #gymId#
+        , #price#
+        , #payPrice#
+        , #phone#
+        , #sex#
+        , #code#
+        , #payType#
+        , #status#
+        , now()
+        )
+    ]]>
+    </insert>
+    
+	<select id="getById" parameterClass="map" resultMap="CourseOrderResult">
+		SELECT * FROM course_order WHERE id = #id:BIGINT#
+	</select>
+	
+	<select id="queryOrderList"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT a.id AS order_id,a.gym_id,a.course_id,a.course_meal_id,a.pay_price,a.status
+			,b.name AS gym_name,b.address
+			,c.name AS course_name
+			,DATE_FORMAT(d.begin_time,'%c月%e日') AS begin_time
+			,DATE_FORMAT(d.end_time,'%c月%e日') AS end_time
+			,d.str_time,d.people_number,d.course_number,d.price AS course_price,d.type
+			,IFNULL(e.enroll_count,0) AS enroll_count
+			,f.id AS coach_id,f.name AS coach_name,f.img_url AS coach_img_url
+			
+			FROM (SELECT * FROM course_order WHERE user_id = #userId# AND status != 1 
+					ORDER BY create_time DESC 
+					<isNotNull property="pageSize">
+					LIMIT #page#, #pageSize# 
+					</isNotNull>
+				  ) a
+				
+			LEFT JOIN gym b ON (a.gym_id = b.id)
+			
+			LEFT JOIN course c ON(a.course_id = c.id)
+			
+			LEFT JOIN course_meal d ON(a.course_meal_id = d.id)  
+			
+			LEFT JOIN (SELECT COUNT(course_meal_id) enroll_count,course_meal_id 
+				FROM course_order WHERE status != 1 GROUP BY course_meal_id) 
+				e ON(a.course_meal_id = e.course_meal_id)
+				
+			LEFT JOIN coach f ON(d.coach_id = f.id)
+	</select>
+	
+	<select id="getOrderCount" parameterClass="map" resultClass="java.lang.Integer">
+		SELECT COUNT(id) FROM course_order WHERE user_id = #userId# AND status != 1 
+	</select>
+	
+	<update id="updateOrderPay" parameterClass="map">
+		UPDATE course_order SET status = 2 WHERE id = #orderId# 
+	</update>	
+	
+	<select id="getRefundOrder"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT a.id AS order_id,a.pay_price,a.code,b.begin_time 
+		
+			FROM (SELECT * FROM course_order WHERE id = #orderId# 
+				AND user_id = #userId# AND status = 2 ) a
+				
+			LEFT JOIN course_meal b ON(a.course_meal_id = b.id)
+	</select>
+	
+	<update id="timerNotifyOrderUp">
+		UPDATE course_order a 
+		
+		LEFT JOIN course_meal b ON(a.course_meal_id = b.id)
+
+		SET a.status = 4 WHERE a.status =  2 AND 
+			<![CDATA[ b.begin_time <= NOW() ]]>
+	</update>	
+	
+	<update id="timerNotifyOrderFinish">
+		UPDATE course_order a 
+		
+		LEFT JOIN course_meal b ON(a.course_meal_id = b.id)
+
+		SET a.status = 5 WHERE a.status =  4 AND 
+			<![CDATA[ b.end_time <= NOW() ]]>
+	</update>	
+	
+	<update id="updateOrderRefund">
+		UPDATE course_order SET status = 3 WHERE id = #orderId# AND status = 2
+	</update>	
+	
+	<insert id="createOrderRefund" parameterClass="map">
+		INSERT INTO course_order_refund (
+    	id
+        , user_id
+        , order_id
+        , pay_price
+        , refund_price
+        , out_refund_no
+        , type
+        , create_time
+        ) VALUES (
+        #id#
+        , #userId#
+        , #orderId#
+        , #payPrice#
+        , #refundPrice#
+        , #outRefundNo#
+        , #type#
+        , now()
+        )
+    </insert>
+    
+    <select id="getCourseOrderDetail"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT a.id AS order_id,a.pay_price,a.pay_type,a.code
+			,a.status,a.create_time
+			,b.img_url AS course_img_url
+		
+			FROM (SELECT * FROM course_order WHERE id = #orderId# 
+				AND user_id = #userId#) a
+			
+			LEFT JOIN course b ON(a.course_id = b.id)
+			
+			LEFT JOIN course_meal c ON(a.course_meal_id = c.id)  
+	</select>
+	
+	<select id="queryNoBonusCourseOrderList" resultClass="java.util.HashMap">
+		SELECT a.id,a.pay_price,a.status,a.create_time
+			,a.user_id,b.invite_user_id
+
+        	FROM (SELECT * FROM course_order WHERE (status = 4 OR status = 5) AND is_bonus = 0) a
+
+        	LEFT JOIN user b ON(a.user_id = b.id)
+        
+        	WHERE b.invite_user_id IS NOT NULL
+	</select>
+	
+	<update id="updateOrderIsBonus" parameterClass="map">
+		UPDATE course_order SET is_bonus = 1 WHERE id = #orderId#
+	</update>	
+	
+</sqlMap> 

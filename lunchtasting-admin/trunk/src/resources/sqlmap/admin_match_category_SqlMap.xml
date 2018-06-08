@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.MatchCategory">
+
+	<typeAlias alias="MatchCategory" type="com.lunchtasting.server.po.lt.MatchCategory" />
+        <resultMap class="com.lunchtasting.server.po.lt.MatchCategory" id="MatchCategory">
+	    <result property="id" column="id" jdbcType="BIGINT" />
+		<result property="name" column="name" jdbcType="VARCHAR" />
+		<result property="content" column="content" jdbcType="VARCHAR" /> 
+		<result property="imgUrl" column="img_url" jdbcType="VARCHAR" />
+		<result property="unlockContent" column="unlock_content" jdbcType="VARCHAR" />
+		<result property="medalId" column="medal_id" jdbcType="BIGINT" />
+		<result property="flag" column="flag" jdbcType="INT" />
+		<result property="sort" column="sort" jdbcType="INT" />
+        <result property="score" column="score" jdbcType="INT" />
+        <result property="medalName" column="medal_name" jdbcType="VARCHAR" />
+	</resultMap>
+
+    <!-- 新建 -->
+    <insert id="create" parameterClass="MatchCategory">
+     <![CDATA[
+   		INSERT IGNORE INTO match_category (
+   		        id,
+		    	name,
+		    	content,
+		    	img_url,
+		    	unlock_content,
+		    	medal_id,
+		    	score,
+		    	flag,
+		    	sort
+    	) VALUES (
+    	        #id#,
+		    	#name#,
+		    	#content#,
+		    	#imgUrl#,
+		    	#unlockContent#,
+		    	#medalId#,
+		    	#score#,
+		    	1,
+		    	#sort#
+    	)
+      ]]>
+		<selectKey resultClass="long" keyProperty="id">
+			SELECT @@IDENTITY
+			AS id
+    </selectKey>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="update" parameterClass="MatchCategory">
+                UPDATE match_category 
+ 		<dynamic prepend="set">
+ 		    <isNotEmpty property="name" prepend=",">
+	 			name = #name#
+	 		</isNotEmpty>  
+ 		    <isNotEmpty property="content" prepend=",">
+	 			content = #content#
+	 		</isNotEmpty>  
+	 		<isNotEmpty property="imgUrl" prepend=",">
+	 			img_url = #imgUrl#
+	 		</isNotEmpty>
+	 		<isNotEmpty property="unlockContent" prepend=",">
+	 			unlock_content = #unlockContent#
+	 		</isNotEmpty>
+	 		<isNotEmpty property="medalId" prepend=",">
+	 			medal_id = #medalId#
+	 		</isNotEmpty>
+	 		<isNotEmpty property="score" prepend=",">
+	 			score = #score#
+	 		</isNotEmpty>	
+	 		<isNotEmpty property="sort" prepend=",">
+	 			sort = #sort#
+	 		</isNotEmpty>
+<!-- 	 			,update_time = now() -->
+ 		</dynamic>
+ 		WHERE 
+  			id = #id#
+    </update>
+
+	<!-- 查询 ById-->
+   <select id="queryMatchCategoryById" parameterClass="map"  resultMap="MatchCategory">
+	 	SELECT
+	 	        id,
+		    	name,
+		    	content,
+		    	img_url,
+		    	unlock_content,
+		    	medal_id,
+		    	(select name from medal where id = match_category.medal_id) medal_name,
+		    	score,
+		    	flag,
+		    	sort
+		FROM  match_category  
+		WHERE 1=1
+		<isNotNull property="id" prepend="AND">
+		id = #id#
+		</isNotNull>
+  </select>
+  
+  <!-- 查询 -->
+  <select id="queryMatchCategoryList" parameterClass="map"  resultMap="MatchCategory">
+	 	SELECT
+	 	        id,
+		    	name,
+		    	content,
+		    	img_url,
+		    	unlock_content,
+		    	medal_id,
+		    	(select name from medal where id = match_category.medal_id) medal_name,
+		    	score,
+		    	flag,
+		    	sort
+		FROM  match_category 
+		WHERE 
+		flag != 2
+		ORDER BY sort 
+		<isNotNull property="pageSize">
+            <![CDATA[LIMIT #curPage#,#pageSize#]]>
+        </isNotNull>
+  </select>
+  
+  <!-- 总条数 -->
+  <select id="queryMatchCategoryCount" parameterClass="Map" resultClass="int">
+		select count(*) from match_category
+		WHERE 
+		flag != 2
+  </select>
+  <!-- 删除(改状态) -->
+  <update id="deleteMatchCategory" parameterClass="Map">
+       update match_category set flag = #flag# where id = #id#
+  </update>
+  
+  <select id="queryMatchCategoryByName" parameterClass="Map" resultClass="int">
+		 select
+		     count(*)
+		from
+			match_category where name = #name#
+  </select>
+  
+  <select id="queryMatchCategoryNotLimit"  resultMap="MatchCategory">
+	 	SELECT 
+	 	        id,
+		    	name,
+		    	content,
+		    	img_url,
+		    	unlock_content,
+		    	medal_id,
+		    	(select name from medal where id = match_category.medal_id) medal_name,
+		    	score,
+		    	flag,
+		    	sort
+       FROM match_category WHERE flag = 0 ORDER BY sort 
+  </select>
+</sqlMap>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.Questionnaire">
+
+	<typeAlias alias="Questionnaire" type="com.lunchtasting.server.po.lt.Questionnaire" />
+
+	<resultMap id="QuestionnaireResult" class="com.lunchtasting.server.po.lt.Questionnaire">
+		<result column="id" property="id" jdbcType="BIGINT" />
+	</resultMap>
+	
+	<insert id="createList" parameterClass="java.util.List">
+		  <![CDATA[ 
+		      insert into questionnaire(
+		     	 topic_id, 
+		     	 topic_title,
+		     	 answer_type,
+		     	 type,
+		     	 user_id,
+		     	 user_input,
+		     	 flag,
+		     	 creation_time
+		      ) 
+		      values 
+		  ]]>  
+		  <iterate conjunction="," >  
+	      <![CDATA[ 
+	         ( #questionnaire[].topicId#,
+	          #questionnaire[].topicTitle#,
+	          #questionnaire[].answerType#,
+	          #questionnaire[].type#,
+	          #questionnaire[].userId#,
+	          #questionnaire[].userInput#,
+	          0,
+	          now() )
+	      ]]>  
+		  </iterate>  
+	</insert>
+	
+	<insert id="create" parameterClass="Questionnaire">
+		  <![CDATA[ 
+		      insert into questionnaire(
+		     	 topic_id, 
+		     	 topic_title,
+		     	 answer_type,
+		     	 type,
+		     	 user_id,
+		     	 user_input,
+		     	 flag,
+		     	 creation_time
+		      ) 
+		      values
+		      (
+		          #topicId#,
+		          #topicTitle#,
+		          #answerType#,
+		          #type#,
+		          #userId#,
+		          #userInput#,
+		          0,
+		          now()
+	          )
+	        ]]>  
+	</insert>
+</sqlMap>

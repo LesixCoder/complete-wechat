@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.Course">
+
+    <typeAlias alias="Course" type="com.lunchtasting.server.po.lt.Course" />
+
+    <select id="getCourseDetail"  parameterClass="map" resultClass="java.util.HashMap">
+		    select
+		 	 		c.id,
+		 	 		c.name,
+		 	 		c.img_url,
+		 	 		c.img_array,
+		 	 		c.market_price,
+		 	 		c.content,
+		 	 		c.price,
+		 	 		c.begin_time,
+		 	 		c.end_time,
+		 	 		c.seller_id,
+		 	 		c.flag,
+		 	 		c.category_id,
+		 	 		c.create_time,
+		 	 		(SELECT COUNT(id) FROM seller_comment WHERE seller_id=c.seller_id) as count,
+		 	 		s.specific_address,
+		 	 		s.introduction,
+					s.name as seller_name,
+					s.phone,
+					c2.score
+		 	 from
+		 			course c 
+					LEFT JOIN (SELECT id, name,phone,introduction,specific_address FROM seller WHERE  flag = 0) s ON (c.seller_id = s.id)
+
+					LEFT JOIN (SELECT seller_id,FORMAT(AVG(score),1)  AS score FROM seller_comment
+						WHERE flag = 0 GROUP BY seller_id) c2 ON(c2.seller_id = c.seller_id)	
+
+		 	 where
+		 	 		c.flag = 0 
+		 	 		and c.id=#id#
+    </select>
+    
+    
+</sqlMap>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.temporaryEnroll.TemporaryOrdersReturn">
+
+	<typeAlias alias="TemporaryOrdersReturn" type="com.lunchtasting.server.po.temporaryEnroll.TemporaryOrdersReturn" />
+
+	<resultMap id="TemporaryOrdersReturnResult" class="com.lunchtasting.server.po.temporaryEnroll.TemporaryOrdersReturn">
+		<result column="id" property="id" />
+		<result column="openid" property="openid"/>
+		<result column="total_fee" property="totalFee"/>
+		<result column="time_end" property="timeEnd"/>
+		<result column="out_trade_no" property="outTradeNo" />
+		<result column="transaction_id" property="transactionId" />
+		<result column="trade_type" property="tradeType" />
+		<result column="nonce_str" property="nonceStr" />
+		<result column="sign" property="sign" />
+		<result column="bank_type" property="bankType" />
+		<result column="cash_fee" property="cashFee" />
+		<result column="create_time" property="createTime" />
+	</resultMap>
+	
+	<insert id="create" parameterClass="TemporaryOrdersReturn">
+    <![CDATA[
+   		INSERT INTO temporary_orders_return(
+	    	id
+	    	, openid
+	    	, total_fee
+	    	, time_end
+	    	, out_trade_no
+	    	, transaction_id
+	    	, trade_type
+	    	, nonce_str
+	    	, sign
+	    	, bank_type
+	    	, cash_fee
+	    	, create_time
+    	) VALUES (
+	    	#id#
+	    	, #openid#
+	    	, #totalFee#
+	    	, #timeEnd#
+	    	, #outTradeNo#
+	    	, #transactionId#
+	    	, #tradeType#
+	    	, #nonceStr#
+	    	, #sign#
+	    	, #bankType#
+	    	, #cashFee#
+	    	, now()
+    	)
+    ]]>
+	</insert>
+	<select id="getOrders" parameterClass="map" resultMap="TemporaryOrdersReturnResult">
+	   SELECT 
+			id
+	    	, openid
+	    	, total_fee
+	    	, time_end
+	    	, out_trade_no
+	    	, transaction_id
+	    	, trade_type
+	    	, nonce_str
+	    	, sign
+	    	, bank_type
+	    	, cash_fee
+	    	, create_time
+	   FROM 
+	   		temporary_orders_return
+	   WHERE
+	    	1 = 1
+	   		<isNotEmpty property="outTradeNo">
+	   			AND out_trade_no = #outTradeNo#
+	   		</isNotEmpty>
+	   		<isNotEmpty property="openid">
+	   			AND openid = #openid#
+	   		</isNotEmpty>
+	   		
+	</select>
+	<!-- 个数 -->
+	<select id="checkButton" parameterClass="map" resultClass="java.lang.Integer">
+			SELECT 
+				COUNT(*) 
+			FROM 
+				temporary_orders_return 
+			WHERE 
+				total_fee = #totalFee#
+	</select>
+</sqlMap>

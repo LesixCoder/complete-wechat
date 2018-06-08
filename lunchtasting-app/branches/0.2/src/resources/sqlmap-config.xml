@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMapConfig
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+
+	<settings cacheModelsEnabled="true" enhancementEnabled="true"
+		lazyLoadingEnabled="true" errorTracingEnabled="true" maxRequests="32"
+		maxSessions="10" maxTransactions="5" useStatementNamespaces="true" />
+		
+	<!-- 用户 -->	
+	<sqlMap resource="sqlmap/user/user_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/user/user_device_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/user/user_sms_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/user/user_weChat_SqlMap.xml"/>
+	
+	<!-- 活动 -->    
+	<sqlMap resource="sqlmap/activity/activity_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/activity/activity_enroll_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/activity/activity_comment_SqlMap.xml"/>
+	
+	<!-- 文章 -->
+	<sqlMap resource="sqlmap/article/article_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/article/article_comment_SqlMap.xml"/>
+	
+	<!--通知 -->
+    <sqlMap resource="sqlmap/message/message_notification_SqlMap.xml"/>
+	
+</sqlMapConfig>

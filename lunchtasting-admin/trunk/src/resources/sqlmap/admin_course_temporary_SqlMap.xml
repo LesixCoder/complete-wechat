@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.CourseTemporary">
+
+    <typeAlias alias="CourseTemporary" type="com.lunchtasting.server.po.lt.CourseTemporary" />
+
+    <resultMap id="CourseTemporaryResult" class="com.lunchtasting.server.po.lt.CourseTemporary">
+        <result property="id" column="id" jdbcType="BIGINT" />
+        <result column="seller_id" property="sellerId" jdbcType="BIGINT"/> 	
+        <result column="name" property="name" jdbcType="VARCHAR"/> 	
+        <result column="img_url" property="imgUrl" jdbcType="VARCHAR"/> 	 
+        <result column="img_array" property="imgArray" jdbcType="VARCHAR"/> 	 
+        <result column="market_price" property="marketPrice" jdbcType="DOUBLE"/> 	
+        <result column="content" property="content" jdbcType="VARCHAR"/> 	
+        <result column="price" property="price" jdbcType="DOUBLE"/> 	
+        <result column="begin_time" property="beginTime" jdbcType="VARCHAR"/> 	
+        <result column="end_time" property="endTime" jdbcType="VARCHAR"/> 	
+        <result column="flag" property="flag" jdbcType="INT"/> 	
+        <result column="create_time" property="createTime" jdbcType="DATETIME"/> 	
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="category_id" property="categoryId" jdbcType="BIGINT"/>
+        <result property="attribute01" column="attribute01" jdbcType="VARCHAR" />
+        <result property="attribute02" column="attribute02" jdbcType="VARCHAR" />
+        <result property="attribute03" column="attribute03" jdbcType="VARCHAR" />
+        <result property="attribute04" column="attribute04" jdbcType="VARCHAR" />
+        <result property="attribute05" column="attribute05" jdbcType="VARCHAR" />
+        <result property="attribute06" column="attribute06" jdbcType="DATETIME" />
+        <result property="attribute07" column="attribute07" jdbcType="DATETIME" />
+    </resultMap>
+
+    <!-- 新建 -->
+	<insert id="create" parameterClass="CourseTemporary">
+    <![CDATA[
+   		INSERT INTO course_temporary(
+ 	 		id,
+ 	 		name,
+ 	 		title,
+ 	 		img_url,
+ 	 		img_array,
+ 	 		market_price,
+ 	 		content,
+ 	 		price,
+ 	 		begin_time,
+ 	 		end_time,
+ 	 		seller_id,
+ 	 		flag,
+ 	 		category_id,
+ 	 		create_time,
+ 	 		attribute01,
+ 	 		attribute02,
+ 	 		attribute03,
+ 	 		attribute04,
+ 	 		attribute05,
+ 	 		attribute06,
+ 	 		attribute07
+ 		)VALUES(
+ 	 		#id#,
+ 	 		#name#,
+ 	 		#title#,
+ 	 		#imgUrl#,
+ 	 		#imgArray#,
+ 	 		#marketPrice#,
+ 	 		#content#,
+ 	 		#price#,
+ 	 		#beginTime#,
+ 	 		#endTime#,
+ 	 		#sellerId#,
+ 	 		1,
+ 	 		#categoryId#,
+ 	 		now(),
+ 	 		#attribute01#,			
+ 	 		#attribute02#,			
+ 	 		#attribute03#,			
+ 	 		#attribute04#,		
+ 	 		#attribute05#,			
+ 	 		#attribute06#,			
+ 	 		#attribute07#			
+ 		)
+    ]]>
+	<selectKey resultClass="long" keyProperty="id">
+	   SELECT @@IDENTITY
+	   AS id
+    </selectKey>
+	</insert>
+	
+	<!-- 查询ById -->
+	<!-- <select id="getById" parameterClass="map" resultMap="SellerResult">
+		SELECT * FROM seller WHERE id = #id:BIGINT#
+	</select> -->
+    
+    <!-- 查询 -->
+    <select id="queryCourseTemporary"  parameterClass="map" resultMap="CourseTemporaryResult">
+            SELECT    id
+			        , seller_id
+				 	, name
+				 	, title
+				 	, img_url
+				 	, img_array
+				 	, market_price
+				 	, content
+				 	, price
+				 	, begin_time
+				 	, end_time
+				 	, flag
+				 	, create_time
+			        , attribute01
+			    	, attribute02
+			    	, attribute03
+			    	, attribute04
+			    	, attribute05
+			    	, attribute06
+			    	, attribute07
+            FROM course_temporary
+	</select>
+    
+</sqlMap>

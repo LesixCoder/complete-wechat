@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.ReceiverAddress">
+
+    <typeAlias alias="ReceiverAddress" type="com.lunchtasting.server.po.lt.ReceiverAddress" />
+    
+    <resultMap id="ReceiverAddress" class="com.lunchtasting.server.po.lt.ReceiverAddress">
+   		<result column="addr_id" property="addrId" /> 
+        <result column="receiver_name" property="receiverName" /> 
+        <result column="telephone" property="telephone" />
+        <result column="address_default" property="addressDefault" />
+        <result column="area_id" property="areaId" />
+        <result column="user_id" property="userId" />
+        <result column="created_time" property="createdTime" /> 
+        <result column="created_user" property="createdUser" /> 
+        <result column="updated_time" property="updatedTime" /> 
+        <result column="updated_user" property="updatedUser" />
+        <result column="address_detail" property="addressDetail" />
+        <result column="add_de" property="addDe" />
+<!--         <association property="area" javaType="Area">
+        	<id column="area_id" property="areaId" />
+        	<result column="area_name" property="areaName" />
+        </association> -->
+   </resultMap>
+ 	 <!-- 查询会员地址列表-->
+ 	 <select id="queryReceiverAddress" parameterClass="map" resultClass="java.util.HashMap">
+		SELECT
+			r.addr_id,
+			r.receiver_name,
+			r.telephone,
+			r.address_default,
+			a.area_name,
+			a.area_Id,
+			REPLACE(r.address_detail,",","") as address_detail
+		FROM
+			area a,receiver_address r
+		WHERE 
+			r.area_id= a.area_id
+			AND r.flag=0 
+			AND r.user_id=#userId# <!-- AND a.p_id=#areaId# -->
+			<isNotNull property="areaId">
+				and a.p_id=#areaId#
+			</isNotNull>
+			<isNotNull property="addrId">
+				and addr_id = #addrId#
+			</isNotNull>
+		ORDER BY r.address_default DESC
+ 	 </select>
+ 	 
+ 	 <!-- 增加收货地址 -->
+ 	 <insert id="addReceiverAddress"  parameterClass="ReceiverAddress">
+	 	 <![CDATA[
+	 	  INSERT INTO receiver_address
+		  		(
+		  			receiver_name, telephone, address_default , area_id, user_id, created_time, created_user,flag,address_detail
+		  		)
+		   VALUES
+		  		(
+		  			#receiverName#, #telephone#, #addressDefault#, #areaId#, #userId#, now(), #userId#,#flag#,#addressDetail#
+		  		)
+	     ]]>
+	    <selectKey resultClass="long" keyProperty="addrId">
+			SELECT @@IDENTITY
+			AS addr_id
+    	</selectKey>
+ 	 </insert>
+ 	 
+	  <!-- 修改会员地址  -->
+	  <update id="updateReceiverAddress" parameterClass="ReceiverAddress">
+	  		UPDATE receiver_address SET 
+	  			<isNotEmpty property="receiverName">
+	  				receiver_name = #receiverName#,
+	  			</isNotEmpty>
+	  			<isNotEmpty property="telephone">
+	  				telephone = #telephone#,
+	  			</isNotEmpty>
+	  			<isNotEmpty property="addressDefault">
+	  				address_default = #addressDefault#, 
+	  			</isNotEmpty>
+	  			<isNotEmpty property="flag">
+	  				flag = #flag#, 
+	  			</isNotEmpty>
+	  			<isNotEmpty property="addressDetail" >
+	  				<isNotEqual property="flag" compareValue="1">address_detail = #addressDetail#,</isNotEqual>
+	  			</isNotEmpty>
+	  			updated_time=now() ,
+	  			updated_user=#userId#
+	<!--   		WHERE user_id=#userId# AND area_id=#areaId# -->
+	  		    WHERE user_id=#userId# AND addr_id=#addrId#
+	  </update>
+ 	 
+ 	   <!-- 修改会员非默认地址  -->
+	  <update id="updateDefaultAddress" parameterClass="ReceiverAddress">
+	  		UPDATE receiver_address SET 
+	  			address_default = #addressDefault#,
+	  			updated_time=now() , updated_user=#userId#
+	  		WHERE user_id=#userId# AND addr_id!=#addrId#
+	  </update>
+	  
+	  
+	  
+	<!-- 删除会员地址  -->
+	  <delete id="deleteReceiverAddress" parameterClass="ReceiverAddress">
+	  		DELETE FROM receiver_address where user_id=#userId# AND area_id=#areaId#
+	  </delete>
+</sqlMap>

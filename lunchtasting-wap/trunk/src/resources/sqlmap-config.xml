@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMapConfig
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+
+	<settings cacheModelsEnabled="true" enhancementEnabled="true"
+		lazyLoadingEnabled="true" errorTracingEnabled="true" maxRequests="32"
+		maxSessions="10" maxTransactions="5" useStatementNamespaces="true" />
+	
+	<!-- 用户 
+	<sqlMap resource="sqlmap/user/userSqlMap.xml"/>-->
+	<sqlMap resource="sqlmap/user/user_sms_SqlMap.xml"/>
+<!-- 	<sqlMap resource="sqlmap/user/user_weChat_SqlMap.xml"/>	 -->
+	
+	<!-- 活动 -->
+	<sqlMap resource="sqlmap/activity/activity_SqlMap.xml"/>
+	<!--  
+	<sqlMap resource="sqlmap/activity/activity_enroll_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/activity/activity_comment_SqlMap.xml"/>-->
+	
+	<!-- 文章 -->
+	<sqlMap resource="sqlmap/article/article_SqlMap.xml"/>
+	
+	<!-- 公共 
+	<sqlMap resource="sqlmap/common/common_collect_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/common/common_praise_SqlMap.xml"/>-->	
+	
+	<!-- 商家（场馆） -->
+	<sqlMap resource="sqlmap/seller/seller_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/seller/seller_comment_SqlMap.xml"/>
+	<!-- 课程 -->
+	<sqlMap resource="sqlmap/course/course_SqlMap.xml"/>
+	<!-- 配对报名 -->
+	<sqlMap resource="sqlmap/temporaryEnroll/temporary_enroll_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/temporaryEnroll/enroll_group_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/temporaryEnroll/temporary_orders_ return_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/temporaryEnroll/tempoorary_invitation_code_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/user/temporary_user_wechat.xml"/>
+	<sqlMap resource="sqlmap/temporaryEnroll/temporary_cinema_SqlMap.xml"/>
+	<!-- note帖子  -->
+	<sqlMap resource="sqlmap/note/note_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/note/note_comment_SqlMap.xml"/>
+	<!-- 赛事 -->
+	<sqlMap resource="sqlmap/match/match_SqlMap.xml"/>
+</sqlMapConfig>

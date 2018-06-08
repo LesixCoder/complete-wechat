@@ -1,0 +1,158 @@
+@charset "utf-8";
+
+/* CSS 初始化 */
+
+body,html,div,h1,h2,h3,h4,h5,p,em,i,b,span,input,textarea,section,figure,figcaption,a,ul,li,ol,header,footer,nav,time,address,img {
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+
+html{
+    font-size: 625%;
+    overflow-x: hidden; 
+}
+
+body {
+    font-family: "Microsoft YaHei", "SimSun", Verdana, Arial, Helvetica, sans-serif;
+    background-color: #fff;
+    color: #202125;
+    font-size: .25rem;
+    position: relative;
+    overflow-x: hidden;
+}
+/* 清除chrome浏览器input[type=number]默认样式 */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
+}
+input[type=number] {  
+    -moz-appearance:textfield;  
+}
+/*去除ios按钮默认样式*/
+input[type='submit'],button,textarea {
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+input,textarea,button{
+    outline: none;
+}
+
+a {
+    text-decoration: none;
+    color: #202125;
+}
+em,i,address{
+    font-style: normal;
+}
+img{
+    display: block;
+    max-width: 100%;
+}
+div,figcaption,textarea,input,p,span{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+h1,h2,h3,h4,h5{
+    font-weight: 400;
+}
+.none{
+    display: none;
+}
+.clearfix:after{
+    content: '';
+    height: 0;
+    display: block;
+    clear: both;
+    visibility: hidden;
+}
+/*通用样式*/
+.wrapper-Box{
+    width: 100%;
+    max-width: 6.4rem;
+    margin: 0 auto;
+    text-align: center;
+}
+
+/*支付*/
+.header img{
+    width: 100%;
+    height: 3rem;
+}
+.pay{
+    padding: 0 0 3% 0;
+}
+.pay > h2{
+    padding: 5% 0 3%;
+    font-size: .25rem;
+}
+.pay > p{
+    color: #ec2121;
+}
+.pay > a{
+    display: block;
+    width: 90%;
+    height: .4rem;
+    line-height: .4rem;
+    margin: 6% auto 0;
+    text-align: center;
+    box-sizing: border-box;
+    color: #fff;
+    background: #ec2121;
+    font-size: .18rem;
+}
+.pay > a img{
+    display: inline-block;
+    height: .3rem;
+    margin-right: 1%;
+    vertical-align: middle;
+}
+
+/*媒体查询，小于640px*/
+@media screen and (max-width:640px){
+    .header img {
+        height: 2.2rem;
+    }
+    .pay > h2 {
+        padding: 10% 0 6%;
+    }
+    .pay > a{
+        margin: 10% auto 0;
+    }
+}
+/*媒体查询，小于375px*/
+@media screen and (max-width:375px){
+    body{
+        font-size: .22rem;
+    }
+    .header img {
+        height: 2rem;
+    }
+    .pay > h2 {
+        font-size: .22rem;
+    }
+}
+/*媒体查询，小于320px*/
+@media screen and (max-width:320px){
+    body{
+        font-size: .2rem;
+    }
+    .header img {
+        height: 1.8rem;
+    }
+    .pay > h2 {
+        font-size: .2rem;
+    }
+    .pay > a {
+        height: .35rem;
+        line-height: .35rem;
+        font-size: .16rem;
+    }
+    .pay > a img{
+        height: .25rem;
+    }
+}
+

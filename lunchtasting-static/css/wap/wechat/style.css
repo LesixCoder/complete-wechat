@@ -1,0 +1,142 @@
+@charset "utf-8";
+
+/* CSS 初始化 */
+
+body,html,div,h1,h2,h3,h4,h5,p,em,i,b,span,input,textarea,section,figure,figcaption,a,ul,li,ol,header,footer,nav,time,address,img {
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+html{
+    font-size: 625%;
+    overflow-x: hidden;
+}
+
+body {
+    font-family: "Microsoft YaHei", "SimSun", Verdana, Arial, Helvetica, sans-serif;
+    background: url("http://static.mperfit.com/image/wap/wechat/about-bg.jpg") no-repeat center center;
+    background-size: 100% 100%;
+    color: #fff;
+    font-size: .16rem;
+    position: relative;
+}
+
+a {
+    text-decoration: none;
+    color: #999;
+}
+em,i,address{
+    font-style: normal;
+}
+img{
+    display: block;
+    max-width: 100%;
+}
+div,figure,figcaption,textarea,input,p,span{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+h1,h2,h3,h4,h5{
+    font-weight: 400;
+}
+.none{
+    display: none;
+}
+.clearfix:after{
+    content: '';
+    height: 0;
+    display: block;
+    clear: both;
+    visibility: hidden;
+}
+/*通用样式*/
+.wrapper-Box{
+    width: 100%;
+    max-width: 7.5rem;
+    margin: 0 auto;
+}
+.green{
+    color: #20b3a4;
+}
+.filter{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    background: rgba(255,255,255,.8);
+}
+/*导航栏*/
+.nav{
+    width: 100%;
+    max-width: 7.5rem;
+    padding: 10% 0 8%;
+}
+
+.nav h1{
+    font-size: .2rem;
+    text-align: center;
+}
+
+
+/*关于我们*/
+.about{
+    padding: 0 5%;
+}
+.about .group{
+    
+}
+.about .group > p{
+    margin: 0 0 5% 0;
+    line-height: .28rem;
+    font-size: .14rem;
+}
+.about .tit-group{
+    padding-bottom: 10%;
+}
+.about .tit-group > h2,.about .tit-group > h3{
+    height: .3rem;
+}
+.about .tit-group > h2{
+    margin: 18% 0 8%;
+    background: url("http://static.mperfit.com/image/wap/wechat/about-logo.png") no-repeat center center;
+    background-size: contain;
+}
+.about .tit-group > h3{
+    background: url("http://static.mperfit.com/image/wap/wechat/about-text.png") no-repeat center center;
+    background-size: contain;
+}
+
+/*媒体查询，小于640px*/
+@media screen and (max-width:640px){
+    
+}
+/*媒体查询，小于375px*/
+@media screen and (max-width:375px){
+    .nav {
+        padding: 9% 0 6%;
+    }
+    .about .tit-group > h2, .about .tit-group > h3 {
+        height: .28rem;
+    }
+    .about .tit-group > h2 {
+        margin: 13% 0 6%;
+    }
+}
+/*媒体查询，小于320px*/
+@media screen and (max-width:320px){
+    .nav h1 {
+        font-size: .18rem;
+    }
+    .about .group > p {
+        margin: 0 0 4% 0;
+        line-height: .25rem;
+        font-size: .13rem;
+    }
+    .about .tit-group > h2, .about .tit-group > h3 {
+        height: .24rem;
+    }
+}
+

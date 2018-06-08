@@ -1,0 +1,677 @@
+* {
+    /* 在X5新内核Blink中，在排版页面的时候，会主动对字体进行放大，会检测页面中的主字体，当某一块字体在我们的判定规则中，认为字号较小，并且是页面中的主要字体，就会采取主动放大的操作。然而这不是我们想要的，可以采取给最大高度解决 */
+    max-height: 100000px;
+}
+
+*:before,
+*:after {
+    box-sizing: border-box;
+    max-height: 100000px;
+}
+
+*,
+*:before,
+*:after {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+html,
+body,
+div,
+span,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+address,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+samp,
+small,
+strong,
+sub,
+sup,
+var,
+b,
+i,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+textarea,
+td {
+    border: 0 none;
+    font-size: inherit;
+    color: inherit;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+}
+
+body {
+    position: relative;
+    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","\5FAE\8F6F\96C5\9ED1",Arial,sans-serif;
+    line-height: 1.5;
+    font-size: .28rem;
+}
+
+input {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.wrapBox {
+    max-width: 100%;
+    line-height: .48rem;
+    margin: 0 auto;
+    background-color: #fff000;
+    color: #272827;
+    font-size: .29rem;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+}
+.wrapBox_white{
+    background-color: #fff;
+}
+.wrapBox_black{
+    background-color: #272827;
+}
+.wrapBox_iphone{
+    min-height: 13.34rem;
+}
+
+/*招募首页*/
+.header_img{
+    display: block;
+    width: 6.06rem;
+    height: 3.2rem;
+    margin: .5rem auto 0;
+}
+.index_intro{
+    display: flex;
+    flex-direction: column;
+    margin: .65rem .3rem 1rem;
+    padding: .55rem .35rem .65rem;
+    background-color: #fff;
+    border-radius: .4rem;
+}
+.intro_box{
+    margin-bottom: .23rem;
+}
+.intro_box h3{
+    margin-bottom: .1rem;
+    font-weight: bold;
+}
+.intro_box h3 em{
+    position: relative;
+    display: inline-block;
+    width: .32rem;
+    height: .32rem;
+    margin-right: .3rem;
+    vertical-align: text-top;
+}
+.intro_box h3 em i{
+    display: block;
+    position: absolute;
+    width: .25rem;
+    height: .25rem;
+    background: #ffda2a;
+}
+.intro_box h3 em i:first-of-type{
+    left: 0;
+    bottom: 0;
+}
+.intro_box h3 em i:last-of-type{
+    right: 0;
+    top: 0;
+}
+.index_btnG{
+    display: flex;
+    flex-direction: column;
+    padding-top: .5rem;
+}
+.index_btnG a{
+    display: block;
+    flex: 1;
+    height: .9rem;
+    line-height: .9rem;
+    margin: 0 .35rem;
+    font-size: .37rem;
+    background-color: #ffda2a;
+    text-align: center;
+    border-radius: .22rem;
+}
+.index_btnG .btn_Public{
+    margin-bottom: .4rem;
+}
+
+/* 活动流程 */
+.actpro_tit{
+    width: 5.6rem;
+    height: .86rem;
+    line-height: .86rem;
+    margin:  .6rem auto .6rem;
+    background: url("../../images/enlist/login_titBg.png") no-repeat;
+    background-size: 100% 100%;
+    color: #fff;
+    font-size: .5rem;
+    text-align: center;
+}
+.actpro_intro{
+    display: flex;
+    flex-direction: column;
+    padding: 0 .7rem 1.08rem;
+}
+.actpro_box{
+    margin-bottom: .4rem;
+}
+.actpro_box:last-of-type{
+    margin-bottom: 0;
+}
+.actpro_box h3{
+    text-align: center;
+    margin-bottom: .3rem;
+    font-weight: bold;
+}
+.box_content{
+    border: .03rem solid #272827;
+    padding: .28rem;
+    border-radius: .2rem;
+}
+.good_show .box_content{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.good_show .box_content img{
+    width: 2.24rem;
+    height: 2.13rem;
+}
+.actpro_task .box_content{
+    position: relative;
+    padding: .4rem .28rem .5rem;
+}
+.actpro_task .box_content::before{
+    content: "";
+    position: absolute;
+    left: .45rem;
+    top: 0;
+    width: 1px;
+    height: 75%;
+    border-left: .04rem dotted #efa600;
+    margin: .5rem 0 2rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.actpro_task .box_content p{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: .5rem;
+}
+.actpro_task .box_content p:last-of-type{
+    margin-bottom: 0;
+}
+.actpro_task .box_content p i{
+    width: .4rem;
+    height: .4rem;
+    line-height: .4rem;
+    margin-top: 0.06rem;
+    margin-right: .25rem;
+    text-align: center;
+    border-radius: .2rem;
+    color: #fefffe;
+    background-color: #efa600;
+    font-size: .27rem;
+    vertical-align: top;
+}
+.actpro_task .box_content p span{
+    flex: 1;
+}
+.buyTicket .box_content{
+    display: flex;
+    flex-direction: column;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+.buyTicket .box_content a{
+    flex: 1;
+    height: .8rem;
+    line-height: .8rem;
+    margin-bottom: .4rem;
+    text-align: center;
+    background-color: #272827;
+    color: #ffda2a;
+    font-size: .35rem;
+    border-radius: .2rem;
+}
+.buyTicket .box_content a:last-of-type{
+    margin-bottom: 0;
+}
+.buyTicket .box_content a small{
+    font-size: .29rem;
+}
+
+/* 选择套餐 */
+.setMeal_index,.subInfor_index{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: .9rem;
+}
+.setMeal_index > .list_discount_tit{
+    height: 1.1rem;
+    line-height: 1.1rem;
+    background-color: #272827;
+    font-size: .3rem;
+    color: #fff000;
+    text-align: center;
+}
+.setMeal_index > .list_discount_tit span{
+    padding-left: .12rem;
+    border-left: .14rem solid #fff000;
+}
+.setMeal_list{
+    flex: 1;
+    width: 100%;
+    height: 2.21rem;
+    background-color: #8e8e8e;
+    margin-bottom: .16rem;
+}
+.setMeal_list_1{
+    margin-bottom: 0;
+}
+.setMeal_list > input{
+    display: none;
+}
+.list_figure{
+    display: flex;
+    flex-direction: row;
+    /* align-items: center; */
+    height: 2.21rem;
+    /* padding: 0 .4rem 0 0; */
+}
+.figure_label{
+    display: flex;
+    height: 100%;
+    align-items: center;
+    padding: 0 .32rem 0 .14rem;
+}
+.figure_em{
+    position: relative;
+    width: .3rem;
+    height: .3rem;
+    border: .03rem solid #272827;
+}
+.figure_img{
+    width: 1.6rem;
+    height: 1.6rem;
+    margin-top: .3rem;
+    margin-right: .4rem;
+    border: .03rem solid #fff;
+}
+.figure_text{
+    flex: 1;
+    width: 4.55rem;
+}
+.text_tit{
+    margin-top: .45rem;
+    /* display: flex;
+    flex-direction: row; */
+    /* overflow: hidden; */
+}
+.text_tit h4{
+    flex: 1;
+    height: .6rem;
+    padding-right: 0.2rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.text_tit h4 i{
+    margin-left: .1rem;
+}
+.tit_p{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    /* margin-top: -.26rem; */
+    /* margin-right: -.4rem; */
+    float: right;
+    display: none;
+}
+.tit_p a,.tit_p input{
+    display: inline-block;
+    height: .6rem;
+    background-color: transparent;
+    text-align: center;
+    vertical-align: middle;
+}
+.tit_p a{
+    display: flex;
+    align-items: center;
+    width: .8rem;
+    height: 1rem;
+}
+.tit_p a i{
+    display: inline-block;
+    width: .4rem;
+    height: .4rem;
+    line-height: .23rem;
+    text-align: center;
+    background-color: #272827;
+    border: .03rem solid #272827;
+    color: #ffda2a;
+    margin: 0 0 0 auto;
+    font-size: .5rem;
+}
+.tit_p a.sub i{
+    background-color: transparent;
+    color: #272827;
+}
+.tit_p a.add i{
+    margin: 0 auto 0 0;
+}
+.tit_p input{
+    width: .85rem;
+    border: none;
+    text-align: center;
+    font-size: .35rem;
+}
+.setMeal_price{
+    float: left;
+    /* margin-top: .2rem; */
+    font-size: .26rem;
+    color: #ec2121;
+}
+.setMeal_price em{
+    float: right;
+    visibility: hidden;
+}
+.setMeal_list > input[type='checkbox']:checked + figure{
+    background-color: #fff000;
+}
+.setMeal_list > input[type='checkbox']:checked + figure em{
+    background-color: #272827;
+}
+.setMeal_list > input[type='checkbox']:checked + figure em::after{
+    content: "\e013";
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #ffda2a;
+    font-size: .22rem;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+}
+.setMeal_list_1 .figure_label em{
+    visibility: hidden;
+}
+
+.footer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    z-index: 99;
+    width: 100%;
+}
+.footer_setMeal{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    height: .9rem;
+    border-top: .01rem solid #fff000;
+    color: #202125;
+    font-size: .28rem;
+    background-color: #272827;
+}
+.priceText{
+    margin-right: .4rem;
+}
+.priceText em{
+    color: #fff000;
+}
+.nextBtn{
+    width: 2.32rem;
+    height: 100%;
+    line-height: .9rem;
+    text-align: center;
+    background-color: #fff000;
+}
+
+/* 填写信息 */
+.subInfor_index{
+
+}
+.infor_input{
+    padding: .6rem .3rem 0;
+    border-bottom: .08rem solid #f2cf28;
+}
+.infor_input p{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: .94rem;
+    line-height: .94rem;
+    margin-bottom: .5rem;
+    background-color: #fff0aa;
+    border-radius: .1rem;
+    color: #999;
+    overflow: hidden;
+}
+.infor_input p.p_gender{
+    overflow: visible;
+}
+.infor_input p i{
+    width: .8rem;
+    text-align: center;
+    font-size: .4rem;
+}
+.infor_input p input,.infor_input p span{
+    flex: 1;
+    width: 100%;
+    height: .94rem;
+    padding: 0 .2rem 0 0;
+    border: none;
+    background-color: transparent;
+    font-size: .32rem;
+    color: #999;
+}
+/* .infor_input p input:focus:invalid {
+    box-shadow: 0 1px 10px #F5192F;
+}
+
+.infor_input p input:focus:valid {
+    box-shadow: 0 1px 10px #5cb85c;
+} */
+.infor_input p em{
+    width: .8rem;
+    text-align: center;
+    font-size: .4rem;
+}
+
+.goods_tit{
+    margin: .6rem 0 .3rem;
+    font-size: .37rem;
+    text-align: center;
+}
+.goods_tit i{
+    width: .45rem;
+    height: .45rem;
+    line-height: .45rem;
+    margin-right: .28rem;
+    text-align: center;
+    background-color: #272827;
+    color: #ffda2a;
+    border-radius: 100%;
+    font-size: .32rem;
+    vertical-align: text-top;
+}
+.goods_box{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 1.9rem;
+    border-bottom: .01rem solid #f2cf28;
+}
+.goods_box:last-of-type{
+    border: none;
+}
+.goods_box img{
+    width: 1.3rem;
+    height: 1.3rem;
+    margin: 0 .45rem 0 .6rem;
+    border-radius: .65rem;
+    background: url('../../images/enlist/gift_bg.jpg') no-repeat;
+    background-size: 100% 100%;
+}
+.goods_box figcaption{
+    flex: 1;
+    padding-right: .5rem;
+}
+.goods_box figcaption > div{
+    display: flex;
+    flex-direction: row;
+    overflow: hidden
+}
+.goods_box figcaption > div h5{
+    flex: 1;
+}
+.goods_box figcaption > div em{
+    float: right;
+}
+.goods_box figcaption span{
+    font-size: .26rem;
+    color: #ec2121;;
+}
+.footer_subInfor{
+    background-color: #fff0aa;
+}
+.footer_subInfor .priceText em{
+    color: #ec2121;
+}
+.footer_subInfor .nextBtn{
+    background-color: #272827;
+    color: #ffda2a;
+}
+
+/*订单完成  */
+.order_index{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: .4rem 0 0 0;
+    font-size: .3rem;
+    line-height: .45rem;
+}
+.order_list{
+    width: 6.92rem;
+    margin-bottom: .4rem;
+    padding: .4rem .4rem .22rem;
+    border: .02rem solid #000;
+    border-radius: .08rem;
+}
+.cutOffLine{
+    width: 100%;
+    height: .01rem;;
+    margin: .18rem 0 .26rem;
+    background-color: #000;
+}
+.order_img{
+    width: 2rem;
+    height: 2rem;
+    margin-bottom: .28rem;
+    border: .03rem solid #fff;
+}
+.order_infor,.order_goods{
+    display: flex;
+    flex-direction: column;
+}
+.order_infor p{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: .16rem;
+}
+.order_infor p em{
+    width: 1.6rem;
+    font-size: .32rem;
+}
+.order_infor p span{
+    flex: 1;
+}
+.order_goods h3{
+    margin-bottom: .1rem;
+    text-align: center;
+}
+.order_goods p{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: .06rem;
+}
+.order_goods p span{
+    flex: 1;
+}
+.order_goods p i{
+    float: right;
+    color: #ec2121;
+}
+
+/* 插件库 */
+.nice-select.wide {
+    flex: 1;
+    border: none;
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+    line-height: .94rem;
+    padding-left: 0;
+}
+.nice-select .option {
+    line-height: .94rem;
+    min-height: .94rem;
+}
+.nice-select .list{
+    font-size: .32rem;
+}
+.nice-select:after{
+    width: .15rem;
+    height: .15rem;
+    right: .3rem;
+}

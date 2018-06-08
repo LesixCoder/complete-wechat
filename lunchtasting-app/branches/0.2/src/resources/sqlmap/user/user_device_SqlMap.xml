@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.UserDevice">
+
+	<typeAlias alias="UserDervice" type="com.lunchtasting.server.po.lt.UserDevice" />
+
+	<resultMap id="UserDerviceResult" class="com.lunchtasting.server.po.lt.UserDevice">
+	    <result property="id" column="id" jdbcType="BIGINT" />
+		<result property="userId" column="user_id" jdbcType="BIGINT" />
+		<result property="authId" column="auth_id" jdbcType="VARCHAR" />
+        <result property="systemType" column="system_type" jdbcType="VARCHAR" />
+        <result property="systemVersion" column="system_version" jdbcType="VARCHAR" />
+        <result property="screenWidth" column="screen_width" jdbcType="INT" />
+		<result property="screenHeight" column="screen_height" jdbcType="INT" />
+		<result property="platform" column="platform" jdbcType="VARCHAR" />
+	    <result property="deviceToken" column="device_token" jdbcType="VARCHAR" />
+		<result property="channel" column="channel" jdbcType="VARCHAR" />
+		<result property="imei" column="imei" jdbcType="VARCHAR" />
+		<result property="appVersion" column="app_version" jdbcType="VARCHAR" />
+		<result property="accessToken" column="access_token" jdbcType="VARCHAR" />
+		<result property="createTime" column="create_time" jdbcType="DATETIME" />
+		<result property="updateTime" column="update_time" jdbcType="DATETIME" />
+	</resultMap>
+
+	<insert id="create" parameterClass="UserDervice">
+    <![CDATA[
+   		INSERT INTO user_device (
+    	user_id
+    	, auth_id
+    	, system_type
+    	, system_version
+    	, screen_width
+    	, screen_height
+    	, platform
+    	, device_token
+    	, channel
+    	, imei
+    	, app_version
+    	, access_token
+    	, create_time
+    	, update_time
+    	) VALUES (
+    	#userId#
+    	, #authId#
+    	, #systemType#
+    	, #systemVersion#
+    	, #screenWidth#
+    	, #screenHeight#
+    	, #platform#
+    	, #deviceToken#
+    	, #channel#
+    	, #imei#
+    	, #appVersion#
+    	, #accessToken#
+    	, now()
+    	, now()
+    	)
+    ]]>
+	<selectKey resultClass="long" keyProperty="id">
+	   SELECT @@IDENTITY
+	   AS id
+    </selectKey>
+	</insert>
+	
+	<update id="updateDevice" parameterClass="UserDervice">
+        <![CDATA[ UPDATE user_device ]]>
+        <dynamic prepend="set">
+            <isNotEmpty prepend="," property="authId">
+                auth_id = #authId#
+            </isNotEmpty>
+            <isNotEmpty prepend="," property="systemType">
+                system_type = #systemType#
+            </isNotEmpty>
+            <isNotEmpty prepend="," property="systemVersion">
+                system_version = #systemVersion#
+            </isNotEmpty>
+            <isNotEmpty prepend="," property="screenWidth">
+                screen_width = #screenWidth#
+            </isNotEmpty>
+            <isNotEmpty prepend="," property="screenHeight">
+                screen_height = #screenHeight#
+            </isNotEmpty>
+            <isNotEmpty prepend="," property="platform">
+                platform = #platform#
+            </isNotEmpty>
+            <isNotEmpty prepend="," property="deviceToken">
+                device_token = #deviceToken#
+            </isNotEmpty>
+            <isNotEmpty prepend="," property="channel">
+                channel = #channel#
+            </isNotEmpty>
+            <isNotEmpty prepend="," property="imei">
+                imei = #imei#
+            </isNotEmpty>
+            <isNotEmpty prepend="," property="appVersion">
+                app_version = #appVersion#
+            </isNotEmpty>
+            <isNotEmpty prepend="," property="accessToken">
+                access_token = #accessToken#
+            </isNotEmpty>
+           update_time = now()
+        </dynamic>
+        WHERE user_id = #userId#
+    </update>
+    
+	<select id="getAccessTokenByAuthId" parameterClass="map" resultClass="java.lang.String">
+		SELECT access_token FROM user_device WHERE auth_id = #authId#
+	</select>
+	
+	<select id="getByUserId" parameterClass="map" resultMap="UserDerviceResult">
+        SELECT * FROM user_device WHERE user_id = #userId#
+    </select>
+    
+    <select id="getDeviceId" parameterClass="map" resultClass="java.lang.Long">
+        SELECT id FROM user_device WHERE user_id = #userId#
+    </select>
+
+</sqlMap>

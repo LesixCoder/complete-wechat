@@ -1,0 +1,486 @@
+@charset "utf-8";
+
+/* CSS 初始化 */
+
+body,html,div,h1,h2,h3,h4,h5,p,em,i,b,span,input,textarea,section,figure,figcaption,a,ul,li,ol,header,footer,nav,time,address,img {
+    margin: 0;
+    padding: 0;
+}
+html{
+    font-size: 62.5%;
+}
+body {
+    font-family: "Microsoft YaHei", "SimSun", Verdana, Arial, Helvetica, sans-serif;
+    background-color: #fff;
+    color: #fff;
+    font-size: 2rem;
+    position: relative;
+}
+/* 清除chrome浏览器input[type=number]默认样式 */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
+}
+input[type=number] {  
+    -moz-appearance:textfield;  
+}
+/*去除ios按钮默认样式*/
+input[type='submit'],button,textarea {
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+input,textarea,button{
+    outline: none;
+}
+textarea{
+    resize: none;
+}
+ul,
+ol {
+    list-style: outside none none;
+}
+
+a {
+    text-decoration: none;
+    color: #fff;
+    -webkit-tap-highlight-color:rgba(0,0,0,0)
+}
+em,i,address{
+    font-style: normal;
+}
+img{
+    display: block;
+    max-width: 100%;
+    width: 100%;
+    vertical-align: top;
+}
+div,figure,figcaption,textarea,input,p,span{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+h1,h2,h3,h4,h5{
+    font-weight: 400;
+}
+.none{
+    display: none;
+}
+.clearfix:after{
+    content: '';
+    height: 0;
+    display: block;
+    clear: both;
+    visibility: hidden;
+}
+/*通用样式*/
+.wrapper-Box{
+    position: relative;
+    width: 100%;
+    max-width: 75rem;
+    margin: 0 auto;
+}
+.yellow{
+    color: #f7da36;
+}
+.indent{
+    text-indent: 2em;
+}
+/*顶部导航*/
+#nav{
+    position: relative;
+    z-index: 999;
+    width: 100%;
+    height: 4rem;
+    background-color: rgba(0,0,0,1);
+}
+#nav a.joinR{
+    float: right;
+    width: 23%;
+    height: 2.4rem;
+    line-height: 2.4rem;
+    margin: .5rem 1rem 0 0;
+    border: 2px solid #6f6a6a;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #6f6a6a;
+    font-size: 1.8rem;
+    text-align: center;
+}
+#navBox{
+    display: none;
+    position: absolute;
+    z-index: 10;
+    top: 4rem;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 2rem;
+    padding-bottom: .5rem;
+    background: #000;
+    border-bottom: 1px solid #353535;
+}
+.filter{
+    display: none;
+    position: absolute;
+    z-index: 5;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,.35);
+}
+#navBox a{
+    display: block;
+    color: #888;
+    padding: .8rem 0;
+    cursor: pointer;
+}
+#header{
+    margin-top: -.1rem;
+}
+/*内容部分*/
+#content{
+    position: relative;
+    background: #000;
+}
+.content-inner{
+    width: 100%;
+    height: 100%;
+    font-size: 2.5rem;
+    padding: 0 5% 10%;
+    background: url('http://static.mperfit.com/image/wap/temporaryEnroll/innerBg.png') repeat-y;
+    background-size: 100%;
+}
+.content-inner > div{
+    margin: 3% 0;
+}
+.con-tit{
+    position: relative;
+    text-align: center;
+    font-size: 3rem;
+    margin: 0% 0 5%;
+    padding-top: 10%;
+}
+.con-tit:after{
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 2rem;
+    width: 3rem;
+    height: 3rem;
+    background: url('http://static.mperfit.com/image/wap/temporaryEnroll/downIcon.png') no-repeat center center;
+    transform: translateX(-50%);
+}
+.content-inner p{
+    line-height: 3rem;
+    margin: 2% 0;
+}
+.content-inner h3{
+    padding: 1% 0 0;
+}
+.content-inner>p[lang=rela]{
+}
+.content-inner p[lang=rela] i{
+    vertical-align: middle;
+}
+.content-inner p[lang=rela] i.pre{
+   
+}
+.content-inner p[lang=rela] i.back{
+   
+}
+.bgImg{
+    background: url('http://static.mperfit.com/image/wap/temporaryEnroll/beautiful.png') no-repeat right center;
+}
+.bgImg a{
+    display: inline-block;
+    width: 55%;
+    background: url('http://static.mperfit.com/image/wap/temporaryEnroll/btnIcon.png') no-repeat left center;
+    padding-left: 3rem;
+}
+.con-reward{
+    margin: 6% 0 4%;
+    text-align: center;
+}
+.con-reward figure{
+    display: inline-block;
+    width: 45%;
+    vertical-align: top;
+    margin-bottom: 2%;
+}
+.con-reward figure > div{
+    height: 10rem;
+}
+.con-reward figure img{
+    margin: 0 auto;
+}
+.con-reward figure figcaption {
+    margin-top: 4%;
+}
+.con-reward figure.reward-img1{
+    margin-right: 5%;
+}
+.con-reward figure.reward-img1 img{
+    width: 100%;
+}
+.con-reward figure.reward-img2 img{
+    width: 50%;
+}
+.con-reward figure.reward-img3{
+    width: 100%;
+}
+.con-reward figure.reward-img3 img{
+    width: 22%;
+}
+.con-reward figure.reward-img3 p{
+    font-size: 1.4rem;
+}
+.con-reward figure figcaption h4{
+    font-size: 2.4rem;
+}
+.content-inner .herms{
+    text-align: center;
+}
+.content-inner .herms img{
+    display: inline-block;
+    width: 45%;
+}
+.content-inner .herms img:first-child{
+    margin-right: 8%;
+}
+.content-inner .chunyue{
+    width: 34rem;
+    height: 6rem;
+    line-height: 6rem;
+    margin: 3% 0;
+}
+.content-inner .chunyue img{
+    display: inline-block;
+    width: 4rem;
+    height: 4rem;
+    margin-left: 5%;
+    vertical-align: middle;
+}
+.content-inner .con-time{
+    margin: 4% 0 6%;
+    padding: 0 1rem;
+    background: url('http://static.mperfit.com/image/wap/temporaryEnroll/timeBg.png');
+    border: 1px solid #f7da36;
+    font-size: 1.4rem;
+}
+.content-inner .con-btnG{
+    margin-top: 12%;
+    text-align: center;
+}
+.content-inner .con-btnG a{
+    display: inline-block;
+    width: 80%;
+    height: 3.5rem;
+    margin-bottom: 4%;
+    line-height: 3.5rem;
+    text-align: center;
+    background: url('http://static.mperfit.com/image/wap/temporaryEnroll/joinBtn.png') no-repeat;
+    background-size: 100% 100%;
+    color: #555;
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+.content-inner .con-btnG a:last-child{
+    margin-right: 0;
+}
+/*场馆信息*/
+#address{
+    text-align: center;
+    padding: 0 0 2%;
+}
+#address p{
+    margin: 4% 0;
+}
+#address a{
+    display: block;
+}
+/*二维码*/
+#partner{
+    text-align: center;
+}
+#partner > div{
+    margin: 6% 0;
+}
+#partner .people .peopleL{
+    margin-bottom: 12%;
+}
+#partner .people a{
+    color: #fff;
+    text-decoration: underline;
+}
+#partner .people i{
+    color: #fff;
+}
+#partner .people img{
+    margin-top: 4%;
+}
+#partner img{
+    width: 55%;
+    margin: 0 auto;
+}
+#partner .anchor{
+    padding-bottom: 3%;
+}
+#partner .anchor > div{
+    margin-top: 3%;
+}
+#partner .enroll img{
+    margin-top: 3%;
+}
+#partner .gw a{
+    text-decoration: underline;
+}
+#partner .hezuo img{
+    display: inline-block;
+    margin: 2% 2% 2% 0;
+    width: 21%;
+}
+#partner .hezuo.nom img{
+    margin: 3% 0 0 0;
+}
+#partner .hezuo.w img{
+    width: 28%;
+}
+
+/*媒体查询，小于640px*/
+@media screen and (max-width:640px){
+    .content-inner {
+        font-size: 1.6rem;
+    }
+    .content-inner h3 {
+        font-size: 2rem;
+    }
+    .content-inner p {
+        line-height: 2.5rem;
+    }
+    .con-tit {
+        font-size: 2rem;
+    }
+    .con-tit:after {
+        top: .8rem;
+        width: 2rem;
+        height: 2rem;
+        background-size: contain;
+    }
+    .bgImg {
+        background-size: 46%;
+    }
+    .bgImg a{
+        padding-left: 1.8rem;
+        background-size: 7%;
+    }
+    .con-reward figure > div {
+        height: 6.5rem;
+    }
+    .con-reward figure figcaption h4 {
+        font-size: 1.5rem;
+    }
+    .content-inner .chunyue {
+        width: 21rem;
+        height: 4.5rem;
+        line-height: 4.5rem;
+    }
+    .bgImg {
+        background-size: 42%;
+    }
+}
+/*媒体查询，小于375px*/
+@media screen and (max-width:375px){
+    #nav {
+        height: 4rem;
+    }
+    #nav a.joinR {
+        width: 22%;
+        height: 2.4rem;
+        line-height: 2.4rem;
+        margin: .6rem 1rem 0 0;
+        font-size: 1.6rem;
+    }
+    #navBox {
+        font-size: 1.8rem;
+    }
+    .popup-layer-content {
+        height: 14rem;
+    }
+    #header {
+       
+    }
+    .content-inner {
+        font-size: 1.5rem;
+    }
+    .con-tit {
+        font-size: 1.8rem;
+    }
+    .con-tit:after {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+    .content-inner h3 {
+        font-size: 1.8rem;
+    }
+    .con-reward figure.reward-img3 p {
+        font-size: 1.3rem;
+    }
+    #partner{
+        font-size: 1.4rem;
+    }
+    #partner h3{
+        font-size: 1.6rem;
+    }
+    #partner .people .peopleL {
+        margin-bottom: 8%;
+    }
+    #partner > div {
+        margin: 3% 0;
+    }
+    #partner .anchor > div {
+        margin-top: 2%;
+    }
+}
+/*媒体查询，小于320px*/
+@media screen and (max-width:320px){
+    .content-inner p {
+        line-height: 1.8rem;
+    }
+    .con-tit {
+        font-size: 1.6rem;
+    }
+    .con-tit:after {
+        top: 0.8rem;
+        width: 1.4rem;
+        height: 1.4rem;
+    }
+    .content-inner {
+        font-size: 1.4rem;
+    }
+    .content-inner h3 {
+        font-size: 1.6rem;
+    }
+    .con-reward figure figcaption h4 {
+        font-size: 1.2rem;
+    }
+    .con-reward figure > div {
+        height: 5.5rem;
+    }
+    .con-reward figure.reward-img3 p {
+        font-size: 1.2rem;
+    }
+    .content-inner .chunyue {
+        width: 18rem;
+        height: 3.5rem;
+        line-height: 3.5rem;
+    }
+    .content-inner .con-btnG a {
+        height: 3rem;
+        line-height: 2.8rem;
+        font-size: 2rem;
+    }
+}
+

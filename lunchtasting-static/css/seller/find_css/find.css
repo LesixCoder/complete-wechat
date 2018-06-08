@@ -1,0 +1,79 @@
+ .pagination.square > li > a,
+ .pagination.square > li > span {
+     margin: 0 5px;
+     border: 1px solid #00f;
+     color: #00f
+ }
+ .pagination.square > li:first-child > a,
+ .pagination.square > li:first-child > span,
+ .pagination.square > li:last-child > a,
+ .pagination.square > li:last-child > span {
+     padding-left: 10px;
+     padding-right: 10px;
+     border-radius: 0px;
+ }
+ .pagination.blue > li > a:hover,
+ .pagination.blue > li > span:hover,
+ .pagination.blue > li > a:focus,
+ .pagination.blue > li > span:focus {
+     background-color: #fdd5d5;
+ }
+ .pagination.blue > .active > a,
+ .pagination.blue > .active > span,
+ .pagination.blue > .active > a:hover,
+ .pagination.blue > .active > span:hover,
+ .pagination.blue > .active > a:focus,
+ .pagination.blue > .active > span:focus {
+     z-index: 2;
+     color: #fff;
+     cursor: default;
+     background-color: #00f;
+     border-color: #00f;
+ }
+ .pagination.blue > .disabled > span,
+ .pagination.blue > .disabled > span:hover,
+ .pagination.blue > .disabled > span:focus,
+ .pagination.blue > .disabled > a,
+ .pagination.blue > .disabled > a:hover,
+ .pagination.blue > .disabled > a:focus {
+     color: #fdd5d5;
+     cursor: not-allowed;
+     background-color: #fff;
+     border-color: #00f;
+ }
+/*模态弹出框*/
+#mydialog{
+    margin-top: 20%
+}
+#List{
+    text-align: center;
+}
+#List thead{
+    font-weight: bold;
+}
+#List tbody tr td{
+    display: table-cell; 
+    vertical-align: middle;
+}
+#List tbody tr td:last-child button{
+    width: 65px;
+}
+.modal-header .close{
+    margin-top: -8px;
+}
+#logoText{
+    font-size: 25px;
+}
+.judgeGro{
+    margin: 50px 0;
+}
+/*回到顶部*/
+.to-top{
+    background: #3498db; 
+    color: #fff;padding: 15px;
+    border-radius: 5px;
+}
+.to-top:hover{
+    text-decoration: none;
+    color: #ccc;
+}

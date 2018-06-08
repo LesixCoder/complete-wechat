@@ -1,0 +1,184 @@
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    box-sizing: border-box;
+    -webkit-overflow-scrolling: touch;
+    overflow-scrolling: touch;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    tap-highlight-color: rgba(0, 0, 0, 0)
+}
+
+@font-face {
+    font-family: 'hyshuaixian';
+    src: url('../../fonts/HYSHUAIXIANTIW.TTF') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html {
+    font-size: 625%;
+}
+
+body {
+    line-height: 1.5;
+    font-family: 'hyshuaixian', 'Microsoft YaHei', 'arial';
+    background: #ffda2a;
+    color: #ffda2a;
+    font-size: .48rem;
+}
+
+
+/* 清除chrome浏览器input[type=number]默认样式 */
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
+}
+input[type="submit"],
+input[type="reset"],
+input[type="button"],
+button {
+-webkit-appearance: none;
+}
+input,textarea,button{
+    outline:none;
+}
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+a {
+    text-decoration: none;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+em,
+i,
+address {
+    font-style: normal;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-weight: 400;
+}
+
+.clearfix:after {
+    content: '';
+    height: 0;
+    display: block;
+    clear: both;
+    visibility: hidden;
+}
+.none{
+    display: none;
+}
+.filter{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    background: rgba(0,0,0,.7);
+    display: none;
+}
+.wrapper-box {
+    position: relative;
+    width: 7.5rem;
+    margin: 0 auto;
+    background: #ffda2a;
+}
+
+/*头部*/
+.score-header{
+    padding-top: 8%;
+    text-align: center;
+}
+.score-header img{
+    margin: 0 auto;
+}
+.score-header img.header-logo{
+    margin: 3% auto 2%;
+}
+.header-explain,.header-lapiao{
+    display: inline-block;
+    margin: 5% auto 4%;
+}
+.header-lapiao{
+    margin-left: 5%;
+}
+/*成绩*/
+.score-box{
+    width: 95%;
+    margin: 0 auto 8%;
+    padding: 3% 0 0;
+    text-align: center;
+}
+.box-top{
+    padding: 4% 0 0;
+    background: url('http://static.mperfit.com/wechat/images/score/score-bg-tit.png') no-repeat center center;
+    background-size: 100% 100%;
+}
+.box-bottom{
+    background: url('http://static.mperfit.com/wechat/images/score/score-bg-box.png') no-repeat center center;
+    background-size: 100% 100%;
+}
+.box-footer{
+    padding: 0 0 6%;
+    background: url('http://static.mperfit.com/wechat/images/score/score-bg-footer.png') no-repeat center center;
+    background-size: 100% 100%;
+}
+.box-time{
+    display: block;
+    width: 40%;
+    height: .65rem;
+    line-height: .7rem;
+    margin: 0 auto;
+    border-radius: 1rem;
+    color: #1c1c1c;
+    background: #ffda2a;
+    font-size: .42rem;
+}
+.box-btnG{
+    padding: 3.5% 0 0;
+}
+.box-btnG a {
+    display: inline-block;
+    width: 25%;
+    height: .55rem;
+    line-height: .55rem;
+    background: #fff;
+    color: #666;
+    font-size: .4rem;
+}
+.box-btnG a.active {
+    background: #ffda2a;
+    color: #fff;
+}
+.score-table{
+    width: 96%;
+    line-height: .8rem;
+    margin: 3% auto 0;
+    color: #1c1c1c;
+    text-align: center;
+    font-size: .4rem;
+    border-collapse: collapse;
+}
+.score-table thead{
+    font-weight: bold;
+}
+.score-table tbody tr{
+    border-bottom: 1px solid #999;
+}
+.score-table tbody tr td:first-child{
+}

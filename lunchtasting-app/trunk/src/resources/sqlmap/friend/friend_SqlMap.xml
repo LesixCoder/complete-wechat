@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.Friend">
+
+    <typeAlias alias="Friend" type="com.lunchtasting.server.po.lt.Friend" />
+
+    <resultMap id="FriendResult" class="com.lunchtasting.server.po.lt.Friend">
+        <result property="id" column="id" jdbcType="BIGINT" />
+        <result property="srcUserId" column="src_user_id" jdbcType="BIGINT" />
+        <result property="desUserId" column="des_user_id" jdbcType="BIGINT" />
+        <result property="createTime" column="create_time" jdbcType="DATETIME" />
+    </resultMap>
+
+	<insert id="create" parameterClass="Friend">
+    <![CDATA[
+   		INSERT INTO friend (
+   		id
+    	, src_user_id
+    	, des_user_id
+    	, create_time
+    	) VALUES (
+    	#id#
+    	, #srcUserId#
+    	, #desUserId#
+    	, now()
+    	)
+    ]]>
+	</insert>
+	
+    <select id="getFollow"  parameterClass="map" resultClass="java.lang.String">
+        SELECT id FROM friend 
+        	WHERE src_user_id = #srcUserId# AND des_user_id = #desUserId#
+    </select>
+    
+    <select id="queryFollowList"  parameterClass="map" resultClass="java.util.HashMap" remapResults="true">
+    	SELECT b.id AS user_id,b.name AS user_name,b.img_url AS user_img_url
+    		<isNotNull property="isLoginUser">
+    			,c.id AS is_follow
+    		</isNotNull>
+    	
+    		FROM (SELECT * FROM friend WHERE src_user_id = #desUserId# 
+    			ORDER BY create_time DESC LIMIT #page#, #pageSize#) a
+    			
+    		JOIN user b ON(a.des_user_id = b.id)
+    		
+    		<isNotNull property="isLoginUser">
+    		LEFT JOIN (SELECT id,des_user_id FROM friend WHERE src_user_id = #userId#) 
+    			c ON(a.des_user_id = c.des_user_id)	
+    		</isNotNull>
+    		
+    </select>
+    
+	<select id="getFollowCount"  parameterClass="map" resultClass="java.lang.Integer">
+    	SELECT COUNT(id) FROM friend WHERE src_user_id = #userId#
+    </select>
+    
+   	<select id="queryFansList"  parameterClass="map" resultClass="java.util.HashMap" remapResults="true">
+    	SELECT b.id AS user_id,b.name AS user_name,b.img_url AS user_img_url
+			<isNotNull property="userId">
+    			,c.id AS is_follow
+    		</isNotNull>   
+    		<isNotNull property="isLoginUser">
+    			,d.id AS is_new
+    		</isNotNull>
+    		 	
+    		FROM (SELECT * FROM friend WHERE des_user_id = #desUserId# 
+    			ORDER BY create_time DESC LIMIT #page#, #pageSize#) a
+    			
+    		JOIN user b ON(a.src_user_id = b.id)
+    		
+    		<isNotNull property="userId">
+    		LEFT JOIN (SELECT id,des_user_id FROM friend WHERE src_user_id = #userId#) 
+    			c ON(a.src_user_id = c.des_user_id)
+    		</isNotNull>
+    		
+    		<isNotNull property="isLoginUser">
+			LEFT JOIN (SELECT id,src_user_id,des_user_id FROM message_notification WHERE src_user_id = #userId# 
+    			AND biz_type = 203 AND is_read = 0) d ON(a.src_user_id = d.des_user_id)    			
+    		</isNotNull>
+    </select>
+    
+	<select id="getFansCount"  parameterClass="map" resultClass="java.lang.Integer">
+    	SELECT COUNT(id) FROM friend WHERE des_user_id = #userId#
+    </select>
+    
+    <delete id="removeFriend" parameterClass="map">
+    	DELETE FROM friend 
+    		WHERE src_user_id = #srcUserId# AND des_user_id = #desUserId#
+    </delete>
+    
+</sqlMap>

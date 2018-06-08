@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.OrdersList">
+
+	<typeAlias alias="OrdersList" type="com.lunchtasting.server.po.lt.OrdersList" />
+
+	<resultMap id="OrdersListResult" class="com.lunchtasting.server.po.lt.OrdersList">
+		<result property="id" column="id"  jdbcType="BIGINT" />
+		<result property="orderId"  column="order_id" jdbcType="BIGINT" />
+		<result property="price"  column="price" jdbcType="DOUBLE" />
+		<result property="code"  column="code" jdbcType="BIGINT" />
+		<result property="status" column="status" jdbcType="INT" />
+	</resultMap>
+	
+    <insert id="create" parameterClass="OrdersList">
+    <![CDATA[
+        INSERT INTO orders_list (
+        id
+        , order_id
+        , price
+        , code
+        , status
+        , create_time
+        ) VALUES (
+        #id#
+        , #orderId#
+        , #price#
+        , #code#
+        , #status#
+        , now()
+        )
+    ]]>
+    <selectKey resultClass="long" keyProperty="id">
+       SELECT @@IDENTITY
+       AS id
+    </selectKey>
+    </insert>
+	
+	<select id="getById" resultMap="OrdersListResult" parameterClass="map">
+		SELECT * FROM orders_list WHERE id = #id:BIGINT#
+	</select>
+	
+	<select id="getOrderListCount"  parameterClass="map" resultClass="java.lang.Integer">
+		SELECT COUNT(id) FROM orders_list WHERE order_id = #orderId#
+		<isNotNull property="status">
+  			AND status = #status#
+  		</isNotNull>
+    </select>
+	
+	<select id="queryOrderListList"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT id,code,status,IFNULL(order_refund_id,'') AS order_refund_id FROM orders_list WHERE order_id = #orderId#
+		<isNotNull property="status">
+  			AND status = #status#
+  		</isNotNull>
+  		<isNotNull property="pageSize">
+            LIMIT #page#,#pageSize#
+        </isNotNull>
+	</select>
+	
+	<update id="updateApplyRefund" parameterClass="map">
+		UPDATE orders_list SET status = #status#,order_refund_id = #refundId# WHERE id IN ($ids$)
+	</update>
+	
+	<update id="updateIsRefund" parameterClass="map">
+		UPDATE orders_list SET status = #status# WHERE id IN ($ids$)
+	</update>
+	
+</sqlMap>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.ScheduleJob">
+
+	<typeAlias alias="ScheduleJob" type="com.lunchtasting.server.po.lt.ScheduleJob" />
+
+	<resultMap id="ScheduleJobResult" class="com.lunchtasting.server.po.lt.ScheduleJob">
+		<result column="job_id" property="jobId" jdbcType="BIGINT" />
+		<result column="job_name" property="jobName" jdbcType="VARCHAR" />
+		<result column="job_group" property="jobGroup" jdbcType="VARCHAR" />
+		<result column="job_status" property="jobStatus" jdbcType="VARCHAR" /> 
+		<result column="cron_expression" property="cronExpression" jdbcType="VARCHAR" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		<result column="bean_class" property="beanClass" jdbcType="VARCHAR" />
+		<result column="is_concurrent" property="isConcurrent" jdbcType="VARCHAR" />
+		<result property="springId" column="spring_id" jdbcType="VARCHAR" />
+		<result property="methodName" column="method_name" jdbcType="VARCHAR" />
+		<result property="createTime" column="create_time" jdbcType="DATETIME" />
+		<result property="updateTime" column="update_time" jdbcType="DATETIME" />
+	</resultMap>
+	
+	<sql id="userQb">
+		job_id
+    	, job_name
+    	, job_group
+    	, job_status
+    	, cron_expression
+    	, is_concurrent
+    	, description
+    	, bean_class
+    	, spring_id
+    	, method_name
+    	, update_time
+    	, create_time  
+	</sql>
+	
+	<insert id="create" parameterClass="ScheduleJob">
+    <![CDATA[
+   		INSERT INTO schedule_job (
+	    	job_name
+	    	, job_group
+	    	, job_status
+	    	, cron_expression
+	    	, is_concurrent
+	    	, description
+	    	, bean_class
+	    	, spring_id
+	    	, method_name
+	    	, update_time
+	    	, create_time  
+    	) VALUES (
+	    	#jobName#
+	    	, #jobGroup#
+	    	, #jobStatus#
+	    	, #cronExpression#
+	    	, #isConcurrent#
+	    	, #description#
+	    	, #beanClass#
+	    	, #springId#
+	    	, #methodName#
+	    	, now()
+	    	, now()
+    	)
+    ]]>
+	<selectKey resultClass="long" keyProperty="jobId">
+			SELECT @@IDENTITY
+			AS job_id
+    </selectKey>
+	</insert>
+	
+	<select id="queryScheduleJobList" parameterClass="map" resultMap="ScheduleJobResult">
+	   SELECT 
+			job_id
+	    	, job_name
+	    	, job_group
+	    	, job_status
+	    	, cron_expression
+	    	, is_concurrent
+	    	, description
+	    	, bean_class
+	    	, spring_id
+	    	, method_name
+	    	, update_time
+	    	, create_time  
+	   FROM 
+	   		schedule_job
+	</select>
+	
+	<select id="queryScheduleJobCount" parameterClass="map" resultClass="int">
+	   SELECT 
+			count(*) 
+	   FROM 
+	   		schedule_job
+	   WHERE  1=1
+	   	<isNotEmpty property="jobName">
+	   		AND job_name=#jobName# 
+	   	</isNotEmpty>
+	   	<isNotEmpty property="jobGroup">	
+	   		AND job_group=#jobGroup#
+	   	</isNotEmpty>
+	</select>
+	
+	<select id="getScheduleJobList" parameterClass="map" resultMap="ScheduleJobResult">
+	   SELECT 
+			job_id
+	    	, job_name
+	    	, job_group
+	    	, job_status
+	    	, cron_expression
+	    	, is_concurrent
+	    	, description
+	    	, bean_class
+	    	, spring_id
+	    	, method_name
+	    	, update_time
+	    	, create_time  
+	   FROM 
+	   		schedule_job
+	</select>
+</sqlMap>

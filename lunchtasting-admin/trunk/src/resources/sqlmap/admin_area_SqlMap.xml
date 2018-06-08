@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.Area">
+
+    <typeAlias alias="Area" type="com.lunchtasting.server.po.lt.Area" />
+
+    <resultMap id="areaResult" class="com.lunchtasting.server.po.lt.Area">
+        <result column="id" property="id" jdbcType="BIGINT"/> 
+        <result column="name" property="name" jdbcType="VARCHAR"/> 
+   </resultMap>
+
+  <!-- 查询区域 -->
+  <select id="queryArea" parameterClass="map"  resultMap="areaResult">
+               select id,name from area
+  </select>
+  
+  <!-- 查询总条数-->
+	 <select id="queryAreaCount" parameterClass="Map" resultClass="int">
+		 select count(*) from area where flag = 0
+  	</select>
+  
+  <select id="queryAreaByName" parameterClass="map" resultMap="areaResult">
+ 		select id,name from area where name = #name#			
+  </select>
+  
+  <insert id="create" parameterClass="Area">
+  <![CDATA[
+   		INSERT INTO area (
+   		  name
+    	, flag
+    	) VALUES (
+    	  #name#
+    	, 0
+    	)
+    ]]>
+	<selectKey resultClass="long" keyProperty="id">
+	   SELECT @@IDENTITY
+	   AS id
+    </selectKey>
+  </insert>
+  
+  <!-- 更新 -->
+    <update id="update" parameterClass="Area">
+ 		UPDATE area 
+ 		<dynamic prepend="set">  
+	 		<isNotEmpty property="name" prepend=",">
+	 			name = #name#
+	 		</isNotEmpty>
+ 		</dynamic>
+ 		WHERE 
+  			id = #id#
+ 	</update>
+ 	
+ 	<update id="deleteArea" parameterClass="Map">
+ 	update area set flag = #flag# where id = #id#
+ 	</update>
+ 	
+ 	<select id="queryAreaList"  parameterClass="map" resultMap="areaResult">
+    	select
+		     id
+		    ,name
+		    ,flag
+		from
+			area
+		where
+		flag = 0
+		<isNotNull property="pageSize">
+            <![CDATA[LIMIT #curPage#,#pageSize#]]>
+        </isNotNull>
+    </select>
+    
+    <select id="queryNameCount" parameterClass="map" resultClass="int">
+ 		select count(*) from area where name = #name#			
+    </select>
+    
+    <select id="queryAreaById" parameterClass="map" resultMap="areaResult">
+ 		SELECT
+ 	 		*
+ 	 	FROM
+ 	 		area
+ 	 	WHERE 
+			id=#id#			
+ 	</select>
+</sqlMap>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.User">
+
+    <typeAlias alias="User" type="com.lunchtasting.server.po.lt.User" />
+
+    <resultMap id="UserResult" class="com.lunchtasting.server.po.lt.User">
+        <result property="id" column="id" jdbcType="BIGINT" />
+        <result property="phone" column="phone" jdbcType="VARCHAR" />
+        <result property="account" column="account" jdbcType="VARCHAR" />
+        <result property="password" column="password" jdbcType="VARCHAR" />
+        <result property="name" column="name" jdbcType="VARCHAR" />
+        <result property="sex" column="sex" jdbcType="INT" />
+        <result property="imgUrl" column="img_url" jdbcType="VARCHAR" />
+        <result property="source" column="source" jdbcType="INT" />
+        <result property="identity" column="identity" jdbcType="INT" />
+        <result property="loginTime" column="login_time" jdbcType="DATETIME" />
+        <result property="updateTime" column="update_time" jdbcType="DATETIME" />
+        <result property="createTime" column="create_time" jdbcType="DATETIME" />
+    </resultMap>
+
+	<insert id="create" parameterClass="User">
+    <![CDATA[
+   		INSERT INTO user (
+    	phone
+    	, account
+    	, password
+    	, name
+    	, sex
+    	, img_url
+    	, source
+    	, identity
+    	, login_time
+    	, update_time
+    	, create_time
+    	) VALUES (
+    	#phone#
+    	, #account#
+    	, #password#
+    	, #name#
+    	, #sex#
+    	, #imgUrl#
+    	, #source#
+    	, #identity#
+    	, now()
+    	, now()
+    	, now()
+    	)
+    ]]>
+	<selectKey resultClass="long" keyProperty="id">
+	   SELECT @@IDENTITY
+	   AS id
+    </selectKey>
+	</insert>
+
+	<select id="getById" parameterClass="map" resultMap="UserResult">
+		SELECT * FROM user WHERE id = #id:BIGINT#
+	</select>
+
+	<select id="getByPhoneAndPwd" parameterClass="map" resultMap="UserResult">
+	   SELECT * FROM user WHERE phone = #phone# AND password = #pwd#
+	</select>
+	
+    <select id="getByAccountAndPwd" parameterClass="map" resultMap="UserResult">
+       SELECT * FROM user WHERE account = #account# AND password = #pwd#
+    </select>
+    
+    <select id="getUserIdByPhone" parameterClass="map" resultClass="java.lang.Long">
+        SELECT id FROM user WHERE phone = #phone#
+    </select>
+    
+    <update id="updatePwd"  parameterClass="map">
+        UPDATE user SET password = #pwd#,update_time = now() WHERE id = #userId#
+    </update>
+    
+    <update id="updateLoginTime"  parameterClass="map">
+        UPDATE user SET login_time = now() WHERE id = #userId#
+    </update>
+    
+    <insert id="createSuggest" parameterClass="map">
+    <![CDATA[
+        INSERT INTO user_suggest (
+        user_id
+        , content
+        , create_time
+        ) VALUES (
+        #userId#
+        , #content#
+        , now()
+        )
+    ]]>
+    </insert>
+</sqlMap>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.UserDepositDraw">
+
+    <typeAlias alias="UserDepositDraw" type="com.lunchtasting.server.po.lt.UserDepositDraw" />
+
+    <resultMap id="UserDepositDrawResult" class="com.lunchtasting.server.po.lt.UserDepositDraw">
+        <result property="id" column="id" jdbcType="BIGINT" />
+        <result property="userId" column="user_id" jdbcType="BIGINT" />
+        <result property="money" column="money" jdbcType="DOUBLE" />
+        <result property="account" column="account" jdbcType="VARCHAR" />
+        <result property="phone" column="phone" jdbcType="VARCHAR" />
+        <result property="name" column="name" jdbcType="VARCHAR" />
+        <result property="status" column="status" jdbcType="INT" />
+        <result property="createTime" column="create_time" jdbcType="DATETIME" />
+    </resultMap>
+
+	<insert id="create" parameterClass="UserDepositDraw">
+    <![CDATA[
+   		INSERT INTO user_deposit_draw (
+   		id
+    	, user_id
+    	, money
+    	, account
+    	, phone
+    	, name
+    	, status
+    	, create_time
+    	) VALUES (
+    	#id#
+    	, #userId#
+    	, #money#
+    	, #account#
+    	, #phone#
+    	, #name#
+    	, #status#
+    	, now()
+    	)
+    ]]>
+	</insert>
+	
+	<select id="getNowDrawCount"  parameterClass="map" resultClass="java.lang.Integer">
+		SELECT COUNT(1) FROM user_deposit_draw WHERE user_id = #userId# 
+			<![CDATA[ AND date_sub(NOW(),interval #day# day) <= create_time ]]>
+	</select>
+	
+	<select id="queryDrawList" parameterClass="map" resultClass="java.util.HashMap">
+		SELECT * FROM user_deposit_draw
+			WHERE user_id = #userId# LIMIT #page#,#pageSize#
+	</select>
+	
+	<select id="getDrawCount" parameterClass="map" resultClass="java.lang.Integer">
+		SELECT COUNT(1) FROM user_deposit_draw WHERE user_id = #userId#
+	</select>	
+	
+</sqlMap>

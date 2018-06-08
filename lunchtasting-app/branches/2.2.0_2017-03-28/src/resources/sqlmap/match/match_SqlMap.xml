@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.Match">
+
+    <typeAlias alias="Match" type="com.lunchtasting.server.po.lt.Match" />
+
+    <resultMap id="MatchResult" class="com.lunchtasting.server.po.lt.Match">
+        <result property="id" column="id"  jdbcType="BIGINT" />
+        <result property="name" column="name"  jdbcType="VARCHAR" />
+        <result property="content" column="content"  jdbcType="VARCHAR" />
+        <result property="imgText" column="img_text"  jdbcType="VARCHAR" />
+        <result property="imgUrl" column="img_url"  jdbcType="VARCHAR" />
+        <result property="price" column="price"  jdbcType="DOUBLE" />
+		<result property="beginTime" column="begin_time"  jdbcType="DATETIME" />
+		<result property="endTime" column="end_time"  jdbcType="DATETIME" />
+		<result property="enrollNum" column="enroll_num"  jdbcType="INT" />
+		<result property="address" column="address"  jdbcType="VARCHAR" />
+		<result property="longitude" column="longitude"  jdbcType="DOUBLE" />
+		<result property="latitude" column="latitude"  jdbcType="DOUBLE" />
+		<result property="sort" column="sort"  jdbcType="INT" />
+		<result property="flag" column="flag"  jdbcType="INT" />
+        <result property="createTime" column="create_time" jdbcType="DATETIME" />
+        <result property="updateTime" column="update_time" jdbcType="DATETIME" />
+    </resultMap>
+    
+    <select id="getById" parameterClass="map" resultMap="MatchResult">
+		SELECT * FROM matchs WHERE id = #id:BIGINT#
+	</select>
+	
+	<select id="queryMatchCategoryList"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT id AS category_id,name,img_url,content,unlock_content
+				,IFNULL(score,0) AS score,medal_id,is_lock
+			FROM match_category WHERE flag = 0 ORDER BY sort ASC
+	</select>	
+    
+    <select id="queryMatchList"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT id AS match_id,name,img_url,begin_time,end_time,address,is_lock FROM matchs WHERE flag = 0 
+		<isNotEmpty property="categoryId">
+			AND	category_id = #categoryId#
+		</isNotEmpty>
+		ORDER BY sort ASC 
+	    LIMIT #page#, #pageSize#
+    </select>	
+    
+    
+	<select id="getMatchCount"  parameterClass="map" resultClass="java.lang.Integer">
+	        SELECT COUNT(id) FROM matchs WHERE flag = 0 
+		<isNotEmpty property="categoryId">
+			AND	category_id = #categoryId#
+		</isNotEmpty>
+	</select>
+	
+	<select id="getMatchDetail"  parameterClass="map" resultClass="java.util.HashMap" remapResults="true" >
+        SELECT a.id AS match_id,a.name,a.content,a.img_url,a.img_text,a.address
+        			,a.specific_address,a.price,a.market_price,a.enroll_num,a.begin_time,a.end_time
+                    ,IFNULL(b.now_enroll_num,0) AS now_enroll_num
+                    ,IFNULL(a.longitude,0) AS longitude,IFNULL(a.latitude,0) AS latitude
+                    <isNotNull property="userId">
+                    ,IFNULL(d.match_id,'') AS is_enroll
+                    </isNotNull>
+            FROM 
+     			(SELECT * FROM matchs WHERE id = #matchId# AND flag = 0) a
+           	 	LEFT JOIN (SELECT COUNT(id) AS now_enroll_num,match_id FROM match_order 
+            		WHERE match_id = #matchId# AND status IN(1,2)) b ON(a.id = b.match_id)
+            	<isNotNull property="userId">
+            	LEFT JOIN (SELECT match_id FROM match_order WHERE match_id = #matchId# 
+            		AND user_id = #userId# AND status IN(1,2)) d ON(a.id = d.match_id)
+            	</isNotNull>
+    </select>
+	
+</sqlMap>

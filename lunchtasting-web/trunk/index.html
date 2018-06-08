@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1 , user-scalable=no">
+    <title>PERFIT玩美-只为不可思议</title>
+    <script type="text/javascript">
+        /*判断是否在手机或者PC中打开*/
+        function browserRedirect() {
+            var sUserAgent = navigator.userAgent.toLowerCase();
+            var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
+            var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
+            var bIsMidp = sUserAgent.match(/midp/i) == "midp";
+            var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";
+            var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";
+            var bIsAndroid = sUserAgent.match(/android/i) == "android";
+            var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
+            var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
+            if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {
+                window.location.href = 'http://wap.mperfit.com/'; //手机站链接
+            } else {
+                //window.location= 'PC站链接'; //PC站链接
+            }
+        }
+        browserRedirect();
+    </script>
+
+    <link rel="shortcut icon" href="images/title_icon.png" type="image/x-icon">
+    <link rel="icon" href="images/title_icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/jquery.fullPage.css" />
+    <link rel="stylesheet" href="css/main.css" />
+</head>
+
+<body style="position:relative;">
+    <!--导航-->
+    <nav class="navbar navbar-default navbar-fixed-bottom selfNav">
+        <div class="container fixW">
+            <div class="navbar-header">
+                <button class="navbar-toggle" data-toggle="collapse" data-target="#myNav">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="index.html" class="navbar-brand"><img src="images/logo.png" width="200" height="50" alt=""></a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNav">
+                <ul class="nav navbar-nav navbar-right" role="tablist" id="menu">
+                    <li data-menuanchor="page1" class="active"><a href="#page1">首页</a></li>
+                    <li data-menuanchor="page2"><a href="#page2">玩美障碍赛</a></li>
+                    <li data-menuanchor="page6"><a href="#page6">玩美相册</a></li>
+                    <li data-menuanchor="page3"><a href="#page3">玩美APP</a></li>
+                    <li data-menuanchor="page4"><a href="#page4">玩美历程</a></li>
+                    <li data-menuanchor="page5"><a href="#page5">关于我们</a></li>
+                    <!--                    <li><a href="joinus.html">加入我们</a></li>-->
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div id="dowebok">
+        <!--第一屏-->
+        <section class="section" id="pageOne">
+            <div class="page1-text">
+                <div class="pageOne-tit">
+                    <h2 class="tit1"></h2>
+                </div>
+                <div class="pageOne-download">
+                    <a class="dow-apple" href="https://itunes.apple.com/cn/app/id1155981225">AppStore</a>
+                    <a class="dow-android" href="http://a.app.qq.com/o/simple.jsp?pkgname=com.mperfit.perfit">Android</a>
+                    <a id="qrcode" class="dow-weixin" href="javascript:void(0)"></a>
+                </div>
+            </div>
+            <div class="fixW fixW1">
+                <video class="page1-video" poster="images/page1-bg.jpg" src="http://static.mperfit.com/video/video.mp4" autoplay="autoplay" loop="loop" muted="muted">
+                    <source src="http://static.mperfit.com/video/video.mp4" type="video/mp4" />
+                    <source src="http://static.mperfit.com/video/video.ogg" type="video/ogg" />
+                    <source src="http://static.mperfit.com/video/video.webm" type="video/webm" />
+                </video>
+            </div>
+        </section>
+        <!--第二屏-->
+        <section class="section" id="pageTwo">
+            <div class="container fixW">
+                <div class="pageTwo-tit">
+                    <h2 id="introduction">跨出无畏的第一步</h2>
+                </div>
+                <ul class="part2-ul clearfix">
+                    <li class="bglight">
+                        <div class="mouseover">
+                            <div>
+                                <i class="font-cn font-hide">个性的障碍设置</i>
+                            </div>
+                        </div>
+                        <div class="mouseout">
+                            <div>
+                                <div class="font-24"><i class="font-cn font-hide">个性化</i></div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="bglight">
+                        <div class="mouseover">
+                            <div>
+                                <i class="font-cn font-hide">职业的赛事规划</i>
+                            </div>
+                        </div>
+                        <div class="mouseout">
+                            <div>
+                                <div class="font-24"><i class="font-cn font-hide">职业化</i></div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="li-tit">
+                        <h3>PERFIT玩美<br>障碍赛</h3>
+                    </li>
+                    <li class="bglight">
+                        <div class="mouseover">
+                            <div>
+                                <i class="font-cn font-hide">规范的团队管理</i>
+                            </div>
+                        </div>
+                        <div class="mouseout">
+                            <div>
+                                <div class="font-24"><i class="font-cn font-hide">规范化</i></div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="bglight">
+                        <div class="mouseover">
+                            <div>
+                                <i class="font-cn font-hide">专业的数据采集</i>
+                            </div>
+                        </div>
+                        <div class="mouseout">
+                            <div>
+                                <div class="font-24"><i class="font-cn font-hide">数据化</i></div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="pageTwo-footer">
+                    <p>PERFIT玩美障碍赛是玩美平台打造的原创户外挑战赛，要求参赛者具备综合的身体素质，此外融合运动、娱乐、音乐、社交等当下潮流、时尚元素，打造属于年轻人的运动嘉年华</p>
+                </div>
+            </div>
+        </section>
+        <!--第六屏-->
+        <section class="section" id="pageSix">
+            <div class="wrap">
+                <div id="showcase" class="noselect">
+                    <div class="card className" lang="1">
+                        <img src="images/activity1.jpeg">
+                        <a href="photos.html">[点击查看相关内容]</a>
+                    </div>
+                    <div class="card" lang="2">
+                        <img src="images/activity2.jpeg">
+                        <a href="photos.html">[点击查看相关内容]</a>
+                    </div>
+                    <div class="card" lang="3">
+                        <img src="images/activity3.jpeg">
+                        <a href="photos.html">[点击查看相关内容]</a>
+                    </div>
+                    <div class="card" lang="4">
+                        <img src="images/activity4.jpeg">
+                        <a href="photos.html">[点击查看相关内容]</a>
+                    </div>
+                    <div class="card">
+                        <img src="images/activity5.jpeg">
+                        <a href="photos.html">[点击查看相关内容]</a>
+                    </div>
+                    <div class="card">
+                        <img src="images/activity6.jpeg">
+                        <a href="photos.html">[点击查看相关内容]</a>
+                    </div>
+                </div>
+                <button class="nav-show noselect left">
+                    &lt;
+                </button>
+                <button class="nav-show noselect right">
+                    &gt;
+                </button>
+            </div>
+        </section>
+        <!--第三屏-->
+        <section class="section" id="pageThree">
+            <div class="pageThree-tit">
+                <img src="images/page3_bg.jpg" alt="">
+            </div>
+            <div class="pageThree-con">
+                <figure>
+                    <span class="ptc-img"></span>
+                    <figcaption>
+                        <p>PERFIT玩美APP吸引众多年轻人在平台中聚集，通过交流，找到你最玩美的朋友</p>
+                    </figcaption>
+                </figure>
+                <figure>
+                    <span class="ptc-img"></span>
+                    <figcaption>
+                        <p>多种赛事玩法，不同难度的挑战，结合线上活动，使你在比赛中发觉更多的乐趣</p>
+                    </figcaption>
+                </figure>
+                <figure>
+                    <span class="ptc-img"></span>
+                    <figcaption>
+                        <p>新奇的内容，专业的知道，让你领略荷尔蒙带来的冲击</p>
+                    </figcaption>
+                </figure>
+            </div>
+        </section>
+        <!--第四屏-->
+        <section class="section" id="pageFour">
+            <div class="container fixW">
+                <div class="pageTwo-tit pageFour-tit">
+                    <h2 id="introduction">选择玩美成就不可思议</h2>
+                </div>
+                <div class="pageFour-con">
+                    <figure class="pfc-1">
+                        <span><img src="images/page4_img1.jpg" alt=""><i class="pfc-icon1"></i></span>
+                        <figcaption>
+                            <h4>美女与野兽综合体能挑战赛</h4>
+                            <time>2016年12月25日</time>
+                            <p>美女与野兽综合体能挑战赛是PERFIT自主举办的第一届娱乐体能赛事。线上关注度累计达到百万人次，为用户提供了一种的新型娱乐社交方式</p>
+                        </figcaption>
+                    </figure>
+                    <figure class="pfc-2">
+                        <span><img src="images/page4_img2.jpg" alt=""><i class="pfc-icon2"></i></span>
+                        <figcaption>
+                            <h4>怀旧复古运动</h4>
+                            <time>2017年3月4日</time>
+                            <p>怀旧复古运动是PERFIT为8090后精心准备的复古赛事，此次赛事线下参与人数200+，线上辐射1W+，为大家提供了一次集体穿越的机会。</p>
+                        </figcaption>
+                    </figure>
+                </div>
+            </div>
+        </section>
+        <!--第五屏-->
+        <section class="section" id="pageFive">
+            <div class="pageFive-tit">
+                <h2 id="about"><span>ABOUT</span></h2>
+            </div>
+            <div class="pageFive-text">
+                <div class="container fixW">
+                    <p>PERFIT，2016年成立于北京。</p>
+                    <p>专注竞技赛事领域，主打“原创精品系列赛事”及“赛事周边文娱活动”。</p>
+                    <p>致力于打造国内领先的，集赛事、娱乐、内容为一体的综合服务平台。</p>
+                    <p>PERFIT是建立于传统运动赛事文化基础之上，秉承价值发现、价值创造、价值提升的核心理念，为全民体育事业，搭建一个从行业升级、产业升级到内容升级、服务升级的开放、多元、个性化的体育文化平台。</p>
+                    <p>PERFIT积极发展全民体育事业，传递独立、正义、活泼、勇敢的核心价值观。号召让全民运动发展成为全民皆可轻松参与的一项娱乐狂欢派对。</p>
+                </div>
+            </div>
+            <!--页脚-->
+            <div class="container fixW">
+                <div class="pageFive-footer clearfix">
+                    <div class="footer-left pull-left">
+                        <a href="#page1">首页</a>丨
+                        <a href="#page2">玩美障碍赛</a>丨
+                        <a href="#page3">玩美APP</a>丨
+                        <a href="#page4">玩美历程</a>丨
+                        <a href="#page5">关于我们</a>
+                    </div>
+                    <div class="footer-right pull-right">
+                        <a class="email" href="javascript:void(0)"></a>
+                        <a class="weibo" href="http://weibo.com/u/6000286078"></a>
+                    </div>
+
+                </div>
+            </div>
+            <div class="pageFive-bottom">
+                <p>Copyright &copy; 2016 京ICP备15042729号 北京稼优佳文化传媒有限公司 版权所有</p>
+            </div>
+        </section>
+    </div>
+    <footer class="footer"></footer>
+</body>
+<script src="js/jquery-1.12.0.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.fullPage.min.js"></script>
+<script src="js/jquery.cloud9carousel.js"></script>
+<script src="js/jquery.reflection.js"></script>
+<script src="js/main.js"></script>
+<script type="text/javascript">
+    window.onload = function() {
+        var myVideo = document.getElementsByTagName('video')[0];
+        myVideo.play();
+    };
+</script>
+
+</html>

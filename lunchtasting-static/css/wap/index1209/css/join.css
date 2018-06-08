@@ -1,0 +1,280 @@
+@charset "UTF-8";
+* {
+    margin: 0;
+    padding: 0;
+}
+html{
+    font-size: 62.5%;
+}
+html,
+body {
+    font-family: "Microsoft YaHei","Hiragino Sans GB", "Hiragino Sans GB W3", simhei, "Segoe UI", "Lucida Grande", Helvetica, Arial,  FreeSans, Arimo, "Droid Sans", "wenquanyi micro hei", Arial, sans-serif;
+    font-size: 14px;
+    cursor: default;
+    height: 100%;
+    margin: 0 auto;
+    background-color: #e5e5e5;
+}
+a{
+    outline: none;
+}
+a:focus,a:hover{
+    text-decoration: none;
+    outline: none;
+}
+i,em{
+    font-style: normal;
+}
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    width: auto\9;
+    vertical-align: top;
+}
+/*内容宽度盒子*/
+
+.fixW {
+    max-width: 640px;
+    width: 100%;
+}
+
+/*导航*/
+.navbar-default .navbar-nav>.active>a,
+.navbar-default .navbar-nav>.active>a:focus,
+.navbar-default .navbar-nav>.active>a:hover {
+    color: #20b3a4;
+    background-color: transparent;
+}
+.navbar-default.selfNav {
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    background-color: rgba(32, 33, 37, 0.8);
+    border: none;
+    box-shadow: 0px 2px 8px 0px rgba(50, 50, 50, 0.25);
+    transition: all .5s;
+}
+.navbar-default .navbar-brand img {
+    width: 100px;
+    height: 25px;
+}
+.navbar-default.selfNav .navbar-nav>li>a {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    font-size: 16px;
+    font-weight: 400;
+    color: #fefefe;
+}
+.navbar-default .navbar-nav>li>a:hover,
+.navbar-default .navbar-nav>li.active>a {
+    color: #20b3a4;
+    cursor: pointer;
+}
+.navbar-toggle {}
+.navbar-default .navbar-toggle:hover {
+    border-color: #ddd;
+    background-color: rgb(64, 210, 177);
+}
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: #fff;
+}
+/*第一屏*/
+
+
+/*第二屏*/
+#pageTwo{
+    background-color: #fff;
+    padding: 0 0 8% 0;
+}
+.pageTwo-tit{
+    text-align: center;
+}
+.pageTwo-tit h2{
+    color: #20b3a4;
+    margin: 3% 0 0;
+    font-weight: bold;
+}
+.job[lang=eq0]{
+    margin-top: 5%;
+}
+.job{
+    font-size: 14px;
+    margin-top: 8%;
+}
+.job > h4{
+    color: #20b3a4;
+    text-align: center;
+    margin: 0 0 3% 0;
+    font-size: 20px;
+}
+.job .job-text{
+    margin-bottom: 3%;
+}
+.job .job-text > h5{
+    font-size: 16px;
+    font-weight: bold;
+    margin: 2% 0 2%;
+}
+.job .job-text p{
+    margin: 0;
+    line-height: 30px;
+}
+.job .row .col-md-12 span{
+    display: block;
+    margin: 2.5% 0 1.5% 0;
+}
+.job .row .col-md-12 address{
+    margin: 0;
+}
+
+/*第三屏*/
+.footer{
+    margin-top: 5px;
+    background-color: #fff;
+}
+#pageThree{
+    position: relative;
+    padding: 2% 0 12% 0;
+}
+/*页脚*/
+
+.pageThree-footer {}
+.footer-left {
+    text-align: center;
+}
+.pageThree-footer .footer-left a {
+    display: inline-block;
+    margin: 0 15px 15px 15px;
+    color: #333;
+}
+.footer-right {
+    position: relative;
+    text-align: center;
+    margin-bottom: 5%;
+}
+.footer-right .emailM {
+    position: absolute;
+    width: 100%;
+    border: 2px solid #ccc;
+    text-align: center;
+}
+.footer-right .emailM p {
+    margin: 0;
+    line-height: 50px;
+}
+.footer-right .emailM:after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent transparent #000 transparent;
+}
+.footer-right a {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    padding: 3px;
+    transition: all .3s;
+}
+.footer-right .email {
+    position: relative;
+    background: #20b3a4 url("http://static.mperfit.com/image/wap/index1209/images/email.png") no-repeat center center;
+    background-size: contain;
+    background-origin: content-box;
+}
+
+.footer-right .weibo {
+    margin-left: 15px;
+    background: #20b3a4 url("http://static.mperfit.com/image/wap/index1209/images/weibo.png") no-repeat center center;
+    background-size: contain;
+    background-origin: content-box;
+}
+
+.pageThree-bottom {
+    position: absolute;
+    width: 100%;
+    padding: 0 5%;
+    text-align: center;
+    bottom: 5px;
+}
+.pageThree-bottom p {
+    margin: 0;
+    line-height: 25px;
+}
+
+/*页脚*/
+.footer p {
+    text-align: center;
+}
+
+/*媒体查询，小于375px*/
+
+@media screen and (max-width:375px) {
+    .navbar-default .navbar-brand img {
+        width: 80px;
+        height: 20px;
+    }
+    .navbar-toggle {
+        padding: 6px 7px;
+        margin-top: 10px;
+    }
+    #pageTwo{
+        padding: 0 0 10% 0;
+    }
+    .pageTwo-tit h2 {
+        font-size: 24px;
+    }
+    .job > h4 {
+        font-size: 18px;
+    }
+    .job .job-text > h5 {
+        font-size: 15px;
+    }
+    .pageThree-text p {
+        line-height: 25px;
+        font-size: 14px;
+    }
+    .pageThree-bottom {
+        font-size: 12px;
+    }
+    .pageThree-footer .footer-left a {
+        margin: 0 10px 15px 10px;
+    }
+}
+
+/*媒体查询，小于320px*/
+@media screen and (max-width:320px) {
+    .pageTwo-tit p {
+        font-size: 13px;
+    }
+    .part2-ul>li {
+        height: 160px;
+        font-size: 12px;
+    }
+    .part2-ul>li>.mouseover {
+        height: 40px;
+    }
+    .part2-ul>li>.mouseout {
+        font-size: 14px;
+    }
+    .pageTwo-tit h2, .pageThree-tit h2 {
+        font-size: 22px;
+    }
+    .pageThree-text p {
+        line-height: 23px;
+        font-size: 12px;
+    }
+    #pageThree {
+        padding: 3% 0 18% 0;
+    }
+    .pageThree-bottom p {
+        line-height: 18px;
+    }
+}

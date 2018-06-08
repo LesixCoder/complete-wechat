@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.ActivityEnroll">
+
+	<typeAlias alias="ActivityEnroll" type="com.lunchtasting.server.po.lt.ActivityEnroll" />
+
+	<resultMap id="ActivityEnrollResult" class="com.lunchtasting.server.po.lt.ActivityEnroll">
+		<result property="id" column="id"  jdbcType="BIGINT" />
+		<result property="userId"  column="user_id" jdbcType="BIGINT" />
+		<result property="activityId" column="activity_id" jdbcType="BIGINT" />
+	    <result property="name" column="name" jdbcType="VARCHAR" />
+		<result property="phone" column="phone" jdbcType="VARCHAR" />
+		<result property="sex" column="sex" jdbcType="INT" />
+		<result property="age" column="age" jdbcType="INT" />
+		<result property="remark" column="remark" jdbcType="VARCHAR" />
+		<result property="createTime" column="create_time" jdbcType="DATETIME" />
+	</resultMap>
+	
+    <!-- 根据活动id查询报名列表 -->
+    <select id="queryEnrollerList"  parameterClass="map" resultClass="java.util.HashMap">
+    	select
+		     id
+		    ,user_id
+		    ,activity_id
+		    ,name
+		    ,phone
+		    ,sex
+		    ,age
+		    ,remark
+		    ,DATE_FORMAT(create_time,'%Y-%m-%d %H:%i') as create_time
+		from
+			activity_enroll
+		where
+			activity_id=#activityId#
+		 ORDER BY create_time DESC
+		<isNotNull property="pageSize">
+            <![CDATA[LIMIT #curPage#,#pageSize#]]>
+        </isNotNull>
+        
+    </select>
+    
+    
+    <!-- 查询对应活动报名人数 -->
+	 <select id="queryEnrollerListCount" parameterClass="Map" resultClass="int">
+		 select
+		     count(*)
+		from
+			activity_enroll
+		where
+			activity_id=#activityId#
+  	</select>
+</sqlMap>

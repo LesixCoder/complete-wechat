@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.temporaryEnroll.TemporaryCinema">
+
+	<typeAlias alias="TemporaryCinema" type="com.lunchtasting.server.po.temporaryEnroll.TemporaryCinema" />
+
+	<resultMap id="TemporaryCinemaResult" class="com.lunchtasting.server.po.temporaryEnroll.TemporaryCinema">
+		<result column="id" property="id" jdbcType="BIGINT" />
+		<result column="random" property="random" jdbcType="VARCHAR" />
+		<result column="user_id" property="userId" jdbcType="BIGINT" />
+		<result column="create_time" property="createTime" jdbcType="DATETIME" />
+	</resultMap>
+	
+	<insert id="create" parameterClass="TemporaryCinema">
+    <![CDATA[
+   		INSERT INTO temporary_cinema(
+	    	  id
+	    	, random
+	    	, create_time
+	    	, user_id
+    	) VALUES (
+	    	  #id#
+	    	, #random#
+	    	, now()
+	    	, #userId#
+    	)
+    ]]>
+	</insert>
+	
+	<!-- 是否唯一 -->
+	<select id="checkRandom" parameterClass="Map" resultClass="java.lang.Integer">
+	SELECT COUNT(*) FROM temporary_cinema WHERE random = #random#
+	</select>
+	
+	<select id="getCinema" parameterClass="Map" resultMap="TemporaryCinemaResult">
+	SELECT * FROM temporary_cinema WHERE user_id = #userId#
+	</select>
+</sqlMap>

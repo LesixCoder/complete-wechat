@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.MessageNotification">
+
+    <typeAlias alias="MessageNotification" type="com.lunchtasting.server.po.lt.MessageNotification" />
+
+    <resultMap id="MessageNotificationResult" class="com.lunchtasting.server.po.lt.MessageNotification">
+        <result property="id" column="id"  jdbcType="BIGINT" />
+        <result property="srcUserId" column="src_user_id"  jdbcType="BIGINT" />
+        <result property="desUserId" column="des_user_id"  jdbcType="BIGINT" />
+        <result property="bizId" column="biz_id"  jdbcType="BIGINT" />
+        <result property="bizType" column="biz_type" jdbcType="INT" />
+        <result property="title" column="title" jdbcType="VARCHAR" />
+        <result property="content" column="content" jdbcType="VARCHAR" />
+        <result property="imgUrl" column="img_url" jdbcType="VARCHAR" />
+        <result property="createTime" column="create_time" jdbcType="DATETIME" />
+        <result property="flag" column="flag" jdbcType="INT" />
+    </resultMap>
+    
+    <insert id="create" parameterClass="MessageNotification">
+    <![CDATA[
+        INSERT INTO message_notification (
+        src_user_id
+        , des_user_id
+        , biz_id
+        , biz_type
+        , title
+        , content
+        , img_url
+        , create_time
+        ) VALUES (
+        #srcUserId#
+        , #desUserId#
+        , #bizId#
+        , #bizType#
+        , #title#
+        , #content#
+        , #imgUrl#
+        , now()
+        )
+    ]]>
+    <selectKey resultClass="long" keyProperty="id">
+        SELECT @@IDENTITY
+        AS id
+    </selectKey>
+    </insert>
+</sqlMap>

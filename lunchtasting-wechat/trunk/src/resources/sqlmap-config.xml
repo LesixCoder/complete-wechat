@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMapConfig
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+
+	<settings cacheModelsEnabled="true" enhancementEnabled="true"
+		lazyLoadingEnabled="true" errorTracingEnabled="true" maxRequests="32"
+		maxSessions="10" maxTransactions="5" useStatementNamespaces="true" />
+		
+	<!-- 商品
+	<sqlMap resource="sqlmap/goods/goods_SqlMap.xml"/>	
+	<sqlMap resource="sqlmap/goods/goods_order_SqlMap.xml"/> -->	
+	
+	
+	<!-- 赛事（活动） -->
+	<sqlMap resource="sqlmap/match/match_order_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/match/match_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/match/match_album_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/match/match_vote_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/match/match_album_tag_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/match/match_album_image_order_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/match/match_ticket_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/match/match_goods_SqlMap.xml"/>
+	
+	
+	<!-- 用户 -->
+	<sqlMap resource="sqlmap/user/user_sms_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/user/user_weChat_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/user/user_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/user/user_address_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/user/user_deposit_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/user/user_deposit_draw_SqlMap.xml"/>
+	
+	
+	<!-- 健身房、课程、教练 -->
+	<sqlMap resource="sqlmap/gym/gym_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/gym/course_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/gym/course_order_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/gym/course_order_vote_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/gym/coach_SqlMap.xml"/>
+	
+	<sqlMap resource="sqlmap/gift/gift_coupon_SqlMap.xml"/>
+	
+	
+	
+</sqlMapConfig>

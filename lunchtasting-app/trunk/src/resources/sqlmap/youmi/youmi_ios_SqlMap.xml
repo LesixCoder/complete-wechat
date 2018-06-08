@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.YoumiIos">
+
+	<typeAlias alias="YoumiIos" type="com.lunchtasting.server.po.lt.YoumiIos" />
+
+	<resultMap id="YoumiIosResult" class="com.lunchtasting.server.po.lt.YoumiIos">
+
+	</resultMap>
+
+	<insert id="createYoumiIos" parameterClass="map">
+	    <![CDATA[
+	   		INSERT INTO youmi_ios (
+			idfa
+			,url
+			,create_time
+	    	) VALUES (
+			#idfa#
+			,#url#
+	   		,now()
+	    	)
+	    ]]>
+	    <selectKey resultClass="int" keyProperty="id">
+	        SELECT @@IDENTITY
+	        AS id
+	    </selectKey>
+	</insert>
+	
+	<update id="updateYoumi" parameterClass="map">
+        <![CDATA[ UPDATE youmi_ios ]]>
+        <dynamic prepend="set">
+        	<isNotEmpty prepend="," property="code">
+                code = #code#
+            </isNotEmpty>
+            <isNotEmpty prepend="," property="url">
+                url = #url#
+            </isNotEmpty>
+        </dynamic>
+        WHERE idfa = #idfa#
+    </update>
+    
+	<select id="getYoumiByIdfa" parameterClass="map" resultClass="java.util.HashMap">
+		SELECT
+		 id,idfa,url
+		FROM youmi_ios
+		WHERE 
+		idfa = #idfa#
+	</select>
+	
+</sqlMap>

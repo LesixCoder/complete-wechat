@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.MatchScore">
+
+	<typeAlias alias="MatchScore" type="com.lunchtasting.server.po.lt.MatchScore" />
+
+	<resultMap id="MatchScoreResult" class="com.lunchtasting.server.po.lt.MatchScore">
+		<result property="id" column="id"  jdbcType="BIGINT" />
+		<result property="userId"  column="user_id" jdbcType="BIGINT" />
+		<result property="matchId"  column="match_id" jdbcType="BIGINT" />
+		<result property="rank"  column="rank" jdbcType="INT" />
+		<result property="tel"  column="tel" jdbcType="VARCHAR" />
+	</resultMap>
+	
+    <insert id="create"  parameterClass="MatchScore" >
+    	INSERT INTO match_score(
+    		id
+    		, user_id
+    		, match_id
+    		, rank
+    		, tel
+    		, create_time
+    	)VALUES(
+    		#id#
+    		, #userId#
+    		, #matchId#
+    		, #rank#
+    		, #tel#
+    		, now()
+    	)
+    </insert>
+    
+     <insert id="addUserScore"  parameterClass="map" >
+    	INSERT INTO user_score(
+    		id
+    		, biz_id
+    		, biz_type
+    		, user_id
+    		, phone
+    		, score
+    		, type
+    		, create_time
+    	)VALUES(
+    		#id#
+    		, #matchId#
+    		, #bizType#
+    		, #userId#
+    		, #tel#
+    		, #score#
+    		, #type#
+    		, now()
+    	)
+    </insert>
+</sqlMap>

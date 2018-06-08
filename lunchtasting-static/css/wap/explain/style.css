@@ -1,0 +1,172 @@
+@charset "utf-8";
+
+/* CSS 初始化 */
+
+body,html,div,h1,h2,h3,h4,h5,p,em,i,b,span,input,textarea,section,figure,figcaption,a,ul,li,ol,header,footer,nav,time,address,img {
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+html{
+    font-size: 625%;
+    overflow-x: hidden;
+}
+
+body {
+    font-family: "Microsoft YaHei", "SimSun", Verdana, Arial, Helvetica, sans-serif;
+    background-color: #fff;
+    color: #202125;
+    font-size: .16rem;
+    position: relative;
+}
+
+a {
+    text-decoration: none;
+    color: #999;
+}
+em,i,address{
+    font-style: normal;
+}
+img{
+    display: block;
+    max-width: 100%;
+}
+div,figure,figcaption,textarea,input,p,span{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+h1,h2,h3,h4,h5{
+    font-weight: 400;
+}
+.none{
+    display: none;
+}
+.clearfix:after{
+    content: '';
+    height: 0;
+    display: block;
+    clear: both;
+    visibility: hidden;
+}
+/*通用样式*/
+.wrapper-Box{
+    width: 100%;
+    max-width: 7.5rem;
+    margin: 0 auto;
+    background: #fff;
+}
+.green{
+    color: #20b3a4;
+}
+/*导航栏*/
+.nav{
+    width: 100%;
+    max-width: 7.5rem;
+    line-height: .5rem;
+    padding-top: 4%;
+    background: #fff;
+}
+
+.nav h1{
+    font-size: .2rem;
+    text-align: center;
+}
+
+
+/*积分详情*/
+.details{
+    padding: 0 3%;
+}
+.details .group{
+    
+}
+.details .group > p{
+    line-height: .3rem;
+}
+.details .group > h3{
+    margin: 5% 0;
+    font-size: .18rem;
+}
+.details .group > h4{
+    line-height: .3rem;
+    margin-top: 6%;
+}
+/*赛事详情*/
+.details.match .group > p,.details.match .group > h3{
+    display: inline;
+}
+.details.match .group{
+    margin: 4% 0;
+}
+.details.match .group.first{
+    margin: 0 0 4%;
+}
+.details.match .group > h3{
+    font-size: .16rem;
+    line-height: 0;
+}
+
+/*媒体查询，小于640px*/
+@media screen and (max-width:640px){
+    
+}
+/*媒体查询，小于375px*/
+@media screen and (max-width:375px){
+    body {
+        font-size: .14rem;
+    }
+    .nav{
+        line-height: .45rem;
+    }
+
+    .nav h1{
+        
+    }
+    .details .group > p{
+
+    }
+    .details .group > h3{
+        margin: 4% 0;
+    }
+    .details .group > h4{
+        line-height: .29rem;
+        margin-top: 5%;
+    }
+    .details.match .group{
+        margin: 3% 0;
+    }
+    .details.match .group.first{
+        margin: 0 0 3%;
+    }
+    .details.match .group > h3{
+        font-size: .14rem;
+    }
+}
+/*媒体查询，小于320px*/
+@media screen and (max-width:320px){
+    body {
+        font-size: .13rem;
+    }
+    .nav{
+        line-height: .4rem;
+    }
+
+    .nav h1{
+        font-size: .18rem;
+    }
+    .details .group > p{
+        line-height: .28rem;
+    }
+    .details .group > h3{
+        font-size: .16rem;
+    }
+    .details .group > h4{
+        line-height: .28rem;
+        margin-top: 4%;
+    }
+    .details.match .group > h3{
+        font-size: .13rem;
+    }
+}
+

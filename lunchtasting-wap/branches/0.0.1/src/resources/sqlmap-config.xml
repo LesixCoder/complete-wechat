@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMapConfig
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+
+	<settings cacheModelsEnabled="true" enhancementEnabled="true"
+		lazyLoadingEnabled="true" errorTracingEnabled="true" maxRequests="32"
+		maxSessions="10" maxTransactions="5" useStatementNamespaces="true" />
+		
+	<sqlMap resource="sqlmap/user/userSqlMap.xml"/>
+	<sqlMap resource="sqlmap/user/user_sms_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/user/user_weChat_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/activity/activitySqlMap.xml"/>
+	<sqlMap resource="sqlmap/activity/activity_enrollSqlMap.xml"/>
+	<sqlMap resource="sqlmap/activity/articleSqlMap.xml"/>
+	<sqlMap resource="sqlmap/schedule_jobSqlMap.xml"/>
+	<sqlMap resource="sqlmap/activity/activity_comment_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/common/common_collect_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/common/common_praise_SqlMap.xml"/>
+	
+</sqlMapConfig>

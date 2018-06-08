@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.OrdersSettlement">
+
+    <typeAlias alias="OrdersSettlement" type="com.lunchtasting.server.po.lt.OrdersSettlement" />
+
+    <resultMap id="OrdersSettlementResult" class="com.lunchtasting.server.po.lt.OrdersSettlement">
+        <result property="id" column="id" jdbcType="BIGINT" />
+        <result property="orderId" column="order_id" jdbcType="BIGINT" />
+        <result property="sellerId" column="seller_id" jdbcType="BIGINT" />
+        <result property="subsidyPrice" column="subsidy_price" jdbcType="DOUBLE" />
+        <result property="originalPrice" column="original_price" jdbcType="DOUBLE" />
+        <result property="payPrice" column="pay_price" jdbcType="DOUBLE" />
+        <result property="servicePrice" column="service_price" jdbcType="DOUBLE" />
+        <result property="channelPrice" column="channel_price" jdbcType="DOUBLE" />
+        <result property="playPrice" column="play_price" jdbcType="DOUBLE" />
+        <result property="profitPrice" column="profit_price" jdbcType="DOUBLE" />
+        <result property="beginTime" column="begin_time" jdbcType="DATETIME" />
+        <result property="endTime" column="end_time" jdbcType="DATETIME" />
+        <result property="playTime" column="play_time" jdbcType="DATETIME" />
+        <result property="remark" column="remark" jdbcType="VARCHAR" />
+        <result property="isReceipt" column="is_receipt" jdbcType="INT" />
+        <result property="status" column="status" jdbcType="INT" />
+        <result property="createTime" column="create_time" jdbcType="DATETIME" />
+        <result property="sellerName" column="seller_name"  jdbcType="VARCHAR" />
+        <result property="settlementDate" column="settlement_date"  jdbcType="DATETIME" />
+        <result property="settlementEndDate" column="settlement_end_date"  jdbcType="DATETIME" />
+        <result property="nextDay" column="next_day"  jdbcType="DATETIME" />
+        <result property="sId" column="s_id"  jdbcType="BIGINT" />
+    </resultMap>
+
+    <!-- 查询 -->
+    <select id="queryOrdersSettlementList"  parameterClass="map" resultMap="OrdersSettlementResult">
+            SELECT
+                s.id AS s_id, 
+	            s.name AS seller_name,
+	            s.settlement_date,
+	            (SELECT date_format(w_date,'%Y-%m-%d') FROM week_day WHERE DATE_FORMAT(w_date,'%Y-%m-%d') >= date_format(s.settlement_date,'%Y-%m-%d') AND w_flag = 0 ORDER BY w_date ASC LIMIT 15,1) AS settlement_end_date,
+	            (SELECT w_next_day FROM week_day WHERE w_date = settlement_date) AS next_day,
+	            os.*
+				FROM
+				(
+				SELECT id,name,DATE_FORMAT(settlement_date,'%Y-%m-%d') AS settlement_date,(SELECT COUNT(*) FROM week_day WHERE w_date BETWEEN date_format(seller.settlement_date,'%Y-%m-%d') AND date_format(now(),'%Y-%m-%d') AND w_flag = 0) AS apart from seller WHERE flag = 0
+				) s
+				 <isEqual property="type" compareValue="1">
+				 LEFT JOIN orders_settlement os 
+			     ON os.seller_id = s.id 
+			     WHERE s.apart >= 15
+				 </isEqual>
+				 <isEqual property="type" compareValue="2">
+				 RIGHT JOIN orders_settlement os 
+			     ON os.seller_id = s.id 
+				 </isEqual>  
+<!-- 				 LEFT JOIN orders_settlement os  -->
+<!-- 				 ON os.seller_id = s.id  -->
+<!-- 				 WHERE -->
+<!-- 			<isEqual property="type" compareValue="1">  -->
+<!-- 			(s.settlement_date = DATE_FORMAT(os.end_time,'%Y-%m-%d') OR os.id IS NULL) AND s.apart >= 15 -->
+<!--             </isEqual> -->
+<!--             <isEqual property="type" compareValue="2">  -->
+<!-- 			(s.settlement_date > DATE_FORMAT(os.end_time,'%Y-%m-%d') OR os.id IS NULL) OR s.apart &lt; 15 -->
+<!--             </isEqual> -->
+            <isNotEmpty property="sellerId" prepend="AND">
+		    seller_id = #sellerId#
+		    </isNotEmpty>
+		    <isNotEmpty property="status" prepend="AND">
+		    status = #status#
+		    </isNotEmpty>
+		     <isNotEmpty property="startDate" prepend="AND">
+		    begin_time = #startDate#
+		    </isNotEmpty>
+		     <isNotEmpty property="endDate" prepend="AND">
+		    end_time = #endDate#
+		    </isNotEmpty>
+            ORDER BY create_time DESC
+            <isNotNull property="pageSize">
+            <![CDATA[LIMIT #curPage#,#pageSize#]]>
+            </isNotNull>  
+	</select>
+
+    <!-- 新建 -->
+	<insert id="create" parameterClass="OrdersSettlement">
+    <![CDATA[
+   		INSERT INTO orders_settlement (
+   		  id
+   		, order_id
+    	, seller_id
+    	, subsidy_price
+    	, original_price
+    	, pay_price
+    	, service_price
+    	, channel_price
+    	, play_price
+    	, profit_price
+    	, begin_time
+    	, end_time
+    	, is_receipt
+    	, status
+    	, create_time
+    	) VALUES (
+    	  #id#
+    	, #orderId#
+    	, #sellerId#
+    	, #subsidyPrice#
+    	, #originalPrice#
+    	, #payPrice#
+    	, #servicePrice#
+    	, #channelPrice#
+    	, #playPrice#
+    	, #profitPrice#
+    	, #beginTime#
+    	, #endTime#
+    	, 0
+    	, 1
+    	, now()
+    	)
+    ]]>
+	<selectKey resultClass="long" keyProperty="id">
+	   SELECT @@IDENTITY
+	   AS id
+    </selectKey>
+	</insert>
+	
+	<!-- 查询ById -->
+	<select id="getById" parameterClass="map" resultClass="java.lang.Integer">
+		SELECT COUNT(seller_id) FROM orders_settlement WHERE 1=1
+		 <isNotEmpty property="sellerId" prepend="AND">
+		    seller_id = #sellerId#
+		 </isNotEmpty>
+		 <isNotEmpty property="startDate" prepend="AND">
+		    begin_time = #startDate#
+		 </isNotEmpty>
+		 <isNotEmpty property="endDate" prepend="AND">
+		    end_time = #endDate#
+		 </isNotEmpty>
+	</select>
+	
+    <!-- 总条数 -->    
+    <select id="getOrdersSettlementCount"  parameterClass="map" resultClass="java.lang.Integer">
+            SELECT
+            COUNT(s.id)
+			FROM
+			(
+			SELECT id,name,DATE_FORMAT(settlement_date,'%Y-%m-%d') AS settlement_date,(SELECT COUNT(*) FROM week_day WHERE w_date BETWEEN date_format(seller.settlement_date,'%Y-%m-%d') AND date_format(now(),'%Y-%m-%d') AND w_flag = 0) AS apart from seller WHERE flag = 0
+			) s 
+			<isEqual property="type" compareValue="1">
+				 LEFT JOIN orders_settlement os 
+			     ON os.seller_id = s.id 
+			     WHERE s.apart >= 15
+				 </isEqual>
+				 <isEqual property="type" compareValue="2">
+				 RIGHT JOIN orders_settlement os 
+			     ON os.seller_id = s.id 
+				 </isEqual>  
+<!-- 			LEFT JOIN orders_settlement os  -->
+<!--             ON os.seller_id = s.id  -->
+<!--             WHERE -->
+<!--             <isEqual property="type" compareValue="1">  -->
+<!-- 			(s.settlement_date = DATE_FORMAT(os.end_time,'%Y-%m-%d') OR os.id IS NULL) AND  s.apart >= 15 -->
+<!--             </isEqual> -->
+<!--             <isEqual property="type" compareValue="2">  -->
+<!-- 			(s.settlement_date > DATE_FORMAT(os.end_time,'%Y-%m-%d') OR os.id IS NULL) OR  s.apart &lt; 15 -->
+<!--             </isEqual> -->
+            <isNotEmpty property="sellerId" prepend="AND">
+		    seller_id = #sellerId#
+		    </isNotEmpty>
+		    <isNotEmpty property="status" prepend="AND">
+		    status = #status#
+		    </isNotEmpty>
+		     <isNotEmpty property="startDate" prepend="AND">
+		    begin_time = #startDate#
+		    </isNotEmpty>
+		     <isNotEmpty property="endDate" prepend="AND">
+		    end_time = #endDate#
+		    </isNotEmpty>
+    </select>
+    
+    <!-- 保存备注 -->
+  <update id="saveRemark" parameterClass="Map">
+       update orders_settlement set remark = #remark# where id = #settlementId#
+  </update>
+    
+    <select id="getYearWeek" parameterClass="map" resultClass="java.lang.Integer">
+		SELECT COUNT(id) FROM orders_settlement WHERE 1 = 1
+		<isNotEmpty property="sellerId" prepend="AND">
+		    seller_id = #sellerId#
+		 </isNotEmpty>
+		<isNotEmpty property="startDate" prepend="AND">
+<!-- 		    <![CDATA[yearweek(date_format(#startDate#,'%Y-%m-%d')) = yearweek(now())-1]]> -->
+		    <![CDATA[begin_time = date_sub(#startDate#,interval 1 WEEK)]]>
+		</isNotEmpty>
+	</select>
+	
+	    <select id="getSellCrea" parameterClass="map" resultClass="java.lang.Integer">
+		SELECT COUNT(id) FROM orders_settlement WHERE 1 = 1
+		<isNotEmpty property="sellerId" prepend="AND">
+		    seller_id = #sellerId#
+		 </isNotEmpty>
+		<isNotEmpty property="startDate" prepend="AND">
+		   begin_time = #startDate#
+		</isNotEmpty>
+	</select>
+	
+	<!-- 更新商家最后结算时间 -->
+	<update id="updateSellerSett" parameterClass="Map">
+       update seller set settlement_date = #settlementDate# where id = #sellerId#
+    </update>
+    
+    <!-- 需要结算的商家 -->
+    <select id="querySettlementNotLimit"  parameterClass="map" resultMap="OrdersSettlementResult">
+            SELECT
+            	s.id AS s_id, 
+	            s.name AS seller_name,
+	            s.settlement_date,
+	            (SELECT date_format(w_date,'%Y-%m-%d') FROM week_day WHERE DATE_FORMAT(w_date,'%Y-%m-%d') >= date_format(s.settlement_date,'%Y-%m-%d') AND w_flag = 0 ORDER BY w_date ASC LIMIT 15,1) AS settlement_end_date,
+	            (SELECT w_next_day FROM week_day WHERE w_date = settlement_date) AS next_day,
+	            os.*
+				FROM
+				(
+				SELECT id,name,DATE_ADD(DATE_FORMAT(settlement_date,'%Y-%m-%d'),INTERVAL 1 DAY) AS settlement_date,(SELECT COUNT(*) FROM week_day WHERE w_date BETWEEN date_format(seller.settlement_date,'%Y-%m-%d') AND date_format(now(),'%Y-%m-%d') AND w_flag = 0) AS apart from seller WHERE flag = 0
+				) s 
+			LEFT JOIN orders_settlement os 
+			ON os.seller_id = s.id WHERE s.apart >= 15
+	</select><!-- (s.settlement_date = DATE_FORMAT(os.end_time,'%Y-%m-%d') OR os.id IS NULL) AND  -->
+    
+    <update id="updateOrdersList" parameterClass="Map">
+          update orders_list set settlement_id = #settlementId#,settlement_time = #settlementTime# where order_id = #orderId#
+    </update>
+</sqlMap>

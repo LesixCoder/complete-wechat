@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.UserHot">
+
+    <typeAlias alias="UserHot" type="com.lunchtasting.server.po.lt.UserHot" />
+
+    <resultMap id="UserHotResult" class="com.lunchtasting.server.po.lt.UserHot">
+        <result property="id" column="id"  jdbcType="BIGINT" />
+        <result property="userId" column="user_id"  jdbcType="BIGINT" />
+        <result property="bizId" column="biz_id"  jdbcType="BIGINT" />
+        <result property="createTime" column="create_time" jdbcType="DATETIME" />
+        <result property="number" column="number" jdbcType="INT" />
+        <result property="type" column="type" jdbcType="INT" />
+    </resultMap>
+    
+    <insert id="createUserHot" parameterClass="map">
+    <![CDATA[
+        INSERT INTO user_hot (
+        id
+        , user_id
+        , biz_type
+        , create_time
+        , number
+        ) VALUES (
+        #id#
+        , #userId#
+        , #type#
+        , now()
+        , #number#
+        )
+    ]]>
+    </insert>
+    
+    <select id="getById" parameterClass="map" resultMap="UserHotResult">
+		SELECT 
+	        id
+	        , user_id
+	        , biz_type
+	        , create_time
+	        , number
+	        , biz_id
+ 		FROM user_hot 
+ 		WHERE id = #id:BIGINT#
+	</select>
+    
+    <select id="queryUserHotList"  parameterClass="map" resultClass="java.util.HashMap" remapResults="true">
+		<![CDATA[ SELECT s.*,CAST((@row_num:=@row_num+1) AS signed) as rank FROM ]]>(SELECT  
+			uh.user_id,SUM(uh.number) as total, u.name,u.img_url
+		FROM user_hot uh 
+			JOIN `user` u ON ( uh.user_id = u.id)
+		<isEqual property="time" compareValue="7">	 
+		WHERE 
+			uh.create_time >= date_sub(curdate(),INTERVAL WEEKDAY(curdate()) DAY)&amp;&amp; uh.create_time &lt;=date_sub(curdate(),INTERVAL WEEKDAY(curdate()) - 6 DAY)
+		</isEqual>
+		<isEqual property="time" compareValue="1">
+		WHERE date(uh.create_time) = curdate()
+		</isEqual>
+		GROUP BY uh.user_id ) AS s<![CDATA[,(select(@row_num:=0)) b ]]>ORDER BY total DESC 
+	    LIMIT #page#, #pageSize#
+    </select>	
+    
+    <select id="getUserHotByUser"  parameterClass="map" resultClass="java.lang.Integer">
+        SELECT IFNULL(SUM(uh.number),0) FROM user_hot uh WHERE uh.user_id=#userId#
+		<isEqual property="time" compareValue="7">	 
+		AND uh.create_time >= date_sub(curdate(),INTERVAL WEEKDAY(curdate()) DAY)&amp;&amp; uh.create_time &lt;=date_sub(curdate(),INTERVAL WEEKDAY(curdate()) - 6 DAY)
+		</isEqual>
+		<isEqual property="time" compareValue="1">
+		AND date(uh.create_time) = curdate()
+		</isEqual>
+	</select>
+	
+	<select id="getUserHotCount"  parameterClass="map" resultClass="java.lang.Integer">
+	        SELECT COUNT(*) FROM (SELECT COUNT(*) FROM user_hot uh 
+			JOIN `user` u ON ( uh.user_id = u.id)
+			<dynamic prepend="where">  
+				<isEqual property="time" compareValue="7">	 
+					uh.create_time >= date_sub(curdate(),INTERVAL WEEKDAY(curdate()) DAY)&amp;&amp; uh.create_time &lt;=date_sub(curdate(),INTERVAL WEEKDAY(curdate()) - 6 DAY)
+				</isEqual>
+				<isEqual property="time" compareValue="1">
+					date(uh.create_time) = curdate()
+				</isEqual>
+				<isNotEmpty property="userId">
+					user_id = #userId#
+				</isNotEmpty>
+			</dynamic>  
+			GROUP BY uh.user_id) s
+	</select>
+	
+	<select id="getTypeCount"  parameterClass="map" resultClass="java.lang.Integer">
+	        SELECT COUNT(*) FROM user_hot uh 
+			JOIN `user` u ON (uh.user_id = u.id)
+			WHERE 
+			date(uh.create_time) = curdate()
+			AND uh.user_id = #userId#
+			AND uh.biz_type = #type#
+	</select>
+	
+	
+	  <update id="updateUserHot" parameterClass="Map">
+	       update user_hot set 
+	       number = #number# 
+	       where id = #id#
+	  </update>
+	  
+	  	<select id="getUserHotRank"  parameterClass="map" resultClass="java.lang.Integer">
+		  SELECT sb.rank from (<![CDATA[ SELECT s.*,CAST((@row_num:=@row_num+1) AS signed) as rank FROM ]]>(SELECT  
+				uh.user_id,SUM(uh.number) as total, u.name,u.img_url
+			FROM user_hot uh 
+				JOIN `user` u ON ( uh.user_id = u.id)
+			<isEqual property="time" compareValue="7">	 
+			WHERE 
+				uh.create_time >= date_sub(curdate(),INTERVAL WEEKDAY(curdate()) DAY)&amp;&amp; uh.create_time &lt;=date_sub(curdate(),INTERVAL WEEKDAY(curdate()) - 6 DAY)
+			</isEqual>
+			<isEqual property="time" compareValue="1">
+			WHERE date(uh.create_time) = curdate()
+			</isEqual>
+			GROUP BY uh.user_id ) AS s<![CDATA[,(select(@row_num:=0)) b ]]>ORDER BY total DESC ) sb where sb.user_id=#userId#
+		</select>
+	  
+	  
+</sqlMap>

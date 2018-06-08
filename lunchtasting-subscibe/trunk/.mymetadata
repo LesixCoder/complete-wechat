@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="lunchtasting-subscibe"
+  id="myeclipse.1470584007987"
+  context-root="/lunchtasting-subscibe"
+  j2ee-spec="5.0"
+  archive="lunchtasting-subscibe.war">
+  <attributes>
+    <attribute name="webrootdir" value="/WebRoot" />
+  </attributes>
+</project-module>
+

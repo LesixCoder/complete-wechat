@@ -1,0 +1,367 @@
+@charset "utf-8";
+
+/* CSS 初始化 */
+
+body,
+html,
+div,
+h1,
+h2,
+h3,
+h4,
+h5,
+p,
+em,
+i,
+b,
+span,
+input,
+textarea,
+section,
+figure,
+figcaption,
+a,
+ul,
+li,
+ol,
+header,
+footer,
+nav,
+time,
+address,
+img {
+    margin: 0;
+    padding: 0;
+}
+html {
+    font-size: 62.5%;
+}
+body {
+    font-family: "Microsoft YaHei", "SimSun", Verdana, Arial, Helvetica, sans-serif;
+    color: #fff;
+    position: relative;
+    background: url('http://static.mperfit.com/image/wap/temporaryEnroll/innerBg.png') repeat-y;
+    background-size: 100%;
+}
+
+/* 清除chrome浏览器input[type=number]默认样式 */
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
+}
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+/*去除ios按钮默认样式*/
+
+input[type='submit'],
+button,
+textarea {
+    -webkit-appearance: none;
+    appearance: none;
+}
+input,
+textarea,
+button {
+    outline: none;
+}
+textarea {
+    resize: none;
+}
+ul,
+ol {
+    list-style: outside none none;
+}
+a {
+    text-decoration: none;
+    color: #fff;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0)
+}
+em,
+i,
+address {
+    font-style: normal;
+}
+img {
+    display: block;
+    max-width: 100%;
+    width: 100%;
+    vertical-align: top;
+}
+div,
+figure,
+figcaption,
+textarea,
+input,
+p,
+span {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-weight: 400;
+}
+.none {
+    display: none!important;
+}
+.show {
+    display: block!important;
+}
+.i-show{
+    display: inline-block!important;
+}
+.clearfix:after {
+    content: '';
+    height: 0;
+    display: block;
+    clear: both;
+    visibility: hidden;
+}
+
+/*通用样式*/
+
+.container {
+    padding: 0 5%;
+}
+.wrapper-Box {
+    width: 100%;
+    max-width: 64rem;
+    height: 100%;
+    margin: 0 auto;
+}
+.yellow {
+    color: #f7da36;
+}
+.indent {
+    text-indent: 2em;
+}
+
+/*内容部分*/
+
+#content {
+    position: relative;
+    background: #000;
+}
+.content-inner {
+    width: 100%;
+    height: 100%;
+    font-size: 2.5rem;
+    padding: 10% 0% 10%;
+    background: url('http://static.mperfit.com/image/wap/temporaryEnroll/headIcon.png') no-repeat left top;
+    background-size: 20%;
+}
+.content-inner > h2 {
+    height: 7rem;
+    margin-top: 1%;
+    background: url('http://static.mperfit.com/image/wap/temporaryEnroll/zmTit.png') no-repeat center center;
+    background-size: contain;
+    text-indent: -99em;
+    overflow: hidden;
+}
+.zm-content {
+    margin-top: -5%;
+    padding: 12% 3%;
+    background: url('http://static.mperfit.com/image/wap/temporaryEnroll/zmBg.png') no-repeat center center;
+    background-size: 100% 100%;
+    text-align: center;
+}
+.zm-perCon {
+    display: block;
+    width: 47%;
+    text-align: left;
+}
+.zm-perCon .zm-img {
+    position: relative;
+    display: block;
+    height: 18rem;
+}
+.zm-perCon .zm-img:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: url('http://static.mperfit.com/image/wap/temporaryEnroll/perBgIcon.png') no-repeat;
+    background-size: 100% 100%;
+}
+.zm-perCon:last-child .zm-img:after {
+    background: url('http://static.mperfit.com/image/wap/temporaryEnroll/perBgIcon2.png') no-repeat;
+    background-size: 100% 100%;
+}
+.zm-perCon .zm-img img {
+    width: 100%;
+    height: 100%;
+}
+.zm-perCon:first-child {
+    float: left;
+    border: 3px solid #f09d33;
+}
+.zm-perCon:last-child {
+    float: right;
+    border: 3px solid #2091b0;
+}
+.zm-perCon > figcaption div span {
+    display: block;
+}
+.zm-perCon > figcaption div.text span {
+    height: 3.5rem;
+    line-height: 3.5rem;
+    padding-left: 5%;
+    font-size: 1.8rem;
+}
+.zm-perCon > figcaption .text span:first-child {
+    border-top: 3px solid #f09d33;
+    border-bottom: 3px solid #f09d33;
+}
+.zm-perCon:last-child > figcaption .text span:first-child {
+    border-top: 3px solid #2091b0;
+    border-bottom: 3px solid #2091b0;
+}
+.zm-perCon > figcaption .ing span {
+    text-align: center;
+    height: 7rem;
+    line-height: 7rem;
+    border-top: 3px solid #f09d33;
+    font-size: 2rem;
+}
+.zm-perCon:last-child > figcaption .ing span {
+    border-top: 3px solid #2091b0;
+}
+/*规则*/
+.rule{
+    line-height: 1.6rem;
+    padding: 0 5%;
+    margin: -2% 0 5%;
+}
+.rule h4{
+    font-size: 1.4rem;
+    margin-bottom: 1%;
+}
+.rule p{
+    font-size: 1.2rem;
+}
+/*按钮组*/
+.btn-group {
+    margin-top: 0;
+    text-align: center;
+}
+.btn-group a {
+    display: inline-block;
+    width: 30%;
+    height: 3.8rem;
+    line-height: 3.8rem;
+    font-size: 2.2rem;
+    color: #010101;
+    font-weight: normal;
+    margin-right: 10%;
+}
+.btn-group a:first-child {
+    background: url('http://static.mperfit.com/image/wap/temporaryEnroll/btn1.png') no-repeat;
+    background-size: 100% 100%;
+}
+.btn-group a:nth-child(2) {
+    background: url('http://static.mperfit.com/image/wap/temporaryEnroll/btn2.png') no-repeat;
+    background-size: 100% 100%;
+}
+.btn-group a:last-child {
+    background: url('http://static.mperfit.com/image/wap/temporaryEnroll/btn3.png') no-repeat;
+    background-size: 100% 100%;
+    margin-right: 0;
+}
+#cover {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 18888;
+    background-color: #000000;
+    opacity: 0.7;
+}
+#guide {
+    display: none;
+    position: absolute;
+    right: 18px;
+    top: 5px;
+    z-index: 19999;
+}
+#guide img {
+    width: 260px;
+    height: 180px;
+}
+
+/*媒体查询，小于640px*/
+
+@media screen and (max-width:640px) {}
+
+/*媒体查询，小于375px*/
+
+@media screen and (max-width:375px) {
+    .content-inner {
+        background-size: 18%;
+    }
+    .content-inner > h2 {
+        height: 6rem;
+        margin-top: 0;
+    }
+    .zm-perCon .zm-img {
+        height: 16rem;
+    }
+    .zm-perCon > figcaption div.text span {
+        height: 3rem;
+        line-height: 3rem;
+        font-size: 1.6rem;
+    }
+    .zm-perCon > figcaption .ing span {
+        height: 6rem;
+        line-height: 6rem;
+        font-size: 1.8rem;
+    }
+    .btn-group {
+        margin-top: 0;
+    }
+    .btn-group a {
+        width: 30%;
+        height: 3.2rem;
+        line-height: 3.2rem;
+        font-size: 2rem;
+    }
+}
+
+/*媒体查询，小于320px*/
+
+@media screen and (max-width:320px) {
+    .content-inner > h2 {
+        height: 5rem;
+    }
+    .zm-perCon .zm-img {
+        height: 14rem;
+    }
+    .zm-perCon > figcaption div.text span {
+        height: 2.5rem;
+        line-height: 2.5rem;
+        font-size: 1.5rem;
+    }
+    .zm-perCon > figcaption .ing span {
+        height: 5rem;
+        line-height: 5rem;
+        font-size: 1.6rem;
+    }
+    .btn-group {
+        margin-top: 0;
+    }
+    .btn-group a {
+        width: 28%;
+        height: 2.5rem;
+        line-height: 2.5rem;
+        font-size: 1.5rem;
+    }
+}

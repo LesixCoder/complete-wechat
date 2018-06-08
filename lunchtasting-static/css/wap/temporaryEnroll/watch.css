@@ -1,0 +1,154 @@
+@charset "utf-8";
+
+/* CSS 初始化 */
+
+body,html,div,h1,h2,h3,h4,h5,p,em,i,b,span,input,textarea,section,figure,figcaption,a,ul,li,ol,header,footer,nav,time,address,img {
+    margin: 0;
+    padding: 0;
+}
+html{
+    font-size: 62.5%;
+}
+body {
+    font-family: "Microsoft YaHei", "SimSun", Verdana, Arial, Helvetica, sans-serif;
+    color: #fff;
+    position: relative;
+}
+/* 清除chrome浏览器input[type=number]默认样式 */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
+}
+input[type=number] {  
+    -moz-appearance:textfield;  
+}
+/*去除ios按钮默认样式*/
+input[type='submit'],button,textarea {
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+input,textarea,button{
+    outline: none;
+}
+textarea{
+    resize: none;
+}
+ul,
+ol {
+    list-style: outside none none;
+}
+
+a {
+    text-decoration: none;
+    color: #fff;
+    -webkit-tap-highlight-color:rgba(0,0,0,0)
+}
+em,i,address{
+    font-style: normal;
+}
+img{
+    display: block;
+    max-width: 100%;
+    width: 100%;
+    vertical-align: top;
+}
+div,figure,figcaption,textarea,input,p,span{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+h1,h2,h3,h4,h5{
+    font-weight: 400;
+}
+.none{
+    display: none;
+}
+.clearfix:after{
+    content: '';
+    height: 0;
+    display: block;
+    clear: both;
+    visibility: hidden;
+}
+/*通用样式*/
+.wrapper-Box{
+    width: 100%;
+    max-width: 64rem;
+    height: 100%;
+    margin: 0 auto;
+    background: url('http://static.mperfit.com/image/wap/temporaryEnroll/watchBg.png') no-repeat;
+    background-size: 100% 100%;
+}
+.yellow{
+    color: #f7da36;
+}
+.indent{
+    text-indent: 2em;
+}
+/*内容部分*/
+#content{
+    position: relative;
+    text-align: center;
+    font-size: 1.6rem;
+}
+.content-header{
+    padding-top: 8%;
+}
+.content-header img{
+    width: 65%;
+    margin: 0 auto;
+}
+.content-header h1{
+    margin: 4% 0 3%;
+    font-size: 2.6rem;
+}
+.content-header h3{
+    font-size: 2rem;
+}
+#content .watchCode{
+    margin: 9% 0;
+    font-size: 2.4rem;
+}
+#content .watchCode .wcp{
+    display: block;
+    font-size: 1.4rem;
+    margin-top: 2%;
+}
+.content-address img{
+    width: 30%;
+    margin: 0 auto;
+}
+.content-address span{
+    display: block;
+    margin-bottom: 3%;
+}
+.content-address address{
+    margin-bottom: 4%;
+}
+
+/*媒体查询，小于640px*/
+@media screen and (max-width:640px){
+
+}
+/*媒体查询，小于375px*/
+@media screen and (max-width:375px){
+    #content {
+        font-size: 1.4rem;
+    }
+    .content-header h1 {
+        font-size: 2.2rem;
+    }
+    .content-header h3 {
+        font-size: 1.6rem;
+    }
+    #content .watchCode {
+        font-size: 2.2rem;
+    }
+}
+/*媒体查询，小于320px*/
+@media screen and (max-width:320px){
+    
+}
+

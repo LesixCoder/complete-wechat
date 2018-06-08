@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.goods.GoodsOrder">
+
+    <typeAlias alias="GoodsOrder" type="com.lunchtasting.server.po.lt.goods.GoodsOrder" />
+
+    <resultMap id="GoodsOrderResult" class="com.lunchtasting.server.po.lt.goods.GoodsOrder">
+       	<result property="id" column="id"  jdbcType="BIGINT" />
+		<result property="userId" column="user_id"  jdbcType="BIGINT" />
+		<result property="addressId"  column="address_id" jdbcType="BIGINT" />
+		<result property="price"  column="price" jdbcType="DOUBLE" />
+		<result property="payPrice"  column="pay_price" jdbcType="DOUBLE" />
+		<result property="score"  column="score" jdbcType="INT" />
+		<result property="freight"  column="freight" jdbcType="DOUBLE" />
+		<result property="code"  column="code" jdbcType="VARCHAR" />
+		<result property="remark"  column="remark" jdbcType="VARCHAR" />
+		<result property="payType"  column="pay_type" jdbcType="INT" />
+		<result property="status" column="status" jdbcType="INT" />
+		<result property="createTime"  column="create_time" jdbcType="DATETIME" />
+		<result property="updateTime"  column="update_time" jdbcType="DATETIME" />
+    </resultMap>
+
+	<insert id="create" parameterClass="GoodsOrder">
+    <![CDATA[
+   		INSERT INTO goods_order (
+   		id
+    	, user_id
+    	, address_id
+    	, price
+    	, pay_price
+    	, score
+    	, freight
+    	, code
+    	, remark
+    	, pay_type
+    	, status
+    	, update_time
+    	, create_time
+    	) VALUES (
+    	#id#
+    	, #userId#
+    	, #addressId#
+    	, #price#
+    	, #payPrice#
+    	, #score#
+    	, #freight#
+    	, #code#
+    	, #remark#
+    	, #payType#
+    	, #status#
+    	, now()
+    	, now()
+    	)
+    ]]>
+	</insert>
+	
+	<insert id="createOrderList" parameterClass="map">
+    <![CDATA[
+        INSERT INTO goods_order_list (
+        id
+        , order_id
+        , goods_sku_id
+        , user_id
+        , number
+        , price
+        , create_time
+        ) VALUES (
+        #id#
+        , #orderId#
+        , #goodsSkuId#
+        , #userId#
+        , #number#
+        , #price#
+        , now()
+        )
+    ]]>
+    </insert>
+	
+	<select id="getById"  parameterClass="map" resultMap="GoodsOrderResult">
+        SELECT * FROM goods_order where id = #id:BIGINT#
+    </select> 
+	
+	
+	<select id="queryOrderList" parameterClass="map" resultClass="java.util.HashMap">
+		SELECT a.id AS order_id,a.code,a.status,a.price
+			   ,GROUP_CONCAT(IFNULL(c.img_url,d.img_url),'@',d.name,'@'
+			   	,IFNULL(e.goods_property_name,''),'@',b.number SEPARATOR '|') AS goods_concat_str
+			   	
+			FROM (SELECT * FROM goods_order WHERE user_id = #userId# AND flag = 0
+		  		<isNotEmpty prepend="AND" property="status">
+		 			status = #status#
+		 		</isNotEmpty>
+		  		) a 
+			LEFT JOIN goods_order_list b ON (a.id = b.order_id)
+			JOIN goods_sku c ON(b.goods_sku_id = c.id)
+			JOIN goods d ON(c.goods_id = d.id)
+			LEFT JOIN (
+					SELECT t1.goods_sku_id,GROUP_CONCAT(t2.name SEPARATOR ' / ') AS goods_property_name FROM goods_sku_option t1 
+			      	JOIN sku_option t2 ON(t1.sku_option_id = t2.id)
+			      	GROUP BY t1.goods_sku_id
+                 ) e ON(c.id = e.goods_sku_id)
+            
+			GROUP BY a.id
+		 	ORDER BY a.create_time DESC
+		 	<isNotNull property="pageSize">
+		 		LIMIT #page#,#pageSize#
+		 	</isNotNull>
+	</select>
+	
+	<select id="getOrderCount" parameterClass="map" resultClass="java.lang.Integer">
+		SELECT COUNT(*) FROM goods_order WHERE user_id = #userId# AND flag = 0
+		 <isNotEmpty prepend="AND" property="status">
+		 	status = #status#
+		 </isNotEmpty> 
+	</select>
+	
+	<select id="getOrderDetail" parameterClass="map" resultClass="java.util.HashMap">
+		SELECT a.id AS order_id,a.code,a.status,a.pay_type,a.create_time,a.price,a.original_price
+				,a.score,IFNULL(a.freight,0) AS freight
+				,b.id AS address_id,b.name AS address_name,b.sex AS address_sex,b.phone AS address_phone
+				,b.province,b.city,b.town,b.detail
+			FROM (SELECT * FROM goods_order WHERE id = #orderId# AND user_id = #userId# AND flag = 0) a
+	 		JOIN user_address b ON(a.user_address_id = b.id)
+	</select>
+	
+	<select id="getOrderPayMap" parameterClass="map" resultClass="java.util.HashMap">
+		SELECT * FROM goods_order WHERE id = #orderId# AND status = 1 AND flag = 0
+	</select>
+	
+	<update id="updateOrderPay" parameterClass="map">
+		UPDATE goods_order SET status = 3,update_time = NOW() WHERE id = #orderId# 
+	</update>
+	
+	<update id="updateOrderCancel" parameterClass="map">
+		UPDATE goods_order SET status = 2,update_time = NOW() WHERE id = #orderId# 
+	</update>
+	
+</sqlMap>

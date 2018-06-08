@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.UsersInfo">
+
+    <typeAlias alias="UsersInfo" type="com.lunchtasting.server.po.lt.UsersInfo" />
+
+    <resultMap id="UsersInfoResult" class="com.lunchtasting.server.po.lt.UsersInfo">
+        <result property="userId" column="user_id" jdbcType="BIGINT" />
+        <result property="userName" column="user_name" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <insert id="create" parameterClass="UsersInfo">
+    <![CDATA[
+        INSERT INTO users_info (
+        user_name
+        , updatee_time
+        ) VALUES (
+        #name#
+        , now()
+        )
+    ]]>
+        <selectKey resultClass="long" keyProperty="id">
+            SELECT @@IDENTITY
+            AS id
+    </selectKey>
+    </insert>
+
+    <select id="getById" parameterClass="map" resultMap="UsersInfoResult">
+        SELECT *
+        FROM users_info WHERE id = #id:BIGINT#
+    </select>
+
+    <select id="getUserByPhone" parameterClass="map" resultMap="UsersInfoResult">
+        SELECT user_id,user_name FROM users_info WHERE telephone = #phone#
+    </select>
+
+    <select id="queryUserList" parameterClass="map" resultClass="java.util.HashMap">
+       SELECT user_id,user_name FROM users_info LIMIT #page#, #pageSize#
+    </select>
+</sqlMap>

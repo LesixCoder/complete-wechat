@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.Seller">
+
+    <typeAlias alias="Seller" type="com.lunchtasting.server.po.lt.Seller" />
+
+    <select id="getShareDetail"  parameterClass="map" resultClass="java.util.HashMap">
+        SELECT a.id AS seller_id,a.name,IFNULL(a.introduction,'') AS introduction,IFNULL(a.phone,'') AS phone
+        		,IFNULL(a.specific_address,'') AS specific_address,a.img_url,a.img_array,IFNULL(a.business_hours,'') AS business_hours 
+        		,IFNULL(a.longitude,0) AS longitude,IFNULL(a.latitude,0) AS latitude
+            FROM (SELECT * FROM seller WHERE id = #sellerId#  AND flag = 0 ) a
+    </select>
+    
+    
+</sqlMap>

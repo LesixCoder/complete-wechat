@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.Album">
+
+	<typeAlias alias="Album" type="com.lunchtasting.server.po.lt.Album" />
+
+	<resultMap id="AlbumResult" class="com.lunchtasting.server.po.lt.Album">
+		<result column="id" property="id" jdbcType="BIGINT" />
+		<result column="biz_id" property="bizId" jdbcType="BIGINT" />
+		<result column="biz_type" property="bizType" jdbcType="INT" />
+		<result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
+		<result column="img_array" property="imgArray" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="DATETIME" />
+		<result column="flag" property="flag" jdbcType="INT" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="biz_name" property="bizName" jdbcType="VARCHAR" />
+	</resultMap>
+	
+    <!-- 查询列表 -->
+    <select id="queryAlbumList"  parameterClass="map" resultMap="AlbumResult">
+    	select
+		     id
+		    ,name
+		    ,biz_id
+		    ,biz_type
+		    ,img_url
+		    ,img_array
+		    ,create_time
+		    ,flag
+		    ,(select name from matchs where id = album.biz_id) biz_name
+		from
+			album
+		where
+			flag != 2
+		 ORDER BY create_time DESC
+		<isNotNull property="pageSize">
+            <![CDATA[LIMIT #curPage#,#pageSize#]]>
+        </isNotNull>
+        
+    </select>
+    
+    <select id="queryAlbumById" parameterClass="map" resultMap="AlbumResult">
+		SELECT 
+		     id
+		    ,name
+		    ,biz_id
+		    ,biz_type
+		    ,img_url
+		    ,img_array
+		    ,create_time
+		    ,flag
+		    ,(select name from matchs where id = album.biz_id) biz_name
+       FROM album WHERE id = #id:BIGINT#
+	</select>
+    
+    <!-- 新建 -->
+	<insert id="create" parameterClass="Album">
+    <![CDATA[
+   		INSERT INTO album (
+	  		  id
+	  		, name  
+		    , biz_id
+		    , biz_type
+		    , img_url
+		    , img_array
+		    , create_time
+		    , flag
+	    	) VALUES (
+	    	  #id#
+	    	, #name#
+	    	, #bizId#
+	    	, #bizType#
+	    	, #imgUrl#
+	    	, #imgArray#
+	    	, now()
+	    	, 1
+    	)
+    ]]>
+	<selectKey resultClass="long" keyProperty="id">
+	   SELECT @@IDENTITY
+	   AS id
+    </selectKey>
+	</insert>
+    
+    <!-- 更新 -->
+    <update id="update" parameterClass="Album">
+ 		UPDATE album 
+ 		<dynamic prepend="set">
+ 		    <isNotEmpty property="name" prepend=",">
+	 			name = #name#
+	 		</isNotEmpty>  
+	 		<isNotEmpty property="imgUrl" prepend=",">
+	 			img_url = #imgUrl#
+	 		</isNotEmpty>
+	 		<isNotEmpty property="imgArray" prepend=",">
+	 			img_array = #imgArray#
+	 		</isNotEmpty>
+	 		<isNotEmpty property="bizId" prepend=",">
+	 			biz_id = #bizId#
+	 		</isNotEmpty> 
+	 		<isNotEmpty property="bizType" prepend=",">
+	 			biz_type = #bizType#
+	 		</isNotEmpty>
+ 		</dynamic>
+ 		WHERE 
+  			id = #id#
+ 	</update>
+    
+    <!-- 查询总条数-->
+	 <select id="queryAlbumCount" parameterClass="Map" resultClass="int">
+		 select
+		     count(*)
+		from
+			album
+  	</select>
+  	
+  	<!-- 删除(改状态) -->
+  <update id="updateAlbum" parameterClass="Map">
+       update album set flag = #flag# where id = #id#
+  </update>
+  
+  <select id="queryAlbumNotLimit"  parameterClass="map" resultMap="AlbumResult">
+    	select
+		     id
+		    ,name
+		    ,biz_id
+		    ,biz_type
+		    ,img_url
+		    ,img_array
+		    ,create_time
+		    ,flag
+		    ,(select name from matchs where id = album.biz_id) biz_name
+		from
+			album
+		where
+			flag = 0
+		<isNotEmpty property="bizId" prepend="AND">
+		    id = #bizId#
+		</isNotEmpty>
+    </select>
+    
+    <select id="querySelect"  parameterClass="map" resultMap="AlbumResult">
+    	select
+		     id
+		    ,name
+		    ,biz_id
+		    ,biz_type
+		    ,img_url
+		    ,img_array
+		    ,create_time
+		    ,flag
+		    ,(select name from matchs where id = album.biz_id) biz_name
+		from
+			album
+		where
+			flag = 0
+    </select>
+</sqlMap>

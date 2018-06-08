@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.User">
+
+    <typeAlias alias="User" type="com.lunchtasting.server.po.lt.User" />
+
+    <resultMap id="UserResult" class="com.lunchtasting.server.po.lt.User">
+        <result property="id" column="id" jdbcType="BIGINT" />
+        <result property="phone" column="phone" jdbcType="VARCHAR" />
+        <result property="password" column="password" jdbcType="VARCHAR" />
+        <result property="name" column="name" jdbcType="VARCHAR" />
+        <result property="sex" column="sex" jdbcType="INT" />
+        <result property="imgUrl" column="img_url" jdbcType="VARCHAR" />
+        <result property="birth" column="birth" jdbcType="VARCHAR" />
+        <result property="profession" column="profession" jdbcType="VARCHAR" />
+        <result property="feeling" column="feeling" jdbcType="VARCHAR" />
+        <result property="signature" column="signature" jdbcType="VARCHAR" />
+        <result property="source" column="source" jdbcType="INT" />
+        <result property="identity" column="identity" jdbcType="INT" />
+        <result property="loginTime" column="login_time" jdbcType="DATETIME" />
+        <result property="updateTime" column="update_time" jdbcType="DATETIME" />
+        <result property="createTime" column="create_time" jdbcType="DATETIME" />
+    </resultMap>
+
+	<insert id="create" parameterClass="User">
+    <![CDATA[
+   		INSERT INTO user (
+   		id
+    	, phone
+    	, password
+    	, name
+    	, sex
+    	, img_url
+    	, source
+    	, identity
+    	, signature
+    	, login_time
+    	, update_time
+    	, create_time
+    	) VALUES (
+    	#id#
+    	, #phone#
+    	, #password#
+    	, #name#
+    	, #sex#
+    	, #imgUrl#
+    	, #source#
+    	, #identity#
+    	, #signature#
+    	, now()
+    	, now()
+    	, now()
+    	)
+    ]]>
+	</insert>
+	
+	<update id="updateUserInfo" parameterClass="map">
+	   UPDATE user 
+	   <dynamic prepend="set">
+            <isNotEmpty prepend="," property="name">
+                name = #name#
+            </isNotEmpty>
+            <isNotEmpty prepend="," property="imgUrl">
+                img_url = #imgUrl#
+            </isNotEmpty>
+            <isNotEmpty prepend="," property="sex">
+                sex = #sex#
+            </isNotEmpty>
+            <isNotEmpty prepend="," property="birth">
+                birth = #birth#
+            </isNotEmpty>
+            <isNotEmpty prepend="," property="profession">
+                profession = #profession#
+            </isNotEmpty>
+            <isNotEmpty prepend="," property="feeling">
+                feeling = #feeling#
+            </isNotEmpty>
+            <isNotEmpty prepend="," property="signature">
+                signature = #signature#
+            </isNotEmpty>
+            <isNotEmpty prepend="," property="hobby">
+                hobby = #hobby#
+            </isNotEmpty>
+            <isNotEmpty prepend="," property="tags">
+                tags = #tags#
+            </isNotEmpty>
+            ,update_time = now()
+        </dynamic>
+        WHERE id = #userId#
+	</update>
+
+	<select id="getById" parameterClass="map" resultMap="UserResult">
+		SELECT * FROM user WHERE id = #id:BIGINT#
+	</select>
+	
+	<select id="getByUserId" parameterClass="map" resultClass="java.lang.Long">
+		SELECT id FROM user WHERE id = #userId#
+	</select>
+    
+    <select id="getUserIdByPhone" parameterClass="map" resultClass="java.lang.Long">
+        SELECT id FROM user WHERE phone = #phone#
+    </select>
+    
+    <update id="updateLoginTime"  parameterClass="map">
+        UPDATE user SET login_time = now() WHERE id = #userId#
+    </update>
+    
+    <insert id="createSuggest" parameterClass="map">
+    <![CDATA[
+        INSERT INTO user_suggest (
+        id
+        , user_id
+        , content
+        , create_time
+        ) VALUES (
+        #id#
+        , #userId#
+        , #content#
+        , now()
+        )
+    ]]>
+    </insert>
+    
+    <select id="getEditInfo"  parameterClass="map" resultClass="java.util.HashMap">
+        SELECT id AS user_id,IFNULL(name,'') AS name,IFNULL(sex,'') AS sex
+                ,IFNULL(img_url,'') AS img_url,IFNULL(birth,'') AS birth
+                ,IFNULL(profession,'') AS profession,IFNULL(feeling,'') AS feeling
+                ,IFNULL(signature,'') AS signature
+            FROM user WHERE id = #userId#   
+    </select>
+    
+   	<select id="getUserDetail"  parameterClass="map" resultClass="java.util.HashMap">
+    	SELECT id AS user_id,sex,name,img_url,signature,deposit
+    		FROM user WHERE id = #userId# 
+    </select>
+	
+	<select id="queryUserVisitorList"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT b.id AS user_id,b.name,b.img_url
+			FROM (SELECT src_user_id,des_user_id FROM user_visitor WHERE des_user_id = #desUserId#
+				ORDER BY create_time DESC LIMIT #page#, #pageSize# ) a 
+			JOIN user b ON(a.src_user_id = b.id) 
+	</select>
+	
+	<select id="queryUserCommentList"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT a.id AS comment_id,a.parent_id,a.content,a.create_time
+				,b.id AS src_user_id,b.name AS src_name
+				,c.id AS parent_src_user_id,c.name AS parent_name
+				
+			FROM (SELECT * FROM user_comment WHERE user_id = #userId# 
+				ORDER BY create_time DESC LIMIT #page#, #pageSize# ) a
+				
+			JOIN user b ON (a.src_user_id = b.id)
+			
+			LEFT JOIN user c ON (a.parent_src_user_id = c.id)
+	</select>
+	
+	<select id="getUserCommentCount"  parameterClass="map" resultClass="java.lang.Integer">
+		SELECT COUNT(*) FROM user_comment WHERE src_user_id = #userId#
+	</select>
+	
+	<insert id="createUserComment" parameterClass="map">
+    <![CDATA[
+        INSERT INTO user_comment (
+        id
+        , user_id
+        , src_user_id
+        , content
+        , parent_id
+        , parent_src_user_id
+        , create_time
+        ) VALUES (
+        #id#
+        , #userId#
+        , #srcUserId#
+        , #content#
+        , #parentId#
+        , #parentSrcUserId#
+        , now()
+        )
+    ]]>
+    </insert>
+    
+    <insert id="createUserDevice" parameterClass="map">
+    	INSERT INTO user_device (
+    	id
+        , user_id
+        , create_time
+        , update_time
+        ) VALUES (
+        #id#
+        , #userId#
+        , now()
+        , now()
+        )
+    </insert>
+    
+    <select id="getMatchUser"  parameterClass="map" resultClass="java.util.HashMap">
+    	SELECT a.id AS user_id,a.name,a.sex,a.img_url,b.id AS order_id 
+    			,c.id AS group_user_id,c.match_group_id,d.open_id
+    		
+    		FROM (SELECT id,name,sex,img_url FROM user WHERE id = #userId#) a
+    		 
+    		LEFT JOIN (SELECT id,user_id FROM match_order WHERE user_id = #userId# 
+    			AND match_id = #matchId# AND status = 2) b ON(a.id = b.user_id)
+    			
+    		LEFT JOIN (SELECT id,user_id,match_group_id FROM match_group_user WHERE user_id = #userId#
+    			AND match_id = #matchId#) c ON(a.id = c.user_id)
+    			
+    		LEFT JOIN (SELECT open_id,user_id FROM user_weChat WHERE user_id = #userId#)d
+    			ON (a.id = d.user_id)
+    			
+    </select>
+    
+    <update id="updateUser"  parameterClass="map">
+        UPDATE user SET birth = #birth#,name = #name# WHERE id = #userId#
+    </update>
+    
+    <update id="updateImgUrl"  parameterClass="map">
+        UPDATE user SET img_url = #imgUrl# WHERE id = #userId#
+    </update>
+	
+	<update id="updateAddDeposit"  parameterClass="map">
+		UPDATE user SET deposit = IFNULL(deposit,0) + #money# WHERE id = #userId#
+	</update>
+	
+	<update id="updateReduceDeposit"  parameterClass="map">
+		UPDATE user SET deposit = IFNULL(deposit,0) - #money# WHERE id = #userId#
+	</update>
+	
+	<update id="updateInviteUserId"  parameterClass="map">
+		UPDATE user SET invite_user_id = #inviteUserId# WHERE id = #userId# 
+			AND invite_user_id is NULL
+	</update>
+</sqlMap>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.Area">
+
+    <typeAlias alias="Area" type="com.lunchtasting.server.po.lt.Area" />
+
+    <resultMap id="areaResult" class="com.lunchtasting.server.po.lt.Area">
+        <result column="id" property="id" /> 
+        <result column="name" property="name" /> 
+   </resultMap>
+
+  <!-- 查询区域 -->
+  <select id="queryArea" parameterClass="map"  resultMap="areaResult">
+               select id,name from area
+  </select>
+  
+</sqlMap>

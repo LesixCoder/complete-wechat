@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.Activity">
+
+	<typeAlias alias="Activity" type="com.lunchtasting.server.po.lt.Activity" />
+
+	<resultMap id="ActivityResult" class="com.lunchtasting.server.po.lt.Activity">
+		<result property="id" column="id" jdbcType="BIGINT" />
+		<result property="sellerId" column="seller_id" jdbcType="BIGINT" />
+		<result property="name" column="name" jdbcType="VARCHAR" />
+		<result property="content" column="content" jdbcType="VARCHAR" /> 
+		<result property="imgUrl" column="img_url" jdbcType="VARCHAR" />
+		<result property="imgText" column="img_text" jdbcType="TEXT" />
+		<result property="type" column="type" jdbcType="INT" />
+		<result property="price" column="price" jdbcType="DOUBLE" /><!-- 来源  -->
+		<result property="address" column="address" jdbcType="VARCHAR" />
+		<result property="enrollNum" column="enroll_num" jdbcType="INT" />
+		<result property="beginTime" column="begin_time" jdbcType="DATETIME" />
+		<result property="endTime" column="end_time" jdbcType="DATETIME" />
+		<result property="createTime" column="create_time" jdbcType="DATETIME" />
+		<result property="updateTime" column="update_time" jdbcType="DATETIME" />
+		<result property="flag" column="flag" jdbcType="INT" />
+		<result property="sort" column="sort" jdbcType="INT" />
+		<result property="status" column="status" jdbcType="INT" />
+	</resultMap>
+
+	<sql id="userQb">
+		id
+    	, seller_id
+    	, name
+    	, content
+    	, img_url
+    	, img_text
+    	, type
+    	, price
+    	, address
+    	, enroll_num
+    	, begin_time
+    	, end_time
+    	, update_time
+    	, create_time
+    	, flag  
+    	, sort
+    	, status
+	</sql>
+	
+	<insert id="create" parameterClass="Activity">
+    <![CDATA[
+   		INSERT INTO activity (
+	    	, seller_id
+	    	, name
+	    	, content
+	    	, img_url
+	    	, img_text
+	    	, type
+	    	, price
+	    	, address
+	    	, enroll_num
+	    	, begin_time
+	    	, end_time
+	    	, update_time
+	    	, create_time
+	    	, flag 
+    	) VALUES (
+	    	, #sellerId#
+	    	, #name#
+	    	, #content#
+	    	, #imgUrl#
+	    	, #imgText#
+	    	, #type#
+	    	, #price#
+	    	, #address#
+	    	, #enrollNum#
+	    	, #beginTime#
+	    	, #endTime#
+	    	, #updateTime#
+	    	, now()
+	    	, #flag#
+    	)
+    ]]>
+	<selectKey resultClass="long" keyProperty="id">
+			SELECT @@IDENTITY
+			AS id
+    </selectKey>
+	</insert>
+	
+	<!-- 查询活动列表 -->
+	<select id="queryActivityList" parameterClass="map" resultClass="java.util.HashMap">
+		 SELECT 
+			a.id
+	    	, a.name
+	    	, a.content
+	    	, a.img_url
+	    	, a.address
+	    	, a.enroll_num
+	    	, a.begin_time
+	    	, a.end_time
+	    	, a.flag
+			, a.sort
+			, 1 as TABLEtype
+		   FROM
+		   	activity a
+	   <isNotNull property="pageSize">
+	   LIMIT 
+	   	#page#, #pageSize#00
+	   </isNotNull>
+	   ORDER BY 
+	   		a.create_time
+	</select>
+	
+	<!-- 查询活动列表 -->
+	<select id="queryActivityById" parameterClass="map" resultMap="ActivityResult">
+		 SELECT 
+				a.id
+		    	, a.seller_id
+		    	, a.name
+		    	, a.content
+		    	, a.img_url
+		    	, a.img_text
+		    	, a.type
+		    	, a.price
+		    	, a.address
+		    	, a.enroll_num
+		    	, a.begin_time
+		    	, a.end_time
+		    	, a.update_time
+		    	, a.create_time
+		    	, a.flag  
+		    	, a.sort
+		    	, a.status
+		   FROM
+		  	 	activity a
+		   WHERE
+		   		id=#id#
+	</select>
+	
+	<!-- 查询所有列表 -->
+	<select id="queryAllList" parameterClass="map" resultClass="java.util.HashMap">
+		 (SELECT 
+			a.id
+			, a.price
+			, a.market_price
+	    	, a.name
+	    	, a.content
+	    	, a.img_url
+	    	, a.address
+	    	, a.enroll_num
+	    	, DATE_FORMAT(a.begin_time,'%m.%d') as begin_time
+	    	, DATE_FORMAT(a.end_time,'%m.%d') as end_time
+	    	, a.flag
+			, a.sort
+			, 1 as TABLEtype
+			, a.create_time
+		   FROM
+		   	activity a
+		  )
+	UNION ALL
+		(SELECT 
+			a.id
+			, NULL as price
+			, NULL as market_price
+	    	, a.name
+	    	, a.content
+	    	, a.img_url 
+	    	, NULL as address
+	    	, NULL as enroll_num
+	    	, NULL as begin_time
+	    	, NULL as end_time
+	    	, a.flag
+			, a.sort
+			, 2 as TABLEtype
+			, a.create_time
+		   FROM
+		   	article a
+		)
+		ORDER BY create_time DESC
+        <isNotNull property="pageSize">
+            <![CDATA[LIMIT #page#,#pageSize#]]>
+        </isNotNull>		
+	</select>
+</sqlMap>

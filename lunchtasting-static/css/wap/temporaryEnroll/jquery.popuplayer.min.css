@@ -1,0 +1,22 @@
+body {
+    -webkit-backface-visibility: hidden
+}
+.popup-layer {
+    position: absolute;
+    display: none;
+    top: 4rem;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, .4)
+}
+.popup-layer-content {
+    position: absolute;
+    box-shadow: 0 0 15px rgba(0, 0, 0, .1);
+    height: 14rem;
+    border-bottom: 1px solid #383636;
+}
+.popup-layer-blur {
+    -webkit-filter: blur(3px)
+}

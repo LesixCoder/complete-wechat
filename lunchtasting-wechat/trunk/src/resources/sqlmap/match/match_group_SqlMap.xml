@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.MatchGroup">
+
+	<typeAlias alias="MatchGroup" type="com.lunchtasting.server.po.lt.MatchGroup" />
+
+	<resultMap id="MatchGroupResult" class="com.lunchtasting.server.po.lt.MatchGroup">
+		<result property="id" column="id"  jdbcType="BIGINT" />
+		<result property="userId"  column="user_id" jdbcType="BIGINT" />
+		<result property="matchId" column="match_id" jdbcType="BIGINT" />
+	    <result property="name" column="name" jdbcType="VARCHAR" />
+		<result property="createTime" column="create_time" jdbcType="DATETIME" />
+	</resultMap>
+	
+    <insert id="create" parameterClass="MatchGroup">
+    <![CDATA[
+        INSERT INTO match_group (
+        id
+        , user_id
+        , match_id
+        , name
+        , create_time
+        ) VALUES (
+        #id#
+        , #userId#
+        , #matchId#
+        , #name#
+        , now()
+        )
+    ]]>
+    </insert>
+    
+   <insert id="createMatchGroupUser" parameterClass="map">
+    <![CDATA[
+        INSERT INTO match_group_user(
+        id
+        , user_id
+        , match_id
+        , match_group_id
+        , create_time
+        ) VALUES (
+        #id#
+        , #userId#
+        , #matchId#
+        , #matchGroupId#
+        , now()
+        )
+    ]]>
+    </insert>
+    
+   	<select id="getMatchGroupUser"  parameterClass="map" resultClass="java.util.HashMap">
+        SELECT * FROM match_group_user WHERE match_id = #matchId# AND user_id = #userId#
+    </select>
+    
+    <select id="getGroupUserOther"  parameterClass="map" resultClass="java.util.HashMap">
+    	SELECT b.id AS user_id,b.name,b.img_url
+    	
+    		FROM(SELECT * FROM match_group_user WHERE match_group_id = #groupId# 
+    			AND user_id != #userId#) a
+    			
+    		JOIN user b ON(a.user_id = b.id)
+    
+    </select>
+</sqlMap>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.Course">
+
+	<typeAlias alias="Course" type="com.lunchtasting.server.po.lt.Course" />
+
+	<resultMap id="CourseResult" class="com.lunchtasting.server.po.lt.Course">
+		<result property="id" column="id"  jdbcType="BIGINT" />
+		<result property="name" column="name" jdbcType="VARCHAR" />
+		<result property="mold" column="mold" jdbcType="VARCHAR" />
+		<result property="characteristic" column="characteristic" jdbcType="VARCHAR" />
+		<result property="tag" column="tag" jdbcType="VARCHAR" />
+		<result property="highlight" column="highlight" jdbcType="VARCHAR" />
+		<result property="process" column="process" jdbcType="VARCHAR" />
+		<result property="imgUrl" column="img_url" jdbcType="VARCHAR" />
+        <result property="imgArray" column="img_array" jdbcType="VARCHAR" />
+		<result property="createTime" column="create_time" jdbcType="DATETIME" />
+	</resultMap>
+	
+	<insert id="create" parameterClass="Course">
+    <![CDATA[
+        INSERT INTO course (
+        id
+        , name
+        , mold
+        , characteristic
+        , tag
+        , highlight
+        , process
+        , img_url
+        , img_array
+        , create_time
+        ) VALUES (
+        #id#
+        , #name#
+        , #mold#
+        , #characteristic#
+        , #tag#
+        , #highlight#
+        , #process#
+        , #imgUrl#
+        , #imgArray#
+        , now()
+        )
+    ]]>
+    </insert>
+    
+    <update id="update" parameterClass="Course">
+    <![CDATA[ UPDATE course ]]>
+		<dynamic prepend="set">
+			<isNotEmpty prepend="," property="name">
+				name = #name#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="mold">
+				mold = #mold#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="characteristic">
+				characteristic = #characteristic#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="tag">
+				tag = #tag#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="highlight">
+				highlight = #highlight#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="process">
+				process = #process#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="imgUrl">
+				img_url = #imgUrl#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="imgArray">
+				img_array = #imgArray#
+			</isNotEmpty>
+		</dynamic>
+		WHERE id = #id#
+    </update>
+	
+	<select id="getById" parameterClass="map" resultMap="CourseResult">
+		SELECT * FROM course WHERE id = #id:BIGINT#
+	</select>
+	
+	<select id="queryCourseList"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT a.*,IFNULL(b.course_meal_count,0) AS course_meal_count,
+				IFNULL(c.gym_count,0) AS gym_count
+		
+			FROM (SELECT * FROM course LIMIT #page#,#pageSize#) a
+			
+			LEFT JOIN (SELECT COUNT(course_id) AS course_meal_count,course_id 
+				FROM course_meal GROUP BY course_id) b ON(a.id = b.course_id)
+				
+			LEFT JOIN (SELECT COUNT(course_id) AS gym_count,course_id 
+				FROM course_gym_middle GROUP BY course_id) c ON(a.id = c.course_id)
+	</select>
+	
+	<select id="getEditCourse"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT * FROM course WHERE id = #courseId#
+	</select>
+	
+	<select id="queryCourseGymList" resultClass="java.util.HashMap" >
+		SELECT a.id,b.name,b.address,b.simple_address,b.img_url,b.flag
+		 
+			FROM (SELECT * FROM course_gym_middle WHERE course_id = #courseId#) a
+			
+			JOIN gym b ON(a.gym_id = b.id)	
+	</select>
+    
+    <insert id="addCourseGym" parameterClass="map">
+    	INSERT INTO course_gym_middle (
+    	id
+        , gym_id
+        , course_id
+        ) VALUES (
+        #id#
+        , #gymId#
+        , #courseId#
+        )
+    </insert>
+    
+    <delete id="removeCourseGym" parameterClass="map">
+    	DELETE FROM course_gym_middle WHERE id = #id#
+    </delete>
+    
+    <select id="getCourseGym"  parameterClass="map" resultClass="java.lang.Integer">
+    	SELECT COUNT(id) FROM course_gym_middle 
+    		WHERE course_id = #courseId# AND gym_id = #gymId#
+    </select>
+    
+    <update id="updateCourseFlag" parameterClass="map">
+		UPDATE course SET flag = #flag# WHERE id = #courseId#
+	</update>
+    
+</sqlMap>

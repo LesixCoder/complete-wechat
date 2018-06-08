@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.CommunityComment">
+
+	<typeAlias alias="CommunityComment" type="com.lunchtasting.server.po.lt.CommunityComment" />
+
+	<resultMap id="CommunityCommentResult" class="com.lunchtasting.server.po.lt.CommunityComment">
+		<result property="id" column="id"  jdbcType="BIGINT" />
+		<result property="userId"  column="user_id" jdbcType="BIGINT" />
+		<result property="communityId" column="community_id" jdbcType="BIGINT" />
+		<result property="content" column="content" jdbcType="VARCHAR" />
+		<result property="imgUrl" column="img_url" jdbcType="VARCHAR" />
+		<result property="parentId" column="parent_id" jdbcType="BIGINT" />
+        <result property="parentUserId" column="parent_user_id" jdbcType="BIGINT" />
+		<result property="createTime" column="create_time" jdbcType="DATETIME" />
+	</resultMap>
+	
+    <insert id="create" parameterClass="CommunityComment">
+    <![CDATA[
+        INSERT INTO community_comment (
+        user_id
+        , community_id
+        , content
+        , img_url
+        , parent_id
+        , parent_user_id
+        , create_time
+        ) VALUES (
+        #userId#
+        , #communityId#
+        , #content#
+        , #imgUrl#
+        , #parentId#
+        , #parentUserId#
+        , now()
+        )
+    ]]>
+    <selectKey resultClass="long" keyProperty="id">
+       SELECT @@IDENTITY
+       AS id
+    </selectKey>
+    </insert>
+	
+</sqlMap>

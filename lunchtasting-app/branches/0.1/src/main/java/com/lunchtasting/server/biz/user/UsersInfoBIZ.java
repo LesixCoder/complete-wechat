@@ -1,0 +1,57 @@
+package com.lunchtasting.server.biz.user;
+
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import com.alibaba.fastjson.JSONObject;
+import com.lunchtasting.server.po.lt.UsersInfo;
+
+
+public interface UsersInfoBIZ {
+	
+	/**
+	 * 判断号码是否已经注册
+	 * @param phone
+	 * @return
+	 */
+	Boolean checkRegisterPhone(String phone);
+	
+	/**
+	 * 通过号码密码获得用户
+	 * @param phone
+	 * @param pwd
+	 * @return
+	 */
+	UsersInfo getByPhoneAndPwd(String phone,String pwd);
+	
+	/**
+	 * 普通用户注册
+	 * @param phone
+	 * @param password
+	 * @param smsId
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	Map registerUser(String phone,String password,Long smsId,HttpServletRequest request) throws Exception;
+	
+	/**
+	 * 普通用户登录
+	 * @param userId
+	 * @param request
+	 * @return
+	 */
+	Map login(Long userId,HttpServletRequest request) throws Exception;
+	
+	/**
+	 * 微信用户登录，是否登录(否 注册本地用户  是 更新微信授权信息和客户端设备信息)
+	 * @param atObject
+	 * @param userObject
+	 * @param userId
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	Map loginWeChat(JSONObject atObject,JSONObject userObject,Long userId,HttpServletRequest request) throws Exception;
+}

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.OrdersList">
+
+    <typeAlias alias="OrdersList" type="com.lunchtasting.server.po.lt.OrdersList" />
+
+    <resultMap id="OrdersListResult" class="com.lunchtasting.server.po.lt.OrdersList">
+        <result property="id" column="id" jdbcType="BIGINT" />
+        <result property="orderId" column="order_id" jdbcType="BIGINT"/>
+        <result property="price" column="price" jdbcType="DOUBLE"/>
+        <result property="code" column="code" jdbcType="VARCHAR"/>
+        <result property="settlementId" column="settlement_id" jdbcType="BIGINT"/>
+        <result property="settlementTime" column="settlement_time" jdbcType="DATETIME"/>
+        <result property="status" column="status" jdbcType="INT"/>
+        <result property="createTime" column="create_time" jdbcType="DATETIME"/>
+    </resultMap>
+    
+    <resultMap id="OrdersListExhibition" class="com.lunchtasting.server.vo.OrdersListExhibition">
+        <result property="id" column="id" jdbcType="BIGINT" />
+        <result property="orderId" column="order_id" jdbcType="BIGINT"/>
+        <result property="price" column="price" jdbcType="DOUBLE"/>
+        <result property="code" column="code" jdbcType="VARCHAR"/>
+        <result property="settlementId" column="settlement_id" jdbcType="BIGINT"/>
+        <result property="settlementTime" column="settlement_time" jdbcType="DATETIME"/>
+        <result property="status" column="status" jdbcType="INT"/>
+        <result property="createTime" column="create_time" jdbcType="DATETIME"/>
+        <result property="ordersCode" column="ordersCode" />
+        <result property="ordersStatus" column="ordersStatus" />
+        <result property="payType" column="pay_type" />
+        <result property="courseId" column="courseId" />
+        <result property="name" column="name" />
+        <result property="phone" column="phone" />
+    </resultMap>
+    <!-- 查询 -->
+    <select id="queryOrdersListList"  parameterClass="map" resultMap="OrdersListResult">
+             SELECT  
+            		ol.id,
+			        ol.order_id,
+			        ol.price,
+			        ol.code,
+			        ol.settlement_id,
+			        ol.settlement_time,
+			        ol.status,
+			        ol.create_time
+            FROM 
+            		orders_list ol
+            		<isNotNull property="sellerId">
+            			,orders o
+            		</isNotNull>
+            WHERE 
+            		1 = 1
+            		<isNotNull property="sellerId" prepend="AND">
+            			o.seller_id = #sellerId#
+            		</isNotNull>
+		           	<isNotNull property="orderId" prepend="AND">
+				    	ol.order_id = #orderId#
+				    </isNotNull>
+				    <isNotNull property="code" prepend="AND">
+				    	ol.code = #code#
+				    </isNotNull>
+				    <isNotEmpty property="status" prepend="AND">
+				    	ol.status = #status#
+				    </isNotEmpty>
+		            	ORDER BY ol.create_time DESC
+		            <isNotNull property="pageSize">
+		           		<![CDATA[LIMIT #curPage#,#pageSize#]]>
+		            </isNotNull> 
+	</select>
+	
+	 <!-- 查询 -->
+    <select id="queryOrdersListOne"  parameterClass="map" resultMap="OrdersListExhibition">
+             SELECT  
+            		ol.id,
+			        ol.order_id,
+			        ol.price,
+			        ol.code,
+			        ol.settlement_id,
+			        ol.settlement_time,
+			        ol.status,
+			        ol.create_time,
+			        o.code as ordersCode,
+			        o.status as ordersStatus,
+			        o.pay_type,
+			        c.id as courseId,
+			        c.name,
+			        u.phone
+            FROM 
+            		orders_list ol,orders o,course c,user u
+            WHERE 
+            		ol.order_id = o.id
+            		AND o.seller_id = #sellerId#
+            		AND o.course_id = c.id
+            		AND o.user_id = u.id
+		           	<isNotNull property="orderId" prepend="AND">
+				    	ol.order_id = #orderId#
+				    </isNotNull>
+				    <isNotNull property="code" prepend="AND">
+				    	ol.code = #code#
+				    </isNotNull>
+				    <isNotEmpty property="status" prepend="AND">
+				    	ol.status = #status#
+				    </isNotEmpty>
+		            	ORDER BY ol.create_time DESC
+		            <isNotNull property="pageSize">
+		           		<![CDATA[LIMIT #curPage#,#pageSize#]]>
+		            </isNotNull> 
+	</select>	
+	
+	<update id="updateState" parameterClass="map" >
+		UPDATE orders_list 
+		<dynamic prepend="set">  
+			<isEqual property="status" compareValue="2">
+				status = 2
+			</isEqual>
+			<isEqual property="status" compareValue="3">
+				status = 3
+			</isEqual>
+			<isEqual property="status" compareValue="4">
+				status = 4
+			</isEqual>
+		</dynamic>
+		WHERE 
+				id = #id#
+	</update>
+	
+	<select id="queryOrdersListListByCode"  parameterClass="map" resultMap="OrdersListResult">
+		 	SELECT  
+            		ol.id,
+			        ol.order_id,
+			        ol.price,
+			        ol.code,
+			        ol.settlement_id,
+			        ol.settlement_time,
+			        ol.status,
+			        ol.create_time
+            FROM 
+            		orders_list ol
+            WHERE
+            		ol.order_id = (
+	            		SELECT order_id  FROM orders_list WHERE 
+	            		<isNotEmpty property="id">
+	            			id = #id#
+	            		</isNotEmpty>
+	            		<isNotEmpty property="code" >
+	            			AND code = #code#
+	            		</isNotEmpty>
+
+            		)
+	</select>
+</sqlMap>

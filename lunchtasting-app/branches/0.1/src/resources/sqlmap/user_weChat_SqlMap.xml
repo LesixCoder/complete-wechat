@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.UserWeChat">
+
+	<typeAlias alias="UserWeChat" type="com.lunchtasting.server.po.lt.UserWeChat" />
+
+	<resultMap id="UserWeChatResult" class="com.lunchtasting.server.po.lt.UserWeChat">
+		<result property="id" column="id" jdbcType="BIGINT" />
+		<result property="userId" column="user_id" jdbcType="BIGINT" />
+		<result property="accessToken" column="access_token" jdbcType="VARCHAR" />
+		<result property="expiresIn" column="expires_in" jdbcType="INTEGER" />
+		<result property="refreshToken" column="refresh_token"
+			jdbcType="VARCHAR" />
+		<result property="openId" column="open_id" jdbcType="VARCHAR" />
+		<result property="scope" column="scope" jdbcType="VARCHAR" />
+		<result property="createTime" column="create_time" jdbcType="DATETIME" />
+		<result property="updateTime" column="update_time" jdbcType="DATETIME" />
+	</resultMap>
+
+	<insert id="create" parameterClass="UserWeChat">
+    <![CDATA[
+   		INSERT INTO user_weChat (
+    	user_id
+    	, access_token
+    	, expires_in
+    	, refresh_token
+    	, open_id
+    	, scope
+    	, create_time
+    	, update_time
+    	) VALUES (
+    	#accessToken#
+    	, #expiresIn#
+    	, #refreshToken#
+    	, #openId#
+    	, #scope#
+    	, now()
+    	, now()
+    	)
+    ]]>
+	<selectKey resultClass="long" keyProperty="id">
+		SELECT @@IDENTITY
+		AS id
+    </selectKey>
+	</insert>
+
+	<update id="updateWeChat" parameterClass="UserWeChat">
+        <![CDATA[ UPDATE user_weChat ]]>
+		<dynamic prepend="set">
+			<isNotEmpty prepend="," property="accessToken">
+				access_token = #accessToken#
+            </isNotEmpty>
+			<isNotEmpty prepend="," property="expiresIn">
+				expires_in = #expiresIn#
+            </isNotEmpty>
+			<isNotEmpty prepend="," property="refreshToken">
+				refresh_token = #refreshToken#
+            </isNotEmpty>
+			<isNotEmpty prepend="," property="openId">
+				open_id = #openId#
+            </isNotEmpty>
+			<isNotEmpty prepend="," property="scope">
+				scope = #scope#
+            </isNotEmpty>
+			update_time = now()
+		</dynamic>
+		WHERE user_id = #userId#
+	</update>
+
+	<select id="getByOpenId" parameterClass="map" resultMap="UserWeChatResult">
+		SELECT * FROM user_device WHERE open_id = #openId#
+	</select>
+	
+	<select id="getByUserId" parameterClass="map" resultMap="UserWeChatResult">
+        SELECT * FROM user_device WHERE user_id = #userId#
+    </select>
+
+</sqlMap>

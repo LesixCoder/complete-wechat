@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.Community">
+
+	<typeAlias alias="Community" type="com.lunchtasting.server.po.lt.Community" />
+
+	<resultMap id="CommunityResult" class="com.lunchtasting.server.po.lt.Community">
+		<result property="id" column="id"  jdbcType="BIGINT" />
+		<result property="name" column="name" jdbcType="VARCHAR" />
+		<result property="content" column="content" jdbcType="VARCHAR" />
+		<result property="createTime" column="create_time" jdbcType="DATETIME" />
+	</resultMap>
+	
+    <insert id="create" parameterClass="Community">
+    <![CDATA[
+        INSERT INTO community (
+        user_id
+        , name
+        , content
+        , create_time
+        ) VALUES (
+        #userId#
+        , #name#
+        , #content#
+        , now()
+        )
+    ]]>
+    <selectKey resultClass="long" keyProperty="id">
+       SELECT @@IDENTITY
+       AS id
+    </selectKey>
+    </insert>
+	
+	<select id="getById" resultMap="CommunityResult" parameterClass="map">
+		SELECT * FROM community WHERE id = #id:BIGINT#
+	</select>
+	
+</sqlMap>

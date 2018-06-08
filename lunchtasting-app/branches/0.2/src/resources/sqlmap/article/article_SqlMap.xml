@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.Article">
+
+	<typeAlias alias="Article" type="com.lunchtasting.server.po.lt.Article" />
+
+	<resultMap id="ArticleResult" class="com.lunchtasting.server.po.lt.Article">
+		<result property="id" column="id"  jdbcType="BIGINT" />
+		<result property="userId"  column="user_id" jdbcType="BIGINT" />
+		<result property="name" column="name" jdbcType="VARCHAR" />
+		<result property="content" column="content" jdbcType="VARCHAR" />
+		<result property="imgText" column="img_text" jdbcType="VARCHAR" />
+		<result property="imgUrl" column="img_url" jdbcType="VARCHAR" />
+		<result property="createTime" column="create_time" jdbcType="DATETIME" />
+		<result property="updateTime" column="update_time" jdbcType="DATETIME" />
+	</resultMap>
+	
+    <insert id="create" parameterClass="Activity">
+    <![CDATA[
+        INSERT INTO article (
+        user_id
+        , name
+        , content
+        , img_text
+        , img_url
+        , update_time
+        , create_time
+        ) VALUES (
+        #userId#
+        , #name#
+        , #content#
+        , #imgText#
+        , #imgUrl#
+        , now()
+        , now()
+        )
+    ]]>
+    <selectKey resultClass="long" keyProperty="id">
+       SELECT @@IDENTITY
+       AS id
+    </selectKey>
+    </insert>
+	
+	<select id="getById" parameterClass="map" resultMap="ArticleResult">
+		SELECT * FROM article WHERE id = #id:BIGINT#
+	</select>
+    
+    <select id="getArticleCount"  parameterClass="map" resultClass="java.lang.Integer">
+        SELECT COUNT(1) FROM article
+    </select>
+    	
+	<select id="queryArticleList"  parameterClass="map" resultClass="java.util.HashMap">
+        SELECT id AS article_id,name,content,img_url,create_time
+            FROM article ORDER BY create_time DESC
+            LIMIT #page#, #pageSize# 
+	</select>
+    
+    <select id="getArticleDetail"  parameterClass="map" resultClass="java.util.HashMap">
+        SELECT * FROM article
+    </select>
+	
+</sqlMap>

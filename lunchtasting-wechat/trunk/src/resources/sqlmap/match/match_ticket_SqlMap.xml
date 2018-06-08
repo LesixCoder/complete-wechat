@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.MatchTicket">
+
+    <typeAlias alias="MatchTicket" type="com.lunchtasting.server.po.lt.MatchTicket" />
+
+    <resultMap id="MatchTicketResult" class="com.lunchtasting.server.po.lt.MatchTicket">
+        <result property="id" column="id"  jdbcType="BIGINT" />
+        <result property="matchId" column="match_id"  jdbcType="BIGINT" />
+        <result property="name" column="name"  jdbcType="VARCHAR" />
+        <result property="content" column="content"  jdbcType="VARCHAR" />
+        <result property="price" column="price"  jdbcType="DOUBLE" />
+		<result property="earlyBirdPrice" column="early_bird_price"  jdbcType="DOUBLE" />
+		<result property="earlyBirdTime" column="early_bird_time"  jdbcType="DATETIME" />
+		<result property="type" column="type"  jdbcType="INT" />
+		<result property="kind" column="kind"  jdbcType="INT" />
+        <result property="createTime" column="create_time" jdbcType="DATETIME" />
+    </resultMap>
+    
+    <select id="getById" parameterClass="map" resultMap="MatchTicketResult">
+		SELECT * FROM match_ticket WHERE id = #id:BIGINT#
+	</select>
+	
+	<select id="queryMatchTicketList"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT * FROM match_ticket WHERE match_id = #matchId# AND flag = 0 
+			<isNotNull property="ticketType">
+				AND type = #ticketType#
+			</isNotNull> 
+			ORDER BY sort
+	</select>
+	
+	<insert id="createMatchTicketSignup" parameterClass="map">
+    <![CDATA[
+        INSERT INTO match_ticket_signup (
+        id
+        , ticket_id
+        , user_id
+        , match_id
+        , create_time
+        ) VALUES (
+        #id#
+        , #ticketId#
+        , #userId#
+        , #matchId#
+        , now()
+        )
+    ]]>
+    </insert>
+    
+    <insert id="createMatchTicketSignupInfo" parameterClass="map">
+        INSERT INTO match_ticket_signup_info (
+        id
+        , signup_id
+        , field1
+        , field2
+         <isNotEmpty property="field3">
+       	, field3
+        </isNotEmpty>
+        <isNotEmpty property="field4">
+       	, field4
+        </isNotEmpty>
+        <isNotEmpty property="field5">
+       	, field5
+        </isNotEmpty>
+         <isNotEmpty property="field6">
+       	, field6
+        </isNotEmpty>
+        , create_time
+        ) VALUES (
+        #id#
+        , #signupId#
+        , #field1#
+        , #field2#
+        <isNotEmpty property="field3">
+       	, #field3#
+        </isNotEmpty>
+        <isNotEmpty property="field4">
+       	, #field4#
+        </isNotEmpty>
+        <isNotEmpty property="field5">
+       	, #field5#
+        </isNotEmpty>
+         <isNotEmpty property="field6">
+       	, #field6#
+        </isNotEmpty>
+        , now()
+        )
+    </insert>
+</sqlMap>

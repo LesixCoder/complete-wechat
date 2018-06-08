@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<appender name="consoleAppender" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %c [%t] %-5p %x - %m%n"/>
+		</layout>
+	</appender>
+	
+	<appender name="controllerAppender" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="/home/ncm/logs/controller/logger.log" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %c [%t] %-5p %x - %m%n"/>
+		</layout>
+	</appender>
+	
+	<appender name="toolAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="/home/ncm/logs/tool/logger.log" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d %c [%t] %-5p %x - %m%n"/>
+        </layout>
+    </appender>
+	
+	<appender name="errorAppender" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="/home/ncm/logs/error/error.log" />
+		<param name="Append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %c [%t] %-5p %x - %m%n"/>
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="ERROR" />
+			<param name="LevelMax" value="ERROR" />
+		</filter>
+	</appender>
+	
+	
+	<logger name="controllerLogger" additivity="true">
+		<priority value="debug" />
+		<appender-ref ref="controllerAppender" />
+		<appender-ref ref="errorAppender" />
+	</logger>
+	
+	<logger name="toolLogger" additivity="true">
+        <priority value="debug" />
+        <appender-ref ref="toolAppender" />
+        <appender-ref ref="errorAppender" />
+    </logger>
+	
+	<root>
+		<priority value="INFO" />
+		<appender-ref ref="consoleAppender" />
+	</root>
+</log4j:configuration>

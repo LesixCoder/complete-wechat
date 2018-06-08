@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.OrdersSettlement">
+
+    <typeAlias alias="OrdersSettlement" type="com.lunchtasting.server.po.lt.OrdersSettlement" />
+
+    <resultMap id="OrdersSettlementResult" class="com.lunchtasting.server.po.lt.OrdersSettlement">
+        <result property="id" column="id" jdbcType="BIGINT" />
+        <result property="orderId" column="order_id" jdbcType="BIGINT" />
+        <result property="sellerId" column="seller_id" jdbcType="BIGINT" />
+        <result property="subsidyPrice" column="subsidy_price" jdbcType="DOUBLE" />
+        <result property="originalPrice" column="original_price" jdbcType="DOUBLE" />
+        <result property="payPrice" column="pay_price" jdbcType="DOUBLE" />
+        <result property="servicePrice" column="service_price" jdbcType="DOUBLE" />
+        <result property="channelPrice" column="channel_price" jdbcType="DOUBLE" />
+        <result property="playPrice" column="play_price" jdbcType="DOUBLE" />
+        <result property="profitPrice" column="profit_price" jdbcType="DOUBLE" />
+        <result property="beginTime" column="begin_time" jdbcType="DATETIME" />
+        <result property="endTime" column="end_time" jdbcType="DATETIME" />
+        <result property="playTime" column="play_time" jdbcType="DATETIME" />
+        <result property="remark" column="remark" jdbcType="VARCHAR" />
+        <result property="isReceipt" column="is_receipt" jdbcType="INT" />
+        <result property="status" column="status" jdbcType="INT" />
+        <result property="createTime" column="create_time" jdbcType="DATETIME" />
+    </resultMap>
+	
+	    <!-- 查询 -->
+    <select id="queryOrdersSettlementList"  parameterClass="map" resultClass="java.util.HashMap">
+            SELECT  
+            		id,
+			        order_id,
+			        seller_id,
+			        pay_price,
+			        original_price,
+			        subsidy_price,
+			        service_price,
+			        channel_price,
+			        play_price,
+			        profit_price,
+			        DATE_FORMAT(begin_time,'%Y-%m-%d')as begin_time,
+			        DATE_FORMAT(end_time,'%Y-%m-%d') as end_time,
+			        DATE_FORMAT(play_time,'%Y-%m-%d %H:%i')as play_time,
+			        remark,
+			        is_receipt,
+			        status,
+			        create_time
+            FROM 
+            		orders_settlement
+            WHERE 
+            		seller_id = #sellerId#
+			    <isNotEmpty property="status" prepend="AND">
+			    	status = #status#
+			    </isNotEmpty>
+	            	ORDER BY create_time DESC
+	            <isNotNull property="pageSize">
+	           		<![CDATA[LIMIT #curPage#,#pageSize#]]>
+	            </isNotNull> 
+	</select>
+	
+	
+	<!--
+		
+	 -->
+	
+    <select id="getOrdersSettlementCount"  parameterClass="map" resultClass="java.lang.Integer">
+        SELECT COUNT(id) FROM orders_settlement WHERE 
+		   		seller_id = #sellerId#
+		    <isNotEmpty property="status" prepend="AND">
+		    	status = #status#
+		    </isNotEmpty>
+    </select>
+    
+</sqlMap>

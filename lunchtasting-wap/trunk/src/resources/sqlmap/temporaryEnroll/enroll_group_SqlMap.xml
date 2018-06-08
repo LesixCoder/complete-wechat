@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.temporaryEnroll.EnrollGroup">
+
+	<typeAlias alias="EnrollGroup" type="com.lunchtasting.server.po.temporaryEnroll.EnrollGroup" />
+
+	<resultMap id="EnrollGroupResult" class="com.lunchtasting.server.po.temporaryEnroll.EnrollGroup">
+		<result column="id" property="id" jdbcType="BIGINT" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="DATETIME" />
+	</resultMap>
+	
+	<sql id="Qb">
+		id
+    	, create_time
+	</sql>
+	
+	<insert id="create" parameterClass="EnrollGroup">
+    <![CDATA[
+   		INSERT INTO enroll_group(
+	    	id
+	    	, name
+	    	, create_time
+    	) VALUES (
+	    	#id#
+	    	, #name#
+	    	, now()
+    	
+    	)
+    ]]>
+	</insert>
+	<select id="getEnrollGroupOne" parameterClass="map" resultMap="EnrollGroupResult">
+	   SELECT 
+			id
+	    	, create_time
+	   FROM 
+	   		enroll_group
+	   WHERE
+	       id = #id#
+	</select>
+	
+	<update id="UpdateEnrollGroup">
+	
+	</update>
+		<!-- 个数 -->
+	<select id="getAllCounut" parameterClass="map" resultClass="java.lang.Integer">
+			SELECT 
+				COUNT(*) 
+			FROM 
+				enroll_group 
+	</select>
+</sqlMap>

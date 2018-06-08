@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.Course">
+
+	<typeAlias alias="Course" type="com.lunchtasting.server.po.lt.Course" />
+
+	<resultMap id="CourseResult" class="com.lunchtasting.server.po.lt.Course">
+		<result property="id" column="id"  jdbcType="BIGINT" />
+		<result property="sellerId"  column="seller_id" jdbcType="BIGINT" />
+		<result property="name" column="name" jdbcType="VARCHAR" />
+		<result property="price" column="price" jdbcType="DOUBLE" />
+		<result property="marketPrice" column="market_price" jdbcType="DOUBLE" />
+		<result property="imgUrl" column="img_url" jdbcType="VARCHAR" />
+        <result property="imgArray" column="img_array" jdbcType="VARCHAR" />
+		<result property="beginTime" column="begin_time" jdbcType="VARCHAR" />
+		<result property="endTime" column="end_time" jdbcType="VARCHAR" />
+		<result property="createTime" column="create_time" jdbcType="DATETIME" />
+	</resultMap>
+	
+	<select id="getById" resultMap="CourseResult" parameterClass="map">
+		SELECT * FROM course WHERE id = #id:BIGINT#
+	</select>
+	
+	<select id="getCourseCount"  parameterClass="map" resultClass="java.lang.Integer">
+        SELECT COUNT(id) FROM course WHERE flag = 0
+        <isNotNull property="areaId">
+            AND area_id = #areaId#
+        </isNotNull>
+        <isNotNull property="categoryId">
+        	AND category_id = #categoryId#
+        </isNotNull>
+    </select>
+    
+    <select id="queryCourseList"  parameterClass="map" resultClass="java.util.HashMap" remapResults="true">
+        SELECT a.id AS course_id,a.seller_id,a.name AS course_name
+        	,a.price,a.market_price,a.img_url,a.begin_time,a.end_time
+        	,b.name AS seller_name,b.address
+        	,IFNULL(c.score,0) AS score
+        	<isNotNull property="longitude">
+            ,IFNULL(ROUND(6378.138*2*ASIN(SQRT(POW(SIN((#latitude#*PI()/180-b.latitude*PI()/180)/2),2)+COS(22.299439*PI()/180)*COS(b.latitude*PI()/180)*POW(SIN((#longitude#*PI()/180-b.longitude*PI()/180)/2),2)))*1000),'') AS distance
+           	</isNotNull>
+           	
+            FROM (SELECT * FROM course WHERE flag = 0 ) a
+            
+            JOIN (SELECT id,area_id,name,address,latitude,longitude FROM seller WHERE flag = 0) b ON(a.seller_id = b.id)
+            
+            LEFT JOIN(SELECT seller_id,FORMAT(AVG(score),1) AS score FROM seller_comment
+				WHERE flag = 0 GROUP BY seller_id) c ON(b.id = c.seller_id)	
+            
+        <dynamic prepend="where">  
+        	<isNotNull prepend="and" property="areaId">
+            	a.area_id = #areaId#
+        	</isNotNull>
+        	<isNotNull prepend="and" property="categoryId">
+           		a.category_id = #categoryId#
+        	</isNotNull>
+     	</dynamic>
+        
+        <!-- 
+        <isNotNull property="sortId">
+        	<isEqual property="sortId" compareValue="1">
+        		
+        	</isEqual>
+        	<isEqual property="sortId" compareValue="2">
+        	
+        	</isEqual>
+        </isNotNull> -->
+         
+        <isNotNull property="longitude">
+        	ORDER BY distance+0
+        </isNotNull>
+        LIMIT #page#, #pageSize#
+    </select>
+	
+    <select id="queryCourseCategoryList"  parameterClass="map" resultClass="java.util.HashMap">
+    	SELECT id,name FROM course_category WHERE flag = 0
+    		<isNotNull property="level">
+    			AND level = #level#
+    		</isNotNull>
+    	ORDER BY sort
+    </select>
+    
+    <select id="queryAllCourseCategoryList"  parameterClass="map" resultClass="java.util.HashMap">
+    	SELECT a.id AS category_id,a.name,b.str
+    	
+			FROM (SELECT * FROM course_category WHERE level = 1 ORDER BY sort ASC) a
+			
+        	LEFT JOIN (SELECT GROUP_CONCAT(id,'-',name ORDER BY sort ASC separator  '|') str,parent_id 
+        		FROM course_category WHERE level = 2 GROUP BY parent_id ) b ON (a.id = b.parent_id)
+    </select>
+    
+    
+   	<select id="getCourseDtail"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT a.id AS course_id,a.img_url,IFNULL(a.img_array,'') AS img_array,IFNULL(a.name,'') AS course_name
+			,IFNULL(a.title,'') AS course_title,IFNULL(a.content,'') AS course_content,a.price,a.market_price
+			,a.begin_time,a.end_time
+			,b.id AS seller_id,b.name AS seller_name,b.specific_address,b.phone,b.business_hours
+			,IFNULL(c.score,0) AS score
+			,IFNULL(b.longitude,0) AS longitude,IFNULL(b.latitude,0) AS latitude
+			,IFNULL(d.comment_count,0) AS comment_count
+			 
+			FROM (SELECT * FROM course WHERE id = #courseId# AND flag = 0 ) a
+			
+			JOIN (SELECT * FROM seller WHERE flag = 0) b ON(a.seller_id = b.id)
+			
+			LEFT JOIN(SELECT seller_id,FORMAT(AVG(score),1) AS score FROM seller_comment
+				WHERE flag = 0 GROUP BY seller_id) c ON(b.id = c.seller_id)	
+				
+			LEFT JOIN(SELECT seller_id,COUNT(id) comment_count FROM seller_comment
+				WHERE flag = 0 GROUP BY seller_id) d ON(b.id = d.seller_id)
+    </select>
+    
+    <select id="querySellerCourseList"  parameterClass="map" resultClass="java.util.HashMap">
+    	SELECT id AS course_id,name,img_url,price,market_price
+    		 FROM course WHERE seller_id = #sellerId# AND flag = 0
+    </select>
+    
+   	<select id="getConfirmCourse"  parameterClass="map" resultClass="java.util.HashMap">
+    	SELECT a.id AS course_id,IFNULL(a.name,'') AS course_name,a.price,a.begin_time,a.end_time
+    		,b.id AS seller_id,b.name AS seller_name,b.address
+    		
+    		FROM (SELECT id,seller_id,name,price,begin_time,end_time FROM course WHERE id = #courseId# AND flag = 0) a
+    		
+    		JOIN (SELECT id,name,address FROM seller WHERE flag = 0) 
+    			b ON (a.seller_id = b.id)
+	</select>
+</sqlMap>

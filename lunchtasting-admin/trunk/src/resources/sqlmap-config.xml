@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMapConfig
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+
+	<settings cacheModelsEnabled="true" enhancementEnabled="true"
+		lazyLoadingEnabled="true" errorTracingEnabled="true" maxRequests="32"
+		maxSessions="10" maxTransactions="5" useStatementNamespaces="true" />
+		
+ 	<sqlMap resource="sqlmap/user_admin_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/admin_activity_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/admin_article_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/admin_seller_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/admin_area_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/admin_role_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/admin_orders_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/admin_settlement_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/admin_course_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/admin_activity_enroll_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/admin_carousel_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/admin_course_category_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/admin_seller_temporary_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/admin_course_temporary_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/admin_weekday_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/admin_note_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/admin_topic_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/user_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/admin_match_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/admin_match_category_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/admin_medal_SqlMap.xml"/>
+	<sqlMap resource="sqlmap/admin_album_SqlMap.xml"/>
+	
+	<!-- 赛事积分 -->
+	<sqlMap resource="sqlmap/matchScore/match_score_SqlMap.xml"/>
+</sqlMapConfig>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.temporaryEnroll.TempooraryInvitationCode">
+
+	<typeAlias alias="TempooraryInvitationCode" type="com.lunchtasting.server.po.temporaryEnroll.TempooraryInvitationCode" />
+
+	<resultMap id="TempooraryInvitationCodeResult" class="com.lunchtasting.server.po.temporaryEnroll.TempooraryInvitationCode">
+		<result column="id" property="id" jdbcType="BIGINT" />
+		<result column="code" property="code" jdbcType="VARCHAR" />
+		<result column="user_id" property="userId" jdbcType="BIGINT" />
+		<result column="employ_time" property="employTime" jdbcType="DATETIME" />
+		<result column="state" property="state" jdbcType="INT" />
+	</resultMap>
+	
+	<sql id="Qb">
+		id
+		, code
+		, user_id
+    	, employ_time
+    	, state
+	</sql>
+	
+	<insert id="create" parameterClass="TempooraryInvitationCode">
+    <![CDATA[
+   		INSERT INTO tempoorary_invitation_code(
+   			id
+			, code
+			, user_id
+	    	, employ_time
+	    	, state
+    	) VALUES (
+	    	#id#
+	    	, #code#
+	    	, #userId#
+	    	, #employTime#
+	    	, #state#
+    	)
+    ]]>
+	</insert>
+	<select id="getByCode" parameterClass="map" resultMap="TempooraryInvitationCodeResult">
+	   SELECT 
+			id
+			, code
+			, user_id
+	    	, employ_time
+	    	, state
+	   FROM 
+	   		tempoorary_invitation_code
+	   WHERE
+	       1 = 1
+	       <isNotEmpty property="code">
+	       AND code=#code#
+	       </isNotEmpty>
+	</select>
+	
+	<update id="UpdateTempooraryInvitationCode" parameterClass="TempooraryInvitationCode">
+		 UPDATE tempoorary_invitation_code SET 
+	        	state = #state#,
+	        	user_id = #userId#,
+	        	employ_time = now()
+  		 WHERE
+  				code = #code#
+	</update>
+</sqlMap>

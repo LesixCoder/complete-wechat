@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.Course">
+	<typeAlias alias="Course" type="com.lunchtasting.server.po.lt.Course" />
+
+	<resultMap id="CourseRe" class="com.lunchtasting.server.po.lt.Course">
+		<result column="id" property="id" jdbcType="BIGINT"/>
+        <result column="seller_id" property="sellerId" jdbcType="BIGINT"/> 	
+        <result column="name" property="name" jdbcType="VARCHAR"/> 	
+        <result column="img_url" property="imgUrl" jdbcType="VARCHAR"/> 	 
+        <result column="img_array" property="imgArray" jdbcType="VARCHAR"/> 	 
+        <result column="market_price" property="marketPrice" jdbcType="DOUBLE"/> 	
+        <result column="content" property="content" jdbcType="VARCHAR"/> 	
+        <result column="price" property="price" jdbcType="DOUBLE"/> 	
+        <result column="begin_time" property="beginTime" jdbcType="VARCHAR"/> 	
+        <result column="end_time" property="endTime" jdbcType="VARCHAR"/> 	
+        <result column="flag" property="flag" jdbcType="INT"/> 	
+        <result column="create_time" property="createTime" jdbcType="DATETIME"/> 	
+        <result column="seller_name" property="sellerName" jdbcType="VARCHAR"/> 	
+        <result column="title" property="title" jdbcType="VARCHAR"/> 	
+        <result column="category_id" property="categoryId" jdbcType="BIGINT"/> 	
+	</resultMap>
+
+	<!--查询课程列表 -->
+   <select id="queryCourseList" parameterClass="map" resultMap="CourseRe">
+	 	SELECT
+		 	id,
+		 	seller_id,
+		 	(select name from seller where id = seller_id) as seller_name,
+		 	name,
+		 	title,
+		 	img_url,
+		 	img_array,
+		 	market_price,
+		 	content,
+		 	price,
+		 	begin_time,
+		 	end_time,
+		 	flag,
+		 	create_time,
+		 	category_id
+		FROM 
+			course
+		WHERE 
+			flag != 2
+			<isNotEmpty property="sellerId">
+        	and	seller_id = #sellerId#
+			</isNotEmpty>
+			<isNotEmpty property="flag">
+        	and	flag = #flag#
+			</isNotEmpty>
+			ORDER BY create_time DESC
+			<isNotNull property="pageSize">
+            <![CDATA[LIMIT #curPage#,#pageSize#]]>
+            </isNotNull>
+ 	</select>
+ 	
+ 	<!-- 查询课程列表个数 -->
+    <select id="queryCourseCount" parameterClass="map" resultClass="java.lang.Integer">
+	 	SELECT
+		 	COUNT(1)
+		FROM 
+			course
+		WHERE 
+			flag != 2
+			<isNotEmpty property="sellerId">
+        	and	seller_id = #sellerId#
+			</isNotEmpty>
+			<isNotEmpty property="flag">
+        	and	flag = #flag#
+			</isNotEmpty>
+    </select>
+    
+    <!-- 根据id查询课程 -->
+ 	<select id="queryCourseById" parameterClass="map" resultMap="CourseRe">
+ 		SELECT
+ 	 		id,
+ 	 		name,
+ 	 		title,
+ 	 		img_url,
+ 	 		img_array,
+ 	 		market_price,
+ 	 		content,
+ 	 		price,
+ 	 		begin_time,
+ 	 		end_time,
+ 	 		seller_id,
+ 	 		null as seller_name,
+ 	 		flag,
+ 	 		create_time,
+ 	 		category_id
+ 	 	FROM
+ 	 		course
+ 	 	WHERE 
+			id=#id#			
+ 	</select>
+    
+    <!-- 新建课程 -->
+ 	<insert id="create" parameterClass="Course">
+ 	 <![CDATA[
+ 	 	INSERT INTO course(
+ 	 		id,
+ 	 		name,
+ 	 		title,
+ 	 		img_url,
+ 	 		img_array,
+ 	 		market_price,
+ 	 		content,
+ 	 		price,
+ 	 		begin_time,
+ 	 		end_time,
+ 	 		seller_id,
+ 	 		flag,
+ 	 		create_time,
+ 	 		category_id
+ 		)VALUES(
+ 	 		#id#,
+ 	 		#name#,
+ 	 		#title#,
+ 	 		#imgUrl#,
+ 	 		#imgArray#,
+ 	 		#marketPrice#,
+ 	 		#content#,
+ 	 		#price#,
+ 	 		#beginTime#,
+ 	 		#endTime#,
+ 	 		#sellerId#,
+ 	 		1,
+ 	 		now(),
+ 	 		#categoryId#			
+ 		)
+ 	]]>
+ 	</insert>
+    
+ 	<!-- 更新课程 -->
+ 	<update id="update" parameterClass="Course">
+ 		UPDATE course 
+ 		<dynamic prepend="set">
+ 		    <isNotEmpty property="sellerId" prepend=",">
+	 			seller_id = #sellerId#
+	 		</isNotEmpty>  
+ 		    <isNotEmpty property="title" prepend=",">
+	 			title = #title#
+	 		</isNotEmpty>  
+	 		<isNotEmpty property="name" prepend=",">
+	 			name = #name#
+	 		</isNotEmpty>
+	 		<isNotEmpty property="imgUrl" prepend=",">
+	 			img_url = #imgUrl#
+	 		</isNotEmpty>
+	 		<isNotEmpty property="imgArray" prepend=",">
+	 			img_array = #imgArray#
+	 		</isNotEmpty>	
+	 		<isNotEmpty property="marketPrice" prepend=",">
+	 			market_price = #marketPrice#
+	 		</isNotEmpty> 
+	 		<isNotNull property="content" prepend=",">
+	 			content = #content#
+	 		</isNotNull>
+	 		<isNotEmpty property="price" prepend=",">
+	 			price = #price#
+	 		</isNotEmpty>  	
+	 		<isNotEmpty property="beginTime" prepend=",">
+	 			begin_time = #beginTime#
+	 		</isNotEmpty>
+	 		<isNotEmpty property="endTime" prepend=",">
+	 			end_time = #endTime#
+	 		</isNotEmpty>
+	 		<isNotEmpty property="flag" prepend=",">
+	 			flag = #flag#
+	 		</isNotEmpty>
+	 		<isNotEmpty property="categoryId" prepend=",">
+	 		    category_id = #categoryId#
+	 		</isNotEmpty>	 			 		  		 			 				
+ 		</dynamic>
+ 		WHERE 
+  			id = #id#
+ 	</update>
+ 	
+ 	<!-- 改状态 -->
+  <update id="updateCourse" parameterClass="Map">
+       update course set flag = #flag# where id = #id#
+  </update>
+  
+  <select id="queryCourseNotLimit" parameterClass="map" resultMap="CourseRe">
+	 	SELECT 
+	 	    id,
+		 	seller_id,
+		 	(select name from seller where id = seller_id) as seller_name,
+		 	name,
+		 	title,
+		 	img_url,
+		 	img_array,
+		 	market_price,
+		 	content,
+		 	price,
+		 	begin_time,
+		 	end_time,
+		 	flag,
+		 	create_time,
+		 	category_id
+	 	 FROM course WHERE flag != 2 ORDER BY create_time DESC
+ 	</select>
+</sqlMap>

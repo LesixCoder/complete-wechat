@@ -1,0 +1,1 @@
+#set($path="http://static.mperfit.com")

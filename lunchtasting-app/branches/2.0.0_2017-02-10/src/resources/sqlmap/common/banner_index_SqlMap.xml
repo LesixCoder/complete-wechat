@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.BannerIndex">
+
+	<typeAlias alias="BannerIndex" type="com.lunchtasting.server.po.lt.BannerIndex" />
+
+    <select id="queryBannerIndexList" parameterClass="map" resultClass="java.util.HashMap">
+    	SELECT biz_id,biz_type,img_url,IFNULL(depict,'') AS depict,IFNULL(url,'') AS url,is_click
+    		 FROM banner_index WHERE flag = 0 ORDER BY sort LIMIT #pageSize#
+    </select>
+</sqlMap>

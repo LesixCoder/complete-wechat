@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.gym.Coach">
+
+	<typeAlias alias="Coach" type="com.lunchtasting.server.po.lt.gym.Coach" />
+
+	<select id="getCoachDetail"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT * FROM coach WHERE id = #coachId#
+	</select>
+	
+	<select id="queryCoachAlbumList"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT * FROM coach_album WHERE coach_id = #coachId#
+	</select>
+	
+</sqlMap>

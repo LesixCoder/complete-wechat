@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.CourseCategory">
+
+	<typeAlias alias="CourseCategory" type="com.lunchtasting.server.po.lt.CourseCategory" />
+
+	<resultMap id="CourseCategoryResult" class="com.lunchtasting.server.po.lt.CourseCategory">
+		<result column="id" property="id" jdbcType="BIGINT" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="parent_id" property="parentId" jdbcType="INT" />
+		<result column="level" property="level" jdbcType="INT" />
+		<result column="sort" property="sort" jdbcType="INT" />
+		<result column="flag" property="flag" jdbcType="INT" />
+		<result column="create_time" property="createTime" jdbcType="DATETIME"/>
+	</resultMap>
+	
+    <!-- 查询列表 -->
+    <select id="queryCourseCategoryList"  parameterClass="map" resultMap="CourseCategoryResult">
+    	select
+		     id
+		    ,name
+		    ,parent_id
+		    ,level
+		    ,flag
+		    ,sort
+		    ,create_time
+		from
+			course_category
+		where
+		flag != 2
+		    <isNotEmpty property="name" prepend="AND">
+		    name like concat('%', #name:VARCHAR#, '%')
+		    </isNotEmpty>
+		    <isNotEmpty property="level" prepend="AND">
+		    parent_id = #level#
+		    </isNotEmpty>
+			ORDER BY create_time DESC
+		<isNotNull property="pageSize">
+            <![CDATA[LIMIT #curPage#,#pageSize#]]>
+        </isNotNull>
+        
+    </select>
+    
+    <select id="getById" parameterClass="map" resultMap="CourseCategoryResult">
+		SELECT * FROM course_category WHERE id = #id:BIGINT#
+	</select>
+    
+    <!-- 新建 -->
+	<insert id="create" parameterClass="CourseCategory">
+    <![CDATA[
+   		INSERT INTO course_category (
+   		  id
+   		, name
+    	, parent_id
+    	, level
+    	, flag
+    	, sort
+    	, create_time
+    	) VALUES (
+    	  #id#
+    	, #name#
+    	, #parentId#
+    	, #level#
+    	, 1
+    	, #sort#
+    	, now()
+    	)
+    ]]>
+	<selectKey resultClass="long" keyProperty="id">
+	   SELECT @@IDENTITY
+	   AS id
+    </selectKey>
+	</insert>
+    
+    <!-- 更新 -->
+    <update id="update" parameterClass="CourseCategory">
+ 		UPDATE course_category 
+ 		<dynamic prepend="set">  
+	 		<isNotEmpty property="name" prepend=",">
+	 			name = #name#
+	 		</isNotEmpty>
+	 		<isNotEmpty property="parentId" prepend=",">
+	 			parent_id = #parentId#
+	 		</isNotEmpty>
+	 		<isNotEmpty property="level" prepend=",">
+	 			level = #level#
+	 		</isNotEmpty>	
+	 		<isNotEmpty property="sort" prepend=",">
+	 			sort = #sort#
+	 		</isNotEmpty> 
+ 		</dynamic>
+ 		WHERE 
+  			id = #id#
+ 	</update>
+    
+    <!-- 查询总条数-->
+	 <select id="queryCourseCategoryListCount" parameterClass="Map" resultClass="int">
+		 select
+		     count(*)
+		from
+			course_category
+			where
+			flag != 2
+		    <isNotEmpty property="name" prepend="AND">
+		    name like concat('%', #name:VARCHAR#, '%')
+		    </isNotEmpty>
+		    <isNotEmpty property="level" prepend="AND">
+		    level = #level#
+		    </isNotEmpty>
+  	</select>
+  	<!-- 删除(改状态) -->
+  <update id="deleteCourseCategory" parameterClass="Map">
+       update course_category set flag = #flag# where id = #id#
+  </update>
+  
+  <update id="deleteCategoryByParentId" parameterClass="Map">
+       update course_category set flag = #flag# where parent_id = #id#
+  </update>
+  
+  <select id="queryCourseCategoryByLevel" resultMap="CourseCategoryResult">
+    	select * from course_category where level = 1 and flag = 0
+  </select>
+    
+    <select id="queryCourseCategoryByName" parameterClass="Map" resultClass="int">
+		 select
+		     count(*)
+		from
+			course_category where name = #name#
+  	</select>
+  	
+  	<select id="getCategoryByName" parameterClass="Map" resultMap="CourseCategoryResult">
+		 select * from course_category where level = 2 and name = #name#
+  	</select>
+  	
+  	<select id="getlevel2" parameterClass="Map" resultMap="CourseCategoryResult">
+		 select * from course_category where level = 2 
+  	</select>
+</sqlMap>

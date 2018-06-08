@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<appender name="consoleAppender" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %c [%t] %-5p %x - %m%n"/>
+		</layout>
+	</appender>
+	
+	<appender name="userControllerAppender" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="/home/service/logs/perfit/app/controller/user/logger.log" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %c [%t] %-5p %x - %m%n"/>
+		</layout>
+	</appender>
+	
+	<appender name="sellerControllerAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="/home/service/logs/perfit/app/seller/logger.log" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d %c [%t] %-5p %x - %m%n"/>
+        </layout>
+    </appender>
+	
+	<appender name="toolAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="/home/service/logs/perfit/app/tool/logger.log" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d %c [%t] %-5p %x - %m%n"/>
+        </layout>
+    </appender>
+	
+	<appender name="errorAppender" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="/home/service/logs/perfit/error/error.log" />
+		<param name="Append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %c [%t] %-5p %x - %m%n"/>
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="ERROR" />
+			<param name="LevelMax" value="ERROR" />
+		</filter>
+	</appender>
+	
+	<logger name="userControllerAppender" additivity="true">
+		<priority value="debug" />
+		<appender-ref ref="userControllerAppender" />
+		<appender-ref ref="errorAppender" />
+	</logger>
+	
+	<logger name="sellerControllerAppender" additivity="true">
+        <priority value="debug" />
+        <appender-ref ref="sellerControllerAppender" />
+        <appender-ref ref="errorAppender" />
+    </logger>
+	
+	<logger name="toolLogger" additivity="true">
+        <priority value="debug" />
+        <appender-ref ref="toolAppender" />
+        <appender-ref ref="errorAppender" />
+    </logger>
+	
+	<root>
+		<priority value="INFO" />
+		<appender-ref ref="consoleAppender" />
+	</root>
+</log4j:configuration>

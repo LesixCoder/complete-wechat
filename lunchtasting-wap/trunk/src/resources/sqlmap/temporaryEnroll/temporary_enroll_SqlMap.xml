@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.temporaryEnroll.TemporaryEnroll">
+
+	<typeAlias alias="TemporaryEnroll" type="com.lunchtasting.server.po.temporaryEnroll.TemporaryEnroll" />
+
+	<resultMap id="TemporaryEnrollResult" class="com.lunchtasting.server.po.temporaryEnroll.TemporaryEnroll">
+		<result column="id" property="id" jdbcType="BIGINT" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="sex" property="sex" jdbcType="INT" />
+		<result column="state" property="state" jdbcType="INT" />
+		<result column="create_time" property="createTime" jdbcType="DATETIME" />
+		<result column="job" property="job" jdbcType="VARCHAR" />
+		<result column="group_id" property="groupId" jdbcType="BIGINT" />
+		<result column="user_id" property="userId" jdbcType="BIGINT" />
+		<result column="phone" property="phone" jdbcType="BIGINT" />
+	</resultMap>
+	
+	<sql id="Qb">
+		id
+    	, name
+    	, sex
+    	, state
+    	, create_time
+    	, job
+	</sql>
+	
+	<insert id="create" parameterClass="TemporaryEnroll">
+    <![CDATA[
+   		INSERT INTO temporary_enroll(
+	    	id
+	    	, name
+	    	, sex
+	    	, state
+	    	, job
+	    	, phone
+	    	, create_time
+	    	, group_id
+	    	, user_id
+    	) VALUES (
+	    	#id#
+	    	, #name#
+	    	, #sex#
+	    	, #state#
+	    	, #job#
+	    	, #phone#
+	    	, now()
+	    	, #groupId#
+	    	, #userId#
+    	)
+    ]]>
+	</insert>
+	<select id="getRandomOneRandom" parameterClass="map" resultMap="TemporaryEnrollResult">
+	   SELECT 
+			id
+	    	, name
+	    	, sex
+	    	, state
+	    	, job
+	    	, phone
+	    	, create_time
+	    	, group_id
+	    	, user_id
+	   FROM 
+	   		temporary_enroll
+	   order by rand() limit 1		
+	</select>
+	
+	<select id="getTemporaryEnrollByMap" parameterClass="map" resultMap="TemporaryEnrollResult">
+	   SELECT 
+			id
+	    	, name
+	    	, sex
+	    	, state
+	    	, job
+	    	, phone
+	    	, create_time
+	    	, group_id
+	    	, user_id
+	   FROM 
+	   		temporary_enroll
+	   WHERE
+	   		1 = 1
+	   		<isNotEmpty property="id">
+	   			AND id = #id#
+	   		</isNotEmpty>
+	   		<isNotEmpty property="state">
+	   			AND state = #state#
+	   		</isNotEmpty>
+	   		<isNotEmpty property="phone">
+	   			AND phone = #phone#
+	   		</isNotEmpty>
+	   		<isNotEmpty property="name">
+	   			AND name = #name#
+	   		</isNotEmpty>
+	   		<isNotEmpty property="sex">
+	   			AND sex = #sex#
+	   		</isNotEmpty>
+	   		<isNotEmpty property="userId">
+	   			AND user_id = #userId#
+	   		</isNotEmpty>
+	</select>
+	
+	<select id="show" parameterClass="map" resultClass="java.util.HashMap">
+	   SELECT 
+			te.id
+	    	, te.name
+	    	, te.sex
+			, tuw.head_img_url
+	   FROM 
+	   		temporary_enroll te , temporary_user_weChat tuw
+	   WHERE
+	   		te.user_id = tuw.id
+	   		<isNotEmpty property="userId">
+	   			AND te.user_id = #userId#
+	   		</isNotEmpty>
+	   		<isNotEmpty property="groupId">
+	   			AND te.group_id = #groupId#
+	   		</isNotEmpty>
+	</select>
+	
+	<update id="updateTemporaryEnroll" parameterClass="TemporaryEnroll" >
+		 UPDATE temporary_enroll SET 
+	        	state = #state#,
+	        	group_id = #groupId#
+  		WHERE
+  				user_id = #userId#
+	</update>
+	
+	
+	
+	<!-- 是否报名 -->
+	<select id="checkUser" parameterClass="Map" resultClass="java.lang.Integer">
+	SELECT COUNT(*) FROM temporary_enroll WHERE phone = #phone#
+	</select>
+</sqlMap>

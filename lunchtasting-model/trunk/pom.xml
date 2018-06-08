@@ -1,0 +1,77 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.lunchtasting</groupId>
+	<artifactId>lunchtasting-model</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>lunchtasting-model</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	
+ 	<distributionManagement>  
+        <repository>  
+            <id>nexus-releases</id>  
+            <name>releases</name>  
+            <url>http://114.215.70.159:8081/nexus/content/repositories/releases/</url>  
+        </repository>  
+        <snapshotRepository>
+        	<id>nexus-snapshots</id>  
+            <name>snapshots</name>  
+            <url>http://114.215.70.159:8081/nexus/content/repositories/snapshots/</url>  
+        </snapshotRepository>
+    </distributionManagement>
+	
+	<dependencies>
+		<dependency>
+			<groupId>com.lunchtasting</groupId>
+			<artifactId>lunchtasting-base</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-core-asl</artifactId>
+			<version>1.5.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.5.0</version>
+		</dependency>
+	</dependencies>
+	
+	<!--  
+	<build>
+        <plugins>
+            <plugin> 
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                	<source>1.7</source>
+                	<target>1.7</target>
+            	</configuration>
+            </plugin>
+            <plugin> 
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-source-plugin</artifactId>  
+               <version>2.4</version>
+                <configuration>  
+                    <attach>true</attach>  
+                </configuration>  
+                <executions>  
+                    <execution>  
+                        <phase>compile</phase>  
+                        <goals>  
+                            <goal>jar</goal>  
+                        </goals>  
+                    </execution>  
+                </executions> 
+            </plugin> 
+        </plugins>
+    </build>-->
+</project>

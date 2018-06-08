@@ -1,0 +1,373 @@
+@charset "UTF-8";
+* {
+    margin: 0;
+    padding: 0;
+}
+html {
+    font-size: 625%;
+}
+body {
+    font-family: "Microsoft YaHei", "Hiragino Sans GB", "Hiragino Sans GB W3", simhei, "Segoe UI", "Lucida Grande", Helvetica, Arial, FreeSans, Arimo, "Droid Sans", "wenquanyi micro hei", Arial, sans-serif;
+    font-size: .14rem;
+    cursor: default;
+    height: 100%;
+    margin: 0 auto;
+}
+a,
+li {
+    outline: none;
+}
+a:focus,
+a:hover {
+    text-decoration: none;
+    outline: none;
+}
+i,
+em {
+    font-style: normal;
+}
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    width: auto\9;
+    vertical-align: top;
+}
+
+/*内容宽度盒子*/
+
+.fixW {
+    max-width: 7.5rem;
+    width: 100%;
+}
+
+/*第一屏*/
+
+#pageOne {
+    position: relative;
+    background: url("http://static.mperfit.com/image/wap/index1209/images/page1-bg.jpg") no-repeat center center;
+    background-size: cover;
+}
+.fixW1 {}
+.pageOne-tit {
+    color: #fff;
+    margin: 15% 0 15% 0;
+    text-align: center;
+}
+.pageOne-tit h2 > img{
+    height: 0.5rem;
+    margin: 0 auto;
+}
+.pageOne-tit h3{
+    font-size: .2rem;
+}
+
+/*下载*/
+
+.pageOne-download {
+    margin: 0 0 13% 0;
+    text-align: center;
+}
+.pageOne-download a{
+    display: inline-block;
+    width: 50%;
+    padding: .05rem 0;
+    border-radius: .03rem;
+    font-size: .14rem;
+    color: #fff;
+    background-color: #20b3a4;
+}
+.pageOne-img img{
+    height: 48%;
+    margin: 0 auto;
+}
+
+/*第二屏*/
+
+.clearfix {
+    zoom: 1;
+}
+.clearfix:after,
+.clearfix:before {
+    content: "";
+    display: table;
+}
+#pageTwo {
+    padding: 5% 0 0 0;
+    text-align: center;
+    color: #090a0e;
+}
+.pageTwo-tit {
+    margin: 0% 0 6%;
+}
+.pageTwo-tit h2,
+.pageThree-tit h2 {
+    font-weight: bold;
+}
+.pageTwo-tit h2 {
+    font-size: .22rem;
+    color: #20b3a4;
+}
+.pageTwo-tit h3 {
+    font-size: .16rem;
+    color: #666;
+}
+
+.pageTwo-text{
+    line-height: .3rem;
+    font-size: .15rem;
+    text-align: left;
+    text-indent: 2em;
+}
+
+/*第三屏*/
+#pageTh{
+    text-align: center;
+}
+.pageTh-text{
+    text-align: left;
+}
+.pageTh-text figure{
+    width: 100%;
+    margin: 0 0 6% 0;
+    overflow: hidden;
+}
+.pageTh-text figure > img,.pageTh-text figure > figcaption{
+    float: left;
+}
+.pageTh-text figure > img{
+    width: .75rem;
+}
+.pageTh-text figure > figcaption{
+    width: 75%;
+    margin: 2% 0 0 3%;
+    font-size: .15rem;
+    line-height: 0.3rem;
+}
+
+
+
+/*第四屏*/
+
+#pageThree {
+    position: relative;
+    padding: 3% 0 15% 0;
+}
+.pageThree-tit h2 {
+    position: relative;
+    text-align: left;
+    text-align: center;
+    color: #20b3a4;
+    font-size: .22rem;
+}
+.pageThree-tit {
+    margin: 0 0 5% 0;
+}
+.pageThree-tit h2:before {
+    position: absolute;
+    content: '';
+    left: 0;
+    top: 45%;
+    width: 100%;
+    height: .03rem;
+    background: url("http://static.mperfit.com/image/wap/index1209/images/page3Bg.png") repeat-x left center;
+}
+.pageThree-tit h2 > span {
+    display: inline-block;
+    position: relative;
+    background: #fff;
+    padding: 0 .15rem;
+}
+.pageThree-text {
+    padding: 4% 2%;
+    margin: 3% 0 3%;
+    background-color: #20b3a4;
+    color: #fff;
+}
+.pageThree-text p {
+    line-height: .3rem;
+    font-size: .16rem;
+    margin: 0;
+}
+
+/*页脚*/
+
+.pageThree-footer {
+    
+}
+
+.footer-right {
+    position: relative;
+    text-align: center;
+    margin-bottom: 2%;
+}
+.footer-right .emailM {
+    position: absolute;
+    width: 100%;
+    border: 2px solid #ccc;
+    text-align: center;
+}
+.footer-right .emailM p {
+    margin: 0;
+    line-height: 50px;
+}
+.footer-right .emailM:after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent transparent #000 transparent;
+}
+.footer-right a {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    padding: 3px;
+    margin-right: 30px;
+    transition: all .3s;
+}
+.footer-right .email {
+    position: relative;
+    background: #20b3a4 url("http://static.mperfit.com/image/wap/index1209/images/email.png") no-repeat center center;
+    background-size: contain;
+    background-origin: content-box;
+}
+.footer-right .weibo {
+    margin-right: 0;
+    background: #20b3a4 url("http://static.mperfit.com/image/wap/index1209/images/weibo.png") no-repeat center center;
+    background-size: contain;
+    background-origin: content-box;
+}
+.footer-download{
+    padding: 0 0 2% 0;
+}
+.footer-download img{
+    width: 1.2rem;
+    margin: 0 auto;
+}
+.footer-download span{
+    display: block;
+    color: #999;
+    text-align: center;
+    font-size: .12rem;
+}
+
+.pageThree-bottom {
+    position: absolute;
+    width: 100%;
+    padding: 0 2%;
+    text-align: center;
+    bottom: .05rem;
+    font-size: .12rem;
+}
+.pageThree-bottom p {
+    margin: 0;
+    line-height: 25px;
+}
+
+
+/*媒体查询，小于640px*/
+
+@media screen and (max-width:640px) {}
+
+/*媒体查询，小于375px*/
+
+@media screen and (max-width:375px) {
+    .pageOne-tit h2 > img {
+        height: 0.4rem;
+    }
+    .pageOne-tit h3 {
+        font-size: .18rem;
+    }
+    .pageOne-download a {
+        padding: .04rem 0;
+        font-size: .13rem;
+    }
+    .pageOne-img img {
+        height: 48%;
+    }
+    .pageTwo-tit h2 {
+        font-size: .2rem;
+    }
+    .pageTwo-tit h3 {
+        font-size: .15rem;
+    }
+    .pageTwo-text {
+        font-size: .13rem;
+    }
+    .pageTh-text figure > img {
+        width: 0.7rem;
+    }
+    .pageTh-text figure > figcaption {
+        font-size: .13rem;
+        line-height: 0.28rem;
+    }
+    .pageThree-tit h2 {
+        font-size: .2rem;
+    }
+    .pageThree-text p {
+        line-height: .28rem;
+        font-size: .15rem;
+    }
+    .footer-right {
+        margin-bottom: 1%;
+    }
+    .footer-download img {
+        width: 1rem;
+    }
+}
+
+/*媒体查询，小于320px*/
+@media screen and (max-width:320px) {
+    .pageOne-tit h2 > img {
+        height: 0.35rem;
+    }
+    .pageOne-tit h3 {
+        font-size: .16rem;
+    }
+    .pageOne-download a {
+        padding: .03rem 0;
+        font-size: .12rem;
+    }
+    .pageOne-img img {
+        height: 43%;
+    }
+    .pageTwo-tit h2 {
+        font-size: .19rem;
+    }
+    .pageTwo-tit h3 {
+        font-size: .13rem;
+    }
+    .pageTwo-text {
+        font-size: .12rem;
+    }
+    .pageTh-text figure > img {
+        width: 0.6rem;
+    }
+    .pageTh-text figure > figcaption {
+        font-size: .12rem;
+        line-height: 0.23rem;
+        margin: 2% 0 0 2%;
+    }
+    .pageTh-text figure > figcaption {
+        width: 77%;
+    }
+    .pageThree-text p {
+        line-height: .25rem;
+        font-size: .13rem;
+    }
+    .footer-download img {
+        width: .9rem;
+    }
+    .pageThree-bottom {
+        padding: 0 0%;
+    }
+    .pageThree-bottom p {
+        margin: 0;
+        line-height: .2rem;
+    }
+}

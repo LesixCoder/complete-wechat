@@ -1,0 +1,350 @@
+@charset "utf-8";
+
+/* CSS 初始化 */
+
+body,html,div,h1,h2,h3,h4,h5,p,em,i,b,span,input,textarea,section,figure,figcaption,a,ul,li,ol,header,footer,nav,time,address,img {
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+
+html{
+    font-size: 625%;
+    overflow-x: hidden; 
+}
+
+body {
+    font-family: "Microsoft YaHei", "SimSun", Verdana, Arial, Helvetica, sans-serif;
+    background-color: #fff;
+    color: #202125;
+    font-size: .18rem;
+    position: relative;
+    overflow-x: hidden;
+}
+/* 清除chrome浏览器input[type=number]默认样式 */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
+}
+input[type=number] {  
+    -moz-appearance:textfield;  
+}
+/*去除ios按钮默认样式*/
+input[type='submit'],button,textarea {
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+input,textarea,button{
+    outline: none;
+}
+
+a {
+    text-decoration: none;
+    color: #202125;
+}
+em,i,address{
+    font-style: normal;
+}
+img{
+    display: block;
+    max-width: 100%;
+}
+div,figcaption,textarea,input,p,span{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+h1,h2,h3,h4,h5{
+    font-weight: 400;
+}
+.none{
+    display: none;
+}
+.clearfix:after{
+    content: '';
+    height: 0;
+    display: block;
+    clear: both;
+    visibility: hidden;
+}
+/*通用样式*/
+.wrapper-Box{
+    width: 100%;
+    max-width: 6.4rem;
+    margin: 0 auto;
+    padding: 0 3%;
+}
+
+/*加入战队*/
+.header h2{
+    height: .55rem;
+    line-height: .55rem;
+    text-align: center;
+    color: #fff;
+    background: #ec2121;
+    font-size: .25rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.join-clan{
+    padding: 6% 0 5% 0;
+    background: #e5e5e5;
+    box-shadow: 0 4px 5px #a9a5a7;
+} 
+.join-clan > a{
+    display: block;
+    width: 35%;
+    height: .4rem;
+    line-height: .4rem;
+    margin: 0 auto;
+    color: #fff;
+    background: #ec2121;
+    text-align: center;
+    font-size: .18rem;
+}
+.clan-headImg{
+    padding: 0 0 6% 0;
+    text-align: center;
+}
+.clan-headImg figure{
+    display: inline-block;
+    width: 45%;
+    text-align: center;
+}
+.clan-headImg figure a > span{
+    display: block;
+    width: 1.3rem;
+    height: 1.3rem;
+    margin: 0 auto;
+    border: 2px solid #fff;
+    border-radius: 100%;
+    overflow: hidden;
+}
+.clan-headImg figure a > figcaption{
+    padding: 2% 0 0 0;
+    font-size: .22rem;
+}
+.join-btn,.join-hot{
+    padding: 5% 0 0 0;
+}
+.join-btn h3,.join-hot h3{
+    padding: 0 0 3% 0;
+    font-size: .22rem;
+}
+.join-btn h3 i,.join-hot h3 i{
+    display: inline-block;
+    height: 0;
+    border: 7px solid transparent;
+    border-left: 7px solid #202125;
+    font-size: .10rem;
+}
+.btn-a{
+    margin: 3% 0 6% 0;
+    text-align: center;
+}
+.btn-a a{
+    display: inline-block;
+    width: 32%;
+    height: .45rem;
+    line-height: .45rem;
+    margin-right: 10%;
+    text-align: center;
+    border: 1px solid #ec2121;
+    color: #fff;
+    background: #ec2121;
+}
+.btn-a a:nth-child(2){
+    margin-right: 0;
+    background: #fff;
+    color: #ec2121;
+}
+.btn-list{
+
+}
+.list-box{
+    position: relative;
+    margin: 0 0 3% 0;
+    padding: 3% 4%;
+    border-radius: 5px;
+    background: #f4f4f4;
+}
+.list-box:last-child{
+    margin-bottom: 0%;
+}
+.list-box .list-left,.btn-list .list-right{
+    float: left;
+    width: 70%;
+}
+.list-box .list-left p:first-child span {
+    color: #ec2021;
+    cursor: pointer;
+}
+.list-box .list-left p:nth-child(2){
+    padding: 2% 0 0 0;
+    color: #666;
+    font-size: .16rem;
+}
+.list-box .list-left i{
+    color: #ec2121;
+}
+.list-box .list-right{
+    position: absolute;
+    top: 50%;
+    right: 4%;
+    width: 20%;
+    text-align: right;
+    transform: translateY(-50%);
+}
+.list-box .list-right a{
+    display: inline-block;
+    width: 100%;
+    height: .3rem;
+    line-height: .3rem;
+    text-align: center;
+    color: #fff;
+    border-radius: 5px;
+    background: #ec2121;
+}
+.join-hot{
+    padding-bottom: 8%;
+}
+.join-hot h3 a{
+    float: right;
+    line-height: .25rem;
+    color: #ec2121;
+    text-decoration: underline;
+    font-size: .18rem;
+}
+.hot-box{
+    text-align: center;
+}
+.hot-box .hot-person{
+    display: inline-block;
+    width: 31%;
+    margin: 0 1% 0 0;
+    font-size: .15rem;
+}
+.hot-box .hot-person:last-child{
+    margin-right: 0%;
+}
+.hot-person figcaption h4{
+    padding: 6% 0 4% 0;
+    font-size: .15rem;
+}
+.hot-person figcaption a{
+    display: block;
+    width: 50%;
+    height: .2rem;
+    line-height: .2rem;
+    margin: 0 auto;
+    text-align: center;
+    border: 1px solid #ec2121;
+    border-radius: 5px;
+    color: #ec2121;
+}
+
+/*媒体查询，小于640px*/
+@media screen and (max-width:640px){
+    body{
+        font-size: .18rem;
+    }
+    .header h2 {
+        height: .5rem;
+        line-height: .5rem;
+        font-size: .22rem;
+    }
+    .clan-headImg figure > span {
+        width: 1.2rem;
+        height: 1.2rem;
+    }
+    .clan-headImg figure > figcaption {
+        padding: 5% 0 0 0;
+        font-size: .2rem;
+    }
+}
+/*媒体查询，小于375px*/
+@media screen and (max-width:375px){
+    body{
+        font-size: .16rem;
+    }
+    .header h2 {
+        height: .45rem;
+        line-height: .45rem;
+        font-size: .2rem;
+    }
+    .clan-headImg figure > span {
+        width: 1.1rem;
+        height: 1.1rem;
+    }
+    .clan-headImg figure > figcaption {
+        font-size: .17rem;
+    }
+    .join-btn h3, .join-hot h3 {
+        font-size: .2rem;
+    }
+    .btn-a a {
+        height: .4rem;
+        line-height: .4rem;
+    }
+    .list-box .list-left p:nth-child(2) {
+        font-size: .14rem;
+    }
+    .list-box .list-right a {
+        height: .25rem;
+        line-height: .25rem;
+    }
+    .join-hot h3 a {
+        font-size: .16rem;
+    }
+    .hot-person figcaption h4{
+        font-size: .14rem;
+    }
+    .hot-box .hot-person {
+        font-size: .14rem;
+    }
+}
+/*媒体查询，小于320px*/
+@media screen and (max-width:320px){
+    body{
+        font-size: .14rem;
+    }
+    .header h2 {
+        height: .4rem;
+        line-height: .4rem;
+        font-size: .17rem;
+    }
+    .clan-headImg figure > span {
+        width: 1rem;
+        height: 1rem;
+    }
+    .clan-headImg figure > figcaption {
+        font-size: .15rem;
+    }
+    .join-btn h3, .join-hot h3 {
+        font-size: .18rem;
+    }
+    .btn-a a {
+        height: .35rem;
+        line-height: .35rem;
+    }
+    .list-box .list-left p:nth-child(2) {
+        font-size: .13rem;
+    }
+    .list-box .list-right a {
+        height: .23rem;
+        line-height: .22rem;
+    }
+    .join-hot h3 a {
+        font-size: .14rem;
+    }
+    .hot-person figcaption h4 {
+        font-size: .13rem;
+    }
+    .hot-box .hot-person {
+        font-size: .13rem;
+    }
+}
+

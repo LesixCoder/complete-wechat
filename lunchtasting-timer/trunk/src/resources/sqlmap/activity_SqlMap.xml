@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.Activity">
+
+    <typeAlias alias="Activity" type="com.lunchtasting.server.po.lt.Activity" />
+
+    <resultMap id="ActivityResult" class="com.lunchtasting.server.po.lt.Activity">
+        <result property="id" column="id"  jdbcType="BIGINT" />
+        <result property="sellerId"  column="seller_id" jdbcType="BIGINT" />
+        <result property="name" column="name" jdbcType="VARCHAR" />
+        <result property="content" column="content" jdbcType="VARCHAR" />
+        <result property="imgText" column="img_text" jdbcType="VARCHAR" />
+        <result property="imgUrl" column="img_url" jdbcType="VARCHAR" />
+        <result property="type" column="type" jdbcType="INT" />
+        <result property="price" column="price" jdbcType="DOUBLE" />
+        <result property="marketPrice" column="market_price" jdbcType="DOUBLE" />
+        <result property="address" column="address" jdbcType="VARCHAR" />
+        <result property="specificAddress" column="specific_address" jdbcType="VARCHAR" />
+        <result property="enrollNum" column="enroll_num" jdbcType="INT" />
+        <result property="beginTime" column="begin_time" jdbcType="DATETIME" />
+        <result property="endTime" column="end_time" jdbcType="DATETIME" />
+        <result property="createTime" column="create_time" jdbcType="DATETIME" />
+        <result property="updateTime" column="update_time" jdbcType="DATETIME" />
+    </resultMap>
+    
+</sqlMap>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.UserDeposit">
+
+    <typeAlias alias="UserDeposit" type="com.lunchtasting.server.po.lt.UserDeposit" />
+
+    <resultMap id="UserDepositResult" class="com.lunchtasting.server.po.lt.UserDeposit">
+        <result property="id" column="id" jdbcType="BIGINT" />
+        <result property="userId" column="user_id" jdbcType="BIGINT" />
+        <result property="bizId" column="biz_id" jdbcType="BIGINT" />
+        <result property="bizType" column="biz_type" jdbcType="INT" />
+        <result property="money" column="money" jdbcType="DOUBLE" />
+        <result property="createTime" column="create_time" jdbcType="DATETIME" />
+    </resultMap>
+
+	<insert id="create" parameterClass="UserDeposit">
+    <![CDATA[
+   		INSERT INTO user_deposit (
+   		id
+    	, user_id
+    	, biz_id
+    	, biz_type
+    	, money
+    	, bonus_time
+    	, create_time
+    	) VALUES (
+    	#id#
+    	, #userId#
+    	, #bizId#
+    	, #bizType#
+    	, #money#
+    	, #bonusTime#
+    	, now()
+    	)
+    ]]>
+	</insert>
+	
+	<select id="getUserDepositTotal"  parameterClass="map" resultClass="java.lang.Double">
+		SELECT SUM(money) FROM user_deposit WHERE user_id = #userId#
+	</select>
+	
+	<select id="queryUserDepositList" parameterClass="map" resultClass="java.util.HashMap">
+		SELECT * FROM user_deposit 
+			WHERE user_id = #userId# LIMIT #page#,#pageSize#
+	</select>
+	
+	<select id="getUserDepositCount" parameterClass="map" resultClass="java.lang.Integer">
+		SELECT COUNT(1) FROM user_deposit WHERE user_id = #userId#
+	</select>	
+	
+</sqlMap>

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.Activity">
+
+	<typeAlias alias="Activity" type="com.lunchtasting.server.po.lt.Activity" />
+        <resultMap class="com.lunchtasting.server.po.lt.Activity" id="activity">
+	    <result property="id" column="id" jdbcType="BIGINT" />
+		<result property="sellerId" column="seller_id" jdbcType="BIGINT" />
+		<result property="name" column="name" jdbcType="VARCHAR" />
+		<result property="content" column="content" jdbcType="VARCHAR" /> 
+		<result property="imgUrl" column="img_url" jdbcType="VARCHAR" />
+		<result property="imgText" column="img_text" jdbcType="TEXT" />
+		<result property="type" column="type" jdbcType="INT" />
+		<result property="price" column="price" jdbcType="DOUBLE" />
+		<result property="address" column="address" jdbcType="VARCHAR" />
+		<result property="enrollNum" column="enroll_num" jdbcType="INT" />
+		<result property="beginTime" column="begin_time" jdbcType="DATETIME" />
+		<result property="endTime" column="end_time" jdbcType="DATETIME" />
+		<result property="createTime" column="create_time" jdbcType="DATETIME" />
+		<result property="updateTime" column="update_time" jdbcType="DATETIME" />
+		<result property="flag" column="flag" jdbcType="INT" />
+		<result property="sort" column="sort" jdbcType="INT" />
+		<result property="tag" column="tag" jdbcType="VARCHAR" />
+		<result property="specificAddress" column="specific_address" jdbcType="VARCHAR" />
+		<result property="marketPrice" column="market_price" jdbcType="DOUBLE" />
+	</resultMap>
+
+    <!-- 新建 -->
+    <insert id="create" parameterClass="Activity">
+     <![CDATA[
+   		INSERT INTO activity (
+   		        id,
+		    	seller_id,
+		    	name,
+		    	content,
+		    	img_url,
+		    	img_text,
+		    	type,
+		    	price,
+		    	address,
+		    	begin_time,
+		    	end_time,
+		    	create_time,
+		    	update_time,
+		    	flag,
+		    	sort,
+		    	market_price,
+		    	specific_address,
+		    	tag,
+		    	longitude,
+		    	latitude
+    	) VALUES (
+    	        #id#,
+		    	#sellerId#,
+		    	#name#,
+		    	#content#,
+		    	#imgUrl#,
+		    	#imgText#,
+		    	#type#,
+		    	#price#,
+		    	#address#,
+		    	#beginTime#,
+		    	#endTime#,
+		    	now(),
+		    	now(),
+		    	1,
+		    	#sort#,
+		    	#marketPrice#,
+		    	#specificAddress#,
+		    	#tag#,
+		    	#longitude#,
+		    	#latitude#
+    	)
+      ]]>
+		<selectKey resultClass="long" keyProperty="id">
+			SELECT @@IDENTITY
+			AS id
+    </selectKey>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="update" parameterClass="Activity">
+        UPDATE activity SET 
+  			seller_id = #sellerId#,
+  			<isNotEmpty property="name">
+  			name = #name#,
+  			</isNotEmpty>
+  			content = #content#,
+  			<isNotEmpty property="imgUrl">
+  			img_url = #imgUrl#,
+  			</isNotEmpty>
+  			<isNotEmpty property="imgText">
+  			img_text = #imgText#,
+  			</isNotEmpty>
+  			type = #type#,
+  			<isNotEmpty property="price">
+  			price = #price#,
+  			</isNotEmpty>
+  			<isNotEmpty property="enrollNum">
+  			enroll_num = #enrollNum#,
+  			</isNotEmpty>
+  			address = #address#,
+  			begin_time = #beginTime#,
+  			end_time = #endTime#,
+  			update_time = now(),
+  			sort = #sort#,
+  			tag = #tag#,
+  			market_price = #marketPrice#,
+  			specific_address = #specificAddress#
+  		WHERE 
+  			id = #id#
+    </update>
+
+	<!-- 查询 ById-->
+   <select id="queryActivityById" parameterClass="map"  resultMap="activity">
+	 	SELECT
+	 	    id,
+		 	seller_id,
+		   	name,
+		   	content,
+		   	img_url,
+		   	img_text,
+		   	type,
+		   	price,
+		   	address,
+		   	enroll_num,
+		   	begin_time,
+		   	end_time,
+		   	create_time,
+		   	update_time,
+		   	flag,
+		   	sort,
+		   	market_price,
+		   	tag,
+		   	specific_address
+		FROM  
+			activity  
+		WHERE 
+			id = #id#
+  </select>
+  
+  <!-- 查询 -->
+  <select id="queryActivityList" parameterClass="map"  resultClass="java.util.HashMap">
+	 	SELECT
+	 	    id,
+		 	seller_id,
+		   	name,
+		   	content,
+		   	img_url,
+		   	type,
+		   	price,
+		   	address,
+		   	enroll_num,
+		    DATE_FORMAT(a.begin_time,'%m.%d') as begin_time,
+		   	DATE_FORMAT(a.end_time,'%m.%d') as end_time,
+		   	create_time,
+		   	update_time,
+		   	flag,
+		   	sort,
+		   	market_price,
+		   	specific_address,
+		   	(select count(id) from activity_enroll where activity_id=a.id)as enroll_nub 
+		FROM  
+			activity a
+		WHERE 
+			seller_id=#sellerId#
+			AND flag != 2
+			<isNotEmpty property="flag" prepend="AND">
+			flag = #flag#
+			</isNotEmpty>
+			<isNotEmpty property="name" prepend="AND">
+			name like concat('%', #name:VARCHAR#, '%')
+			</isNotEmpty>
+			<isNotEmpty property="specificAddress" prepend="AND">
+			specific_address like concat('%', #specificAddress:VARCHAR#, '%')
+			</isNotEmpty>
+			<isNotEmpty property="beginTime" prepend="AND">
+			(begin_time BETWEEN #beginTime# AND #endTime#
+			</isNotEmpty>
+			<isNotEmpty property="endTime" prepend="OR">
+			end_time BETWEEN #beginTime# AND #endTime#
+			</isNotEmpty>
+			<isNotEmpty property="beginTime" prepend="OR">
+			(begin_time >=#beginTime#
+			</isNotEmpty>
+			<isNotEmpty property="endTime" prepend="AND">
+			end_time &lt;=#endTime#))
+			</isNotEmpty>
+		ORDER BY create_time DESC
+		<isNotNull property="pageSize">
+            <![CDATA[LIMIT #curPage#,#pageSize#]]>
+        </isNotNull>
+  </select>
+  <!-- 验证活动是否属于商家 -->
+  <select id="authenticationUser" parameterClass="map"  resultClass="int">
+  		select count(*) from activity where id = #activityId# and seller_id = #sellerId# 
+  </select>
+  <!-- 总条数 -->
+  <select id="queryActivityListCount" parameterClass="Map" resultClass="int">
+		select count(*) from activity where seller_id=#sellerId# AND (flag = 1 or flag = 0)
+  </select>
+  <!-- 删除(改状态) -->
+  <update id="deleteActivity" parameterClass="Map">
+       update activity set flag = #flag# where id = #id#
+  </update>
+</sqlMap>

@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.Note">
+	<typeAlias alias="Note" type="com.lunchtasting.server.po.lt.Note" />
+
+	<resultMap id="NoteRe" class="com.lunchtasting.server.po.lt.Note">
+		<result column="id" property="id" jdbcType="BIGINT"/>
+        <result column="user_id" property="userId" jdbcType="BIGINT"/> 	
+        <result column="img_url" property="imgUrl" jdbcType="VARCHAR"/> 	 
+        <result column="type" property="type" jdbcType="INT"/> 	 
+        <result column="content" property="content" jdbcType="VARCHAR"/> 	
+        <result column="video_url" property="videoUrl" jdbcType="VARCHAR"/> 	
+        <result column="flag" property="flag" jdbcType="INT"/> 	
+        <result column="create_time" property="createTime" jdbcType="DATETIME"/> 	
+        <result column="update_time" property="updateTime" jdbcType="DATETIME"/> 	
+        <result column="name" property="name" jdbcType="VARCHAR"/> 	
+        <result column="img_height" property="imgHeight" jdbcType="INT"/> 	
+        <result column="img_width" property="imgWidth" jdbcType="INT"/> 	
+        <result column="good" property="good" jdbcType="INT"/> 	
+        <result column="mark" property="mark" jdbcType="INT"/> 	
+        <result column="fabulous" property="fabulous" jdbcType="INT"/> 	
+        <result column="topic_id" property="topicId" jdbcType="BIGINT"/> 	
+        <result column="nl" property="nl" jdbcType="INT"/> 	
+        <result column="real_like" property="realLike" jdbcType="INT"/> 	
+	</resultMap>
+
+	<!--查询帖子列表 -->
+   <select id="queryNoteList" parameterClass="map" resultMap="NoteRe">
+			   SELECT
+					 	n.id,
+					 	n.user_id,
+					 	n.type,
+					 	n.img_url,
+					 	n.video_url,
+					 	n.content,
+					 	n.img_height,
+					 	n.img_width,
+					 	n.good,
+					 	n.flag,
+					 	n.create_time,
+					 	n.update_time,
+					 	n.fabulous,
+			            u.`name` name,
+			            u.mark,
+			            (SELECT topic_id FROM topic_note_middle WHERE note_id = n.id) topic_id,
+			            (SELECT COUNT(note_id) FROM note_like WHERE note_id = n.id) real_like,
+			            (SELECT COUNT(note_id) FROM note_like WHERE note_id = n.id) + IFNULL(n.fabulous,0) nl
+					FROM 
+						note n,`user` u
+					WHERE 
+			            n.user_id = u.id
+					AND n.flag != 2
+		 			<isNotEmpty property="mark">
+		         	AND	u.mark = #mark#
+		 			</isNotEmpty>
+<!-- 			<isNotEmpty property="flag"> -->
+<!--         	and	flag = #flag# -->
+<!-- 			</isNotEmpty> -->
+	 	<!-- SELECT
+		 	id,
+		 	user_id,
+		 	(select name from user where id = user_id) as name,
+		 	type,
+		 	img_url,
+		 	video_url,
+		 	content,
+		 	img_height,
+		 	img_width,
+		 	good,
+		 	flag,
+		 	create_time,
+		 	update_time
+		FROM 
+			note
+		WHERE 
+			flag != 2 -->
+			ORDER BY create_time DESC
+			<isNotNull property="pageSize">
+            <![CDATA[LIMIT #curPage#,#pageSize#]]>
+            </isNotNull>
+ 	</select>
+ 	
+ 	<!-- 查询帖子列表个数 -->
+    <select id="queryNoteCount" parameterClass="map" resultClass="java.lang.Integer">
+	 	SELECT
+		 	COUNT(1)
+		FROM 
+			note n,`user` u
+		WHERE 
+			n.user_id = u.id
+		AND	n.flag != 2
+			<isNotEmpty property="mark">
+        	AND	u.mark = #mark#
+			</isNotEmpty>
+<!-- 			<isNotEmpty property="flag"> -->
+<!--         	and	flag = #flag# -->
+<!-- 			</isNotEmpty> -->
+    </select>
+    
+    <!-- 根据id查询帖子 -->
+ 	<select id="queryNoteById" parameterClass="map" resultMap="NoteRe">
+ 	              SELECT
+					 	n.id,
+					 	n.user_id,
+					 	n.type,
+					 	n.img_url,
+					 	n.video_url,
+					 	n.content,
+					 	n.img_height,
+					 	n.img_width,
+					 	n.good,
+					 	n.flag,
+					 	n.create_time,
+					 	n.update_time,
+					 	n.fabulous,
+			            u.`name` name,
+			            u.mark,
+			            (SELECT topic_id FROM topic_note_middle WHERE note_id = n.id) topic_id,
+			            (SELECT COUNT(note_id) FROM note_like WHERE note_id = n.id) real_like,
+			            (SELECT COUNT(note_id) FROM note_like WHERE note_id = n.id) + IFNULL(n.fabulous,0) nl
+					FROM 
+						note n,`user` u
+					WHERE 
+			            n.user_id = u.id
+			        AND n.id = #id#    
+ 	<!-- 	SELECT
+ 	 		id,
+		 	user_id,
+		 	(select name from user where id = user_id) as name,
+		 	type,
+		 	img_url,
+		 	video_url,
+		 	content,
+		 	img_height,
+		 	img_width,
+		 	good,
+		 	flag,
+		 	create_time,
+		 	update_time
+ 	 	FROM
+ 	 		note
+ 	 	WHERE 
+			id=#id# -->			
+ 	</select>
+    
+    <!-- 新建帖子-->
+ 	<insert id="create" parameterClass="Note">
+ 	 <![CDATA[
+ 	 	INSERT INTO note(
+ 	 		id,
+		 	user_id,
+		 	type,
+		 	img_url,
+		 	video_url,
+		 	content,
+		 	img_height,
+		 	img_width,
+		 	flag,
+		 	create_time,
+		 	update_time
+ 		)VALUES(
+ 	 		#id#,
+ 	 		#userId#,
+ 	 		#type#,
+ 	 		#imgUrl#,
+ 	 		#videoUrl#,
+ 	 		#content#,
+ 	 		#imgHeight#,
+ 	 		#imgWidth#,
+ 	 		1,
+ 	 		now(),
+ 	 		now()
+ 		)
+ 	]]>
+ 	</insert>
+    
+ 	<!-- 更新帖子 -->
+ 	<update id="update" parameterClass="Note">
+ 		UPDATE note 
+ 		<dynamic prepend="set">
+ 		    <isNotEmpty property="userId" prepend=",">
+	 			user_id = #userId#
+	 		</isNotEmpty>  
+ 		    <isNotEmpty property="type" prepend=",">
+	 			type = #type#
+	 		</isNotEmpty>  
+	 		<isNotEmpty property="imgUrl" prepend=",">
+	 			img_url = #imgUrl#
+	 		</isNotEmpty>
+	 		<isNotEmpty property="imgHeight" prepend=",">
+	 			img_height = #imgHeight#
+	 		</isNotEmpty>
+	 		<isNotEmpty property="imgWidth" prepend=",">
+	 			img_width = #imgWidth#
+	 		</isNotEmpty>
+	 		<isNotEmpty property="videoUrl" prepend=",">
+	 			video_url = #videoUrl#
+	 		</isNotEmpty>	
+	 		<isNotEmpty property="content" prepend=",">
+	 			content = #content#
+	 		</isNotEmpty>
+	 			,update_time = now()
+ 		</dynamic>
+ 		WHERE 
+  			id = #id#
+ 	</update>
+ 	
+ 	<!-- 改状态 -->
+  <update id="updateNote" parameterClass="Map">
+       update note set flag = #flag# where id = #id#
+  </update>
+  
+  <update id="updateNoteGood" parameterClass="Map">
+       update note set good = 1 where id = #id#
+  </update>
+  
+  <insert id="insertComment" parameterClass="Map">
+	<![CDATA[
+   		INSERT INTO note_comment(
+          id
+        , user_id
+        , note_id
+        , content
+        , note_user_id
+        , create_time
+        ) VALUES (
+          #id#
+        , #userId#
+        , #noteId#
+        , #content#
+        , #noteUserId#
+        , now()
+        )
+    ]]>
+	</insert>
+  
+  <!-- 赞 -->
+  <update id="updateFabulous" parameterClass="Map">
+       update note set fabulous = #fabulous# where id = #id#
+  </update>
+  
+  
+  <update id="updateNoteByUserId" parameterClass="Map">
+       update note set flag = 1 where user_id = #userId#
+  </update>
+  
+</sqlMap>

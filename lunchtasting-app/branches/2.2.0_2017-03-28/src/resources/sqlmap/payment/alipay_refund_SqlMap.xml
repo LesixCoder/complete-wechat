@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.payment.AlipayRefund">
+
+	<typeAlias alias="AlipayRefund" type="com.lunchtasting.server.po.lt.payment.AlipayRefund" />
+
+	
+    <insert id="createAlipayRefund" parameterClass="map">
+    <![CDATA[
+        INSERT INTO alipay_refund (
+        id
+        , biz_type
+        , body
+        , sub_msg
+        , sub_code
+        , trade_no
+        , out_trade_no
+        , out_request_no
+        , code
+        , msg
+        , refund_reason
+        , refund_amount
+        , total_amount
+        , create_time
+        ) VALUES (
+        #id#
+        , #biz_type#
+        , #body#
+        , #sub_msg#
+        , #sub_code#
+        , #trade_no#
+        , #out_trade_no#
+        , #out_request_no#
+        , #code#
+        , #msg#
+        , #refund_reason#
+        , #refund_amount#
+        , #total_amount#
+        , now()
+        )
+    ]]>
+    </insert>
+	
+	
+</sqlMap>

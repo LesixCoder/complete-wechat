@@ -1,0 +1,518 @@
+@font-face {
+    font-family: 'hyshuaixian';
+    src: url('../../fonts/HYSHUAIXIANTIW.TTF') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+* {
+    /* 在X5新内核Blink中，在排版页面的时候，会主动对字体进行放大，会检测页面中的主字体，当某一块字体在我们的判定规则中，认为字号较小，并且是页面中的主要字体，就会采取主动放大的操作。然而这不是我们想要的，可以采取给最大高度解决 */
+    max-height: 100000px;
+}
+
+*:before,
+*:after {
+    box-sizing: border-box;
+    max-height: 100000px;
+}
+
+*,
+*:before,
+*:after {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+html,
+body,
+div,
+span,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+address,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+samp,
+small,
+strong,
+sub,
+sup,
+var,
+b,
+i,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+textarea,
+td {
+    border: 0 none;
+    font-size: inherit;
+    color: inherit;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+}
+body {
+    position: relative;
+    font-family: "hyshuaixian","Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","\5FAE\8F6F\96C5\9ED1",Arial,sans-serif;
+    line-height: 1.5;
+    font-size: .26rem;
+}
+input {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    outline: none;
+}
+.clearfix:after {
+    content: '';
+    height: 0;
+    display: block;
+    clear: both;
+    visibility: hidden;
+}
+.filter{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 50;
+    background: rgba(0,0,0,.7);
+    display: none;
+}
+.none{
+    display: none;
+}
+.right{
+    float: right;
+}
+.wrapBox {
+    max-width: 100%;
+    line-height: .48rem;
+    margin: 0 auto;
+    background-color: #ffda2a;
+    color: #fff;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+}
+.wrapBox-phone{
+}
+
+/*头部*/
+.vote-header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 5%;
+    text-align: center;
+}
+.vote-header > img{
+    display: block;
+    width: 7.16rem;
+}
+.vote-btnGroup{
+    text-align: center;
+}
+.vote-btnGroup a{
+    display: inline-block;
+}
+.header-explain{
+    margin: 0 .2rem 0 0;
+}
+
+/*投票人员列表*/
+.box-list{
+    display: flex;
+    flex-direction: column;
+    padding: .2rem .3rem .1rem;
+}
+.box-list article{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: .3rem;
+    font-size: .32rem;
+}
+.figure{
+    width: 3.4rem;
+    height: 4.43rem;
+    background-color: #303030;
+    color: #ffda2a;
+}
+.figure > span{
+    display: block;
+    height: 3.31rem;
+}
+.figure > span img{
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.figure-l > span{
+    position: relative;
+}
+.figure-l > span i{
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    width: .46rem;
+    height: .5rem;
+    line-height: .5rem;
+    text-align: center;
+    background: url("../../images/vote/big.png") no-repeat;
+    background-size: cover;
+}
+.figure-l figcaption p{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    position: relative;
+    width: 100%;
+}
+.figure-l figcaption p:first-of-type span{
+    width: 2.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+}
+.figure-l figcaption p:first-of-type a{
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 5;
+}
+.figure-l figcaption p:first-of-type a.voteBtn i{
+    display: inline-block;
+    width: .86rem;
+    height: .46rem;
+    line-height: .46rem;
+    text-align: center;
+    color: #303030;
+    background-color: #ffda2a;
+}
+.figure-l figcaption p:first-of-type a.vote-end i{
+    color: #fff;
+    background-color: #ccc;
+}
+.stone-big,.stone-mid,.stone-small{
+    display: inline-block;
+}
+.stone-big{
+    width: .23rem;
+    height: .3rem;
+    background: url("../../images/vote/new/stone-big.png") no-repeat center;
+    background-size: cover;
+}
+.stone-mid{
+    width: .26rem;
+    height: .3rem;
+    background: url("../../images/vote/new/stone-mid.png") no-repeat center;
+    background-size: cover;
+}
+.stone-small{
+    width: .26rem;
+    height: .3rem;
+    background: url("../../images/vote/new/stone-small.png") no-repeat center;
+    background-size: cover;
+}
+.figure-r > span{
+    padding: .25rem 0 0 .25rem;
+    text-align: center;
+    overflow: hidden;
+}
+.figure-r > span a{
+    float: left;
+    width: .85rem;
+    height: .85rem;
+    margin: .06rem .06rem;
+    background-color: #ffda2a;
+}
+.figure figcaption{
+    padding: .12rem .15rem .2rem;
+}
+.figure figcaption p:first-of-type{
+    text-align: center;
+}
+.figure figcaption p:last-of-type{
+    text-align: right;
+}
+.figure figcaption p:last-of-type a{
+    font-size: .29rem;
+    text-decoration: underline;
+}
+/*底部分页*/
+.footer-list{
+    padding: .8rem 0 0 0;
+}
+.list-footer{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 20;
+    width: 100%;
+    height: .8rem;
+    line-height: .8rem;
+    background: #303030;
+    color: #fefefe;
+    font-size: .35rem;
+}
+.list-footer a{
+    padding: .2rem;
+    color: #fefefe;
+}
+.footer-left,.footer-right{
+    float: left;
+    width: 50%;
+    padding: 0 0 0 .3rem;
+}
+.footer-left{
+    
+}
+.footer-left span{
+    padding: 0 2%;
+}
+.footer-right{
+    padding: 0 0 0 5%;
+}
+.footer-right input{
+    display: inline-block;
+    color: #fefefe;
+    font-size: .43rem;
+    font-family: 'hyshuaixian', 'Microsoft YaHei', 'arial';
+    background: transparent;
+    border: none;
+}
+.footer-right input[type=number]{
+    width: 25%;
+    margin: 0 2%;
+    background: transparent;
+    border: 2px solid #fefefe;
+    text-align: center;
+    padding: 0 2%;
+}
+.footer-right input[type=submit]{
+    font-size: .35rem;
+    padding: .2rem;
+}
+/*投票说明*/
+.explainBox{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 99;
+    width: 6rem;
+    height: 6rem;
+    padding: 8% 0;
+    background: #f8e89f;
+    color: #000;
+    border: 10px solid #ffda2a;
+    border-radius: 100%;
+    text-align: center;
+    font-size: .4rem;
+    display: none;
+}
+.explainBox span{
+    position: absolute;
+    top: -20%;
+    right: 12%;
+    z-index: 20;
+    width: .75rem;
+    height: 1.74rem;
+    background: url('../../images/vote/close.png') no-repeat;
+}
+.explainBox span a{
+    display: block;
+    width: .75rem;
+    height: .75rem;
+}
+
+.explainBox .p1{
+    
+}
+.explainBox .p2{
+    
+}
+
+
+/*投票详情*/
+.vote-details{
+    text-align: center;
+}
+
+.voteHeader{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: .9rem;
+    line-height: .9rem;
+    background-color: #303030;
+    font-size: .34rem;
+}
+.voteHeader a{
+    width: 1rem;
+    height: 100%;
+    font-size: .4rem;
+}
+.voteHeader a.voteHeader-home{
+    font-size: .45rem;
+}
+    
+.del-img{
+    position: relative;
+    width: 5.55rem;
+    height: 6.89rem;
+    margin: 5% auto 0;
+    padding: 5%;
+    background: url('../../images/vote/bg.png') no-repeat center center;
+    background-size: contain;
+    font-size: .4rem;
+}
+.del-img .figure{
+    width: 4.73rem;
+    height: 6.15rem;
+    border: .08rem solid #fff;
+}
+.del-img .figure > span {
+    display: block;
+    height: 4.43rem;
+}
+.del-img .figure figcaption{
+    border-top: .08rem solid #fff;
+    padding: .12rem .15rem .2rem .2rem;
+}
+.del-img .figure-l figcaption p:first-of-type span {
+    width: 3.15rem;
+    text-align: left;
+}
+.del-img .figure-l figcaption p:first-of-type a.voteBtn i{
+    width: 1.01rem;
+    height: .53rem;
+    line-height: .53rem;
+    font-size: .36rem;
+}
+.del-img .figure-l figcaption p{
+    height: .53rem;
+    line-height: .53rem;
+    margin-top: .05rem;
+}
+.del-img .vote-count{
+    font-size: .29rem;
+}
+
+.pullVote{
+    display: block;
+    width: 5.57rem;
+    height: .9rem;
+    line-height: .9rem;
+    margin: 6% auto 8%;
+    color: #ffda2a;
+    background: #303030;
+    font-size: .4rem;
+}
+.del-ercode img,.del-ercode #qrcode{
+    width: 3.45rem;
+    height: 3.45rem;
+    margin: 0 auto;
+}
+.del-ercode p{
+    color: #303030;
+    padding: 3% 0 8%;
+    font-weight: bold;
+    font-size: .34rem;
+}
+
+.dog-img{
+    position: absolute;
+    right: -.8rem;
+    bottom: -.2rem;
+    z-index: 10;
+    width: 1.44rem;
+    height: 1.58rem;
+}
+.dog-nan{
+    background: url("../../images/vote/new/dog-nan.png") no-repeat;
+    background-size: contain;
+}
+.dog-nv{
+    background: url("../../images/vote/new/dog-nv.png") no-repeat;
+    background-size: contain;
+}
+
+/* 更多狗主人 */
+.moreImg{
+    position: relative;
+    display: block;
+    width: 100%;
+    height: .48rem;
+    font-size: .48rem;
+    color: #303030;
+}
+.moreImg::after{
+    content: '';
+    position: absolute;
+    top: 45%;
+    left: 0;
+    height: 1px;
+    width: 100%;
+    background-color: #303030;
+}
+.moreImg i{
+    position: absolute;
+    left: 50%;
+    top: 0;
+    z-index: 5;
+    transform: translateX(-50%);
+    background-color: #ffda2a;
+}
+.vote-headDet{
+    margin: .3rem .3rem 1rem;
+    padding: .4rem;
+    background-color: #303030;
+    overflow: hidden;
+}
+.vote-headDet a{
+    float: left;
+    width: 22%;
+    margin: .08rem;
+}
+.vote-headDet a img{
+    display: block;
+    width: 100%;
+    height: 100%;
+}

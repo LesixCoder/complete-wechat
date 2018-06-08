@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!-- 拦截器 -->
+    <mvc:interceptors>
+        <!-- 授权拦截器 -->
+        <mvc:interceptor>
+            <!-- 需要拦截的地址 -->
+            <mvc:mapping path="/**"/>
+            <bean class="com.lunchtasting.server.interceptor.AuthInterceptor" />
+        </mvc:interceptor>
+        <!-- 用户拦截器 -->
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/seller/**" />  
+            <mvc:exclude-mapping path="/user/login" />  
+            <mvc:exclude-mapping path="/user/register" /> 
+            <mvc:exclude-mapping path="/user/smsCode" />  
+            <mvc:exclude-mapping path="/user/changePwd" />  
+            <mvc:exclude-mapping path="/user/weChat/login" />  
+            <bean class="com.lunchtasting.server.interceptor.UserInterceptor" />
+        </mvc:interceptor> 
+        <!-- 商家拦截器 -->
+        <mvc:interceptor>
+            <mvc:mapping path="/seller/**"/>
+            <mvc:exclude-mapping path="/seller/login" />  
+            <bean class="com.lunchtasting.server.interceptor.SellerInterceptor" />
+        </mvc:interceptor> 
+    </mvc:interceptors>
+
+</beans>

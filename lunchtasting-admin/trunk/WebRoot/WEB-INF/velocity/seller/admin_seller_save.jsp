@@ -1,0 +1,557 @@
+#parse("base.jsp")
+<html>
+  <head>
+    <title>商家管理-保存</title>
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0">    
+	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+	<meta http-equiv="description" content="This is my page">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="description" content="Xenon Boostrap Admin Panel" />
+	<meta name="author" content="" />
+
+<!-- 	<link rel="stylesheet" href="$!path/css/admin_activity/fonts/font.css"> -->
+	<link rel="stylesheet" href="$!path/css/admin_activity/fonts/linecons/css/linecons.css">
+	<link rel="stylesheet" href="$!path/css/admin_activity/fonts/fontawesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="$!path/css/admin_activity/bootstrap.css">
+	<link rel="stylesheet" href="$!path/css/admin_activity/xenon-core.css">
+	<link rel="stylesheet" href="$!path/css/admin_activity/xenon-forms.css">
+	<link rel="stylesheet" href="$!path/css/admin_activity/xenon-components.css">
+	<link rel="stylesheet" href="$!path/css/admin_activity/xenon-skins.css">
+	<link rel="stylesheet" href="$!path/css/admin_activity/custom.css">
+
+    <script src="$!path/js/admin_activity/jquery-1.11.1.min.js"></script>
+	<script src="$!path/js/admin_activity/kindeditor/kindeditor-all.js"></script>
+	<script src="$!path/js/admin_activity/kindeditor/zh-CN.js"></script>
+
+    <script src="$!path/js/admin_activity/bootstrap-select/bootstrap-select.js"></script>
+	<link rel="stylesheet" href="$!path/js/admin_activity/bootstrap-select/bootstrap-select.css">
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+		<script src="System/assets/js/html5shiv.min.js"></script>
+		<script src="System/assets/js/respond.min.js"></script>
+	<![endif]-->
+	<style type="text/css">
+		.table-condensed{
+			font-size: 13px;
+		}
+	</style>
+  </head>
+  
+<body class="page-body">
+
+	<div class="settings-pane">
+			
+		<a href="#" data-toggle="settings-pane" data-animate="true">
+			&times;
+		</a>
+		
+		<div class="settings-pane-inner">
+			
+			<div class="row">
+				
+				<div class="col-md-4">
+					
+					<div class="user-info">
+						
+						<div class="user-image">
+							<a href="extra-profile.html">
+								<img src="$!path/image/admin_images/user-2.png" class="img-responsive img-circle" />
+							</a>
+						</div>
+						
+						<div class="user-details">
+							
+							<h3>
+								<a href="extra-profile.html">John Smith</a>
+								
+								<!-- Available statuses: is-online, is-idle, is-busy and is-offline -->
+								<span class="user-status is-online"></span>
+							</h3>
+							
+							<p class="user-title">Web Developer</p>
+							
+							<div class="user-links">
+								<a href="extra-profile.html" class="btn btn-primary">Edit Profile</a>
+								<a href="extra-profile.html" class="btn btn-success">Upgrade</a>
+							</div>
+							
+						</div>
+						
+					</div>
+					
+				</div>
+				
+				<div class="col-md-8 link-blocks-env">
+					
+					<div class="links-block left-sep">
+						<h4>
+							<span>Notifications</span>
+						</h4>
+						
+						<ul class="list-unstyled">
+							<li>
+								<input type="checkbox" class="cbr cbr-primary" checked="checked" id="sp-chk1" />
+								<label for="sp-chk1">Messages</label>
+							</li>
+							<li>
+								<input type="checkbox" class="cbr cbr-primary" checked="checked" id="sp-chk2" />
+								<label for="sp-chk2">Events</label>
+							</li>
+							<li>
+								<input type="checkbox" class="cbr cbr-primary" checked="checked" id="sp-chk3" />
+								<label for="sp-chk3">Updates</label>
+							</li>
+							<li>
+								<input type="checkbox" class="cbr cbr-primary" checked="checked" id="sp-chk4" />
+								<label for="sp-chk4">Server Uptime</label>
+							</li>
+						</ul>
+					</div>
+					
+					<div class="links-block left-sep">
+						<h4>
+							<a href="#">
+								<span>Help Desk</span>
+							</a>
+						</h4>
+						
+						<ul class="list-unstyled">
+							<li>
+								<a href="#">
+									<i class="fa-angle-right"></i>
+									Support Center
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<i class="fa-angle-right"></i>
+									Submit a Ticket
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<i class="fa-angle-right"></i>
+									Domains Protocol
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<i class="fa-angle-right"></i>
+									Terms of Service
+								</a>
+							</li>
+						</ul>
+					</div>
+					
+				</div>
+				
+			</div>
+		
+		</div>
+		
+	</div>
+	
+	<div class="page-container"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
+			
+		<!-- Add "fixed" class to make the sidebar fixed always to the browser viewport. -->
+		<!-- Adding class "toggle-others" will keep only one menu item open at a time. -->
+		<!-- Adding class "collapsed" collapse sidebar root elements and show only icons. -->
+		<div class="sidebar-menu toggle-others fixed">
+			
+			<div class="sidebar-menu-inner">	
+				
+				<header class="logo-env">
+					
+					<!-- logo -->
+					<div class="logo">
+						<a href="goToIndex" class="logo-expanded">
+							<img src="$!path/image/admin_images/logo@2x.png" width="130" alt="" />
+						</a>
+						
+						<a href="goToIndex" class="logo-collapsed">
+							<img src="$!path/image/admin_images/logo-collapsed@2x.png" width="40" alt="" />
+						</a>
+					</div>
+					
+					<!-- This will toggle the mobile menu and will be visible only on mobile devices -->
+					<div class="mobile-menu-toggle visible-xs">
+						<a href="#" data-toggle="user-info-menu">
+							<i class="fa-bell-o"></i>
+							<span class="badge badge-success">7</span>
+						</a>
+						
+						<a href="#" data-toggle="mobile-menu">
+							<i class="fa-bars"></i>
+						</a>
+					</div>
+					
+					<!-- This will open the popup with user profile settings, you can use for any purpose, just be creative -->
+<!-- 					<div class="settings-icon"> -->
+<!-- 						<a href="#" data-toggle="settings-pane" data-animate="true"> -->
+<!-- 							<i class="linecons-cog"></i> -->
+<!-- 						</a> -->
+<!-- 					</div> -->
+								
+				</header>
+				
+				<ul id="main-menu" class="main-menu">
+				      #include("../../menu.jsp")
+				</ul>
+						
+			</div>
+			
+		</div>
+		
+		<div class="main-content">
+					
+			<!-- User Info, Notifications and Menu Bar -->
+			<nav class="navbar user-info-navbar" role="navigation">
+				
+				<!-- Left links for user info navbar -->
+				<ul class="user-info-menu left-links list-inline list-unstyled">
+					
+					<!-- <li class="hidden-sm hidden-xs">
+						<a href="#" data-toggle="sidebar">
+							<i class="fa-bars"></i>
+						</a>
+					</li> -->
+					
+				</ul>
+				
+			</nav>
+			<div class="page-title">
+				
+				<div class="title-env">
+					<h1 class="title">商家管理-保存</h1>
+					<p class="description"></p>
+				</div>
+				
+					<div class="breadcrumb-env">
+					
+						<ol class="breadcrumb bc-1">
+							<li>
+								<a href="goToIndex"><i></i>首页</a><!-- class="fa-home" -->
+							</li>
+<!-- 							<li> -->
+<!-- 								<a href="javascript:void(0);">Dashboard</a> -->
+<!-- 							</li> -->
+							<li class="active">
+								<strong>商家管理</strong>
+							</li>
+						</ol>
+				</div>
+					
+			</div>
+			
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">基本信息</h3>
+					<div class="panel-options">
+						<a href="#" data-toggle="panel">
+							<span class="collapse-icon">&ndash;</span>
+							<span class="expand-icon">+</span>
+						</a>
+						<a href="#" data-toggle="remove">
+							&times;
+						</a>
+					</div>
+				</div>
+				<div class="panel-body">
+					<iframe style="display: none;" name="ifa" id="ifa"></iframe>
+					<form role="form" method="post" class="form-horizontal validate" id="restaurant-form" target="ifa">
+						<input type="hidden" id="sellerId" value="$!{seller.id}" />
+						<div class="form-group" name="check-div">
+							<label class="col-sm-2 control-label" for="restaurant.areaName">商家名称</label>
+							<div class="col-sm-10">
+							<input type="text" class="form-control" id="name" name="name" value="$!{seller.name}" data-validate="required" data-message-required="商家名称为必填项" placeholder="输入商家名称" aria-required="true" aria-describedby="name-error" aria-invalid="true" maxlength="100">
+							</div>
+						</div>
+						<div class="form-group-separator"></div>
+						<div class="form-group" name="check-div">
+							<label class="col-sm-2 control-label" for="restaurant.areaName">商家简介</label>
+							<div class="col-sm-10">
+							<input type="text" class="form-control" id="introduction" name="introduction" value="$!{seller.introduction}" placeholder="输入商家简介" aria-required="true" aria-describedby="introduction-error" aria-invalid="true">
+							</div>
+						</div>
+						<div class="form-group-separator"></div>
+							<div class="form-group" name="check-div">
+							<label class="col-sm-2 control-label" for="activity.name">区域</label>
+							<div class="col-sm-10" lang="div1">
+							<div class="col-sm-12"><!-- <s:if test="$!{seller.areaId}==$!{area.id}">selected='selected'</s:if> -->
+    								<select class="form-control selectpicker bla bla bli" data-live-search="true" id="areaId" data-validate="required" data-message-required="区域为必填项" aria-required="true" aria-describedby="area-error" aria-invalid="true" style="display: block; visibility: visible; width: 795px; height: 35px; opacity: 100; position: absolute; top: 0px; left: 0px; cursor: pointer; z-index: 999999; margin: 0px; padding: 6px; -webkit-appearance: menulist-button;">
+    								#foreach ($area in $areaList)
+										<option value="$!{area.id}" "#if($area.id == $!{seller.areaId}) selected="selected" #end">$!{area.name}</option>
+									#end	
+									</select>  
+							</div>
+							</div>
+						</div>
+						<div class="form-group-separator"></div>
+						<div class="form-group" name="check-div">
+							<label class="col-sm-2 control-label" for="restaurant.restaurantAddress">简写地址</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="address" name="address" value="$!{seller.address}" data-validate="required" placeholder="输入简写地址" data-message-required="简写地址为必填项" aria-required="true" aria-describedby="address-error" aria-invalid="true" maxlength="18">
+							</div>
+						</div>
+						<div class="form-group-separator"></div>
+						<div class="form-group" name="check-div">
+							<label class="col-sm-2 control-label" for="restaurant.restaurantAddress">具体地址</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="specificAddress" name="specificAddress" value="$!{seller.specificAddress}" data-validate="required" placeholder="输入具体地址" data-message-required="具体地址为必填项" aria-required="true" aria-describedby="specificAddress-error" aria-invalid="true" maxlength="400">
+							</div>
+						</div>
+							<div class="form-group-separator"></div>
+						<div class="form-group" name="check-div">
+							<label class="col-sm-2 control-label" for="restaurant.restaurantAddress">电话</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="phone" name="phone" value="$!{seller.phone}" data-validate="required" placeholder="输入电话" data-message-required="电话为必填项" aria-required="true" aria-describedby="phone-error" aria-invalid="true" maxlength="200">
+							</div>
+						</div>
+							<div class="form-group-separator"></div>
+						<div class="form-group" name="check-div">
+							<label class="col-sm-2 control-label" for="restaurant.restaurantAddress">营业时间</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="businessHours" name="businessHours" value="$!{seller.businessHours}" data-validate="required" placeholder="输入营业时间" data-message-required="营业时间为必填项" aria-required="true" aria-describedby="businessHours-error" aria-invalid="true" maxlength="200">
+							</div>
+						</div>
+						<div class="form-group-separator"></div>
+						<div class="form-group" name="check-div">
+							<label class="col-sm-2 control-label" for="restaurant.restaurantName">标签</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="tag" name="tag" value="$!{seller.tag}" data-validate="required" data-message-required="标签为必填项" placeholder="输入标签" aria-required="true" aria-describedby="tag-error" aria-invalid="true" maxlength="30">
+							</div>
+						</div>
+						<div class="form-group-separator"></div>
+						<div class="form-group" name="check-div">
+							<label class="col-sm-2 control-label" for="restaurant.restaurantName">账号</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="account" name="account" value="$!{seller.account}" placeholder="输入账号" aria-required="true" aria-describedby="account-error" aria-invalid="true" maxlength="30">
+							</div>
+						</div>
+						<!-- <div class="form-group-separator"></div>
+						<div class="form-group" name="check-div">
+							<label class="col-sm-2 control-label" for="restaurant.restaurantName">密码</label>
+							<div class="col-sm-10">
+								<input type="password" class="form-control" id="password" name="password" value="$!{seller.password}" data-validate="required" data-message-required="密码为必填项" placeholder="输入密码" aria-required="true" aria-describedby="password-error" aria-invalid="true" maxlength="100">
+							</div>
+						</div> -->
+						<div class="form-group-separator"></div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group" name="check-div">
+									<label class="control-label" for="about">图片上传 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="red">只上传图片哦，请勿输入其他...</font></label>
+									<textarea class="form-control autogrow" name="imgArray" id="imgArray"  rows="5" style="height: 400px;">$!{imgArray}</textarea>
+								</div>
+							</div>
+						</div>
+						<div class="form-group-separator"></div>
+						<div class="form-group">
+							<button type="button" class="btn btn-success" id="activity-save">保存</button>
+							<button type="reset" class="btn btn-white">重置</button>
+						</div>
+					</form>
+				</div>
+			</div>
+			
+			<!-- Main Footer -->
+			<!-- Choose between footer styles: "footer-type-1" or "footer-type-2" -->
+			<!-- Add class "sticky" to  always stick the footer to the end of page (if page contents is small) -->
+			<!-- Or class "fixed" to  always fix the footer to the end of page -->
+			<footer class="main-footer sticky footer-type-1">
+				<div class="footer-inner">
+					<!-- Add your copyright text here -->
+					<div class="footer-text">
+						&copy; <script>document.write(new Date().getFullYear())</script> 
+						<strong>PerFit</strong> 
+					</div>
+					<!-- Go to Top Link, just add rel="go-top" to any link to add this functionality -->
+					<div class="go-up">
+						<a href="#" rel="go-top">
+							<i></i><!-- class="fa-angle-up" -->
+						</a>
+					</div>
+				</div>
+			</footer>
+		</div>
+		
+	</div>
+
+	<!-- Imported styles on this page -->
+	<link rel="stylesheet" href="$!path/js/admin_activity/datatables/dataTables.bootstrap.css">
+	<link rel="stylesheet" href="$!path/js/admin_activity/daterangepicker/daterangepicker-bs3.css">
+	
+	<!-- Bottom Scripts -->
+	<script src="$!path/js/admin_activity/bootstrap.min.js"></script>
+	<script src="$!path/js/admin_activity/TweenMax.min.js"></script>
+	<script src="$!path/js/admin_activity/resizeable.js"></script>
+	<script src="$!path/js/admin_activity/joinable.js"></script>
+	<script src="$!path/js/admin_activity/xenon-api.js"></script>
+	<script src="$!path/js/admin_activity/xenon-toggles.js"></script>
+	<script src="$!path/js/admin_activity/datatables/js/jquery.dataTables.min.js"></script>
+
+
+	<!-- Imported scripts on this page -->
+	<script src="$!path/js/admin_activity/datatables/dataTables.bootstrap.js"></script>
+	<script src="$!path/js/admin_activity/datatables/yadcf/jquery.dataTables.yadcf.js"></script>
+	<script src="$!path/js/admin_activity/datatables/tabletools/dataTables.tableTools.min.js"></script>
+	
+	<!-- Bottom Scripts -->
+	<script src="$!path/js/admin_activity/moment.min.js"></script>
+
+	<!-- Imported scripts on this page -->
+	<script src="$!path/js/admin_activity/daterangepicker/daterangepicker.js"></script>
+	
+	<!-- Imported scripts on this page -->
+	<script src="$!path/js/admin_activity/jquery-validate/jquery.validate.min.js"></script>
+	
+	<!-- JavaScripts initializations and stuff -->
+	<script src="$!path/js/admin_activity/xenon-custom.js"></script>
+	<script src="$!path/js/admin_activity/md5.js"></script>
+	<div class="xenon-loading-bar"><span data-pct="0" style=""></span></div>
+	<script type="text/javascript">
+	    var role = $!session.getAttribute('login_session_user').roleId;
+	    var userId = $!session.getAttribute('login_session_user').id;
+	    var ext;
+	    var type = "seller";
+        // 关闭过滤模式，保留所有标签
+        KindEditor.options.filterMode = false;
+        KindEditor.ready(function(K) {
+			var editor1 = K.create('textarea[name="imgArray"]', {
+				cssPath : '$!path/css/admin_activity/prettify.css',
+// 				uploadJson : 'kindeditor-master/jsp/upload_json.jsp?type='+type,
+				uploadJson : 'image/upload?type='+type,
+				fileManagerJson : 'kindeditor-master/jsp/file_manager_json.jsp',
+				allowFileManager : true,
+				allowImageRemote: false,
+				items : ['image'],
+	            urlType:'domain' ,
+				afterCreate : function() {
+					var self = this;
+					K.ctrl(document, 13, function() {
+						self.sync();
+						document.forms['example'].submit();
+					});
+					K.ctrl(self.edit.doc, 13, function() {
+						self.sync();
+						document.forms['example'].submit();
+					});
+				}
+			});
+			K('input[name=getHtml]').click(function(e) {
+					alert(editor1.html());//取得HTML
+				});
+				K('input[name=isEmpty]').click(function(e) {
+					alert(editor1.isEmpty());//判断是否为空
+				});
+				K('input[name=getText]').click(function(e) {
+					alert(editor1.text());//取得文本(包含img,embed)
+				});
+				K('input[name=selectedHtml]').click(function(e) {
+					alert(editor1.selectedHtml());//取得选中HTML
+				});
+				K('input[name=setHtml]').click(function(e) {
+					editor1.html('<h3>Hello KindEditor</h3>');//设置HTML
+				});
+				K('input[name=setText]').click(function(e) {
+					editor1.text('<h3>Hello KindEditor</h3>');//设置文本
+				});
+				K('input[name=insertHtml]').click(function(e) {
+					editor1.insertHtml('<strong>插入HTML</strong>');//插入HTML
+				});
+				K('input[name=appendHtml]').click(function(e) {
+					editor1.appendHtml('<strong>添加HTML</strong>');//添加HTML
+				});
+				K('#reset').click(function(e) {
+					editor1.html('');//清空内容
+				});
+	//保存				
+	show_loading_bar(100);
+	K("#activity-save").click(function(){
+		show_loading_bar(50);
+		jQuery("#restaurant-form").submit();
+		var checknum = jQuery("div[name='check-div'][class='form-group validate-has-error']").length;
+		if(checknum == 0){
+		        var telephone;
+// 		        var phoneCheck = /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/;
+// 		        if(phoneCheck.test(jQuery.trim(jQuery("#phone").val())) == true){
+		            telephone = jQuery.trim(jQuery("#phone").val());
+// 		        }else{
+// 			        alert("请输入正确的手机号!");
+// 			        return false;
+// 		        }
+		        
+// 		        queryAccountExist(jQuery.trim(jQuery("#account").val()),jQuery("#sellerId").val());
+		        
+// 		        if(ext == "n"){
+// 		          alert("账号已存在!");
+// 		          return;
+// 		        }
+		        
+		        /* var password;
+		        if("$!{seller.id}" != ""){
+		            if(jQuery("#password").val() != "$!seller.password"){
+		               password = hex_md5(jQuery("#password").val());
+		           }else{
+		               password = "$!seller.password";
+		           }
+		        }else{
+		               password = hex_md5(jQuery("#password").val());
+		        } */
+		        
+				K.ajax('saveSeller', function(data) {
+				        show_loading_bar(100);
+	  					if(data.flag == "success"){
+	  						alert("保存成功!");
+	  						location = "goSellerList";
+	  					}else if(data.flag == "n"){
+	  						alert("账号已存在!");
+	  						return false;
+	  					}else{
+	  					    alert("保存失败!");
+	  						return false;
+	  					}
+                   },'POST',{
+                      id : jQuery("#sellerId").val(),
+                 account : jQuery("#account").val(),
+//                 password : password,
+				    name : jQuery("#name").val(),
+				 address : jQuery("#address").val(),
+		 specificAddress : jQuery("#specificAddress").val(),
+		    introduction : jQuery("#introduction").val(),
+		   businessHours : jQuery("#businessHours").val(),
+		           phone : telephone,
+		          areaId : jQuery("#areaId").val(),
+				imgArray : editor1.html(),
+				     tag : jQuery("#tag").val()
+            });
+		}
+	});
+});
+
+
+		
+// 		function queryAccountExist(account,id) {
+// 			jQuery.ajax({
+// 				url : 'selectSellerExist',
+// 				data : {
+// 					account : account,
+// 					id : id
+// 				},
+// 				type : 'post',
+// 				async : false,
+// 				dataType : 'json',
+// 				success : function(data) {
+// 					ext = data.flag;
+// 				},
+// 				error : function() {
+// 					alert("服务器连接失败！");
+// 				}
+// 			});
+// 		}
+	</script>
+</body>
+</html>

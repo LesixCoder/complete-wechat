@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.SellerTemporary">
+
+    <typeAlias alias="SellerTemporary" type="com.lunchtasting.server.po.lt.SellerTemporary" />
+
+    <resultMap id="SellerTemporaryResult" class="com.lunchtasting.server.po.lt.SellerTemporary">
+        <result property="id" column="id" jdbcType="BIGINT" />
+        <result property="phone" column="phone" jdbcType="VARCHAR" />
+        <result property="name" column="name" jdbcType="VARCHAR" />
+        <result property="introduction" column="introduction" jdbcType="VARCHAR" />
+        <result property="address" column="address" jdbcType="VARCHAR" />
+        <result property="specificAddress" column="specific_address" jdbcType="VARCHAR" />
+        <result property="imgUrl" column="img_url" jdbcType="VARCHAR" />
+        <result property="imgArray" column="img_array" jdbcType="VARCHAR" />
+        <result property="areaId" column="area_id" jdbcType="BIGINT" />
+        <result property="longitude" column="longitude" jdbcType="DOUBLE" />
+        <result property="latitude" column="latitude" jdbcType="DOUBLE" />
+        <result property="createTime" column="create_time" jdbcType="DATETIME" />
+        <result property="flag" column="flag" jdbcType="INT" />
+        <result property="tag" column="tag" jdbcType="VARCHAR" />
+        <result property="password" column="password" jdbcType="VARCHAR" />
+        <result property="businessHours" column="business_hours" jdbcType="VARCHAR" />
+        <result property="attribute01" column="attribute01" jdbcType="VARCHAR" />
+        <result property="attribute02" column="attribute02" jdbcType="VARCHAR" />
+        <result property="attribute03" column="attribute03" jdbcType="VARCHAR" />
+        <result property="attribute04" column="attribute04" jdbcType="VARCHAR" />
+        <result property="attribute05" column="attribute05" jdbcType="VARCHAR" />
+        <result property="attribute06" column="attribute06" jdbcType="DATETIME" />
+        <result property="attribute07" column="attribute07" jdbcType="DATETIME" />
+    </resultMap>
+
+    <!-- 新建 -->
+	<insert id="create" parameterClass="SellerTemporary">
+    <![CDATA[
+   		INSERT INTO seller_temporary (
+   		  id
+    	, phone
+    	, name
+    	, introduction
+    	, img_url
+    	, img_array
+    	, area_id
+    	, address
+    	, longitude
+    	, latitude
+    	, tag
+    	, business_hours
+    	, create_time
+    	, specific_address
+    	, password
+    	, attribute01
+    	, attribute02
+    	, attribute03
+    	, attribute04
+    	, attribute05
+    	, attribute06
+    	, attribute07
+    	) VALUES (
+    	  #id#
+    	, #phone#
+    	, #name#
+    	, #introduction#
+    	, #imgUrl#
+    	, #imgArray#
+    	, #areaId#
+    	, #address#
+    	, #longitude#
+    	, #latitude#
+    	, #tag#
+    	, #businessHours#
+    	, now()
+    	, #specificAddress#
+    	, 'e10adc3949ba59abbe56e057f20f883e'
+    	, #attribute01#
+    	, #attribute02#
+    	, #attribute03#
+    	, #attribute04#
+    	, #attribute05#
+    	, #attribute06#
+    	, #attribute07#
+    	)
+    ]]>
+	<selectKey resultClass="long" keyProperty="id">
+	   SELECT @@IDENTITY
+	   AS id
+    </selectKey>
+	</insert>
+	
+	<!-- 查询ById -->
+	<!-- <select id="getById" parameterClass="map" resultMap="SellerResult">
+		SELECT * FROM seller WHERE id = #id:BIGINT#
+	</select> -->
+    
+    <!-- 查询 -->
+    <select id="querySellerTemporary"  parameterClass="map" resultMap="SellerTemporaryResult">
+            SELECT    id
+			        , phone
+			        , name
+			        , introduction
+			        , address
+			        , img_url
+			        , img_array
+			        , longitude
+			        , latitude
+			        , area_id
+			        , flag
+			        , tag
+			        , business_hours
+			        , create_time
+			        , specific_address
+			        , password
+			        , attribute01
+			    	, attribute02
+			    	, attribute03
+			    	, attribute04
+			    	, attribute05
+			    	, attribute06
+			    	, attribute07
+            FROM seller_temporary
+	</select>
+    
+</sqlMap>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.OrdersList">
+
+    <typeAlias alias="OrdersList" type="com.lunchtasting.server.po.lt.OrdersList" />
+
+    <resultMap id="OrdersListResult" class="com.lunchtasting.server.po.lt.OrdersList">
+        <result property="id" column="id" jdbcType="BIGINT" />
+        <result property="orderId" column="order_id" jdbcType="BIGINT"/>
+        <result property="price" column="price" jdbcType="DOUBLE"/>
+        <result property="code" column="code" jdbcType="VARCHAR"/>
+        <result property="settlementId" column="settlement_id" jdbcType="BIGINT"/>
+        <result property="settlementTime" column="settlement_time" jdbcType="DATETIME"/>
+        <result property="status" column="status" jdbcType="INT"/>
+        <result property="createTime" column="create_time" jdbcType="DATETIME"/>
+    </resultMap>
+    
+    <!-- 查询 -->
+    <select id="getOrdersListById"  parameterClass="Map" resultMap="OrdersListResult">
+             SELECT  
+            		ol.id,
+			        ol.order_id,
+			        ol.price,
+			        ol.code,
+			        ol.settlement_id,
+			        ol.settlement_time,
+			        ol.status,
+			        ol.create_time
+            FROM 
+            		orders_list ol
+            WHERE 
+            		1 = 1
+		           	<isNotNull property="orderId" prepend="AND">
+				    	ol.order_id = #orderId#
+				    </isNotNull>
+	</select>
+	
+</sqlMap>

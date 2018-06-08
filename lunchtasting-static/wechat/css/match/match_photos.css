@@ -1,0 +1,757 @@
+/* // @font-face {
+//     font-family: 'hyshuaixian';
+//     src: url('../../fonts/HYSHUAIXIANTIW.TTF') format('truetype');
+//     font-weight: normal;
+//     font-style: normal;
+// } */
+* {
+    list-style: none;
+    -webkit-overflow-scrolling: touch;
+    overflow-scrolling: touch;
+    /* 在X5新内核Blink中，在排版页面的时候，会主动对字体进行放大，会检测页面中的主字体，当某一块字体在我们的判定规则中，认为字号较小，并且是页面中的主要字体，就会采取主动放大的操作。然而这不是我们想要的，可以采取给最大高度解决 */
+    max-height: 100000px;
+    -webkit-touch-callout:none;
+    -webkit-user-select:none;
+    user-select: none;
+}
+
+*:before,
+*:after {
+    box-sizing: border-box;
+    max-height: 100000px;
+}
+
+html,
+body,
+div,
+span,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+address,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+samp,
+small,
+strong,
+sub,
+sup,
+var,
+b,
+i,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+textarea,
+td {
+    border: 0 none;
+    font-size: inherit;
+    color: inherit;
+    vertical-align: baseline;
+}
+
+body {
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "\5FAE\8F6F\96C5\9ED1", Arial, sans-serif;
+    line-height: 1.5;
+    color: #ffda2a;
+    background-color: #ffda2a;
+    font-size: .48rem;
+    min-height: 13.34rem;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+.clearfix:after {
+    content: '';
+    height: 0;
+    display: block;
+    clear: both;
+    visibility: hidden;
+}
+
+.none {
+    display: none;
+}
+
+.filter {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    background: rgba(0, 0, 0, .7);
+    display: none;
+}
+
+.wrapper-box {
+    position: relative;
+    max-width: 7.5rem;
+    width: 100%;
+    margin: 0 auto;
+    background: #ffda2a;
+}
+
+
+/*头部*/
+
+.photo-header img {
+    width: 7.5rem;
+    height: 4rem;
+    margin: 0 auto;
+}
+
+.header-top {
+    position: relative;
+    width: 7.5rem;
+    height: 4rem;
+    text-align: center;
+}
+.header-top>img{
+    width: 100%;
+    height: 100%;
+}
+
+/* .header-top::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .3)
+} */
+
+.top-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    padding: .7rem 0 0 0;
+}
+
+.top-inner h3 {
+    margin-bottom: .45rem;
+    font-family: "Microsoft YaHei";
+    font-size: .45rem;
+    letter-spacing: .1rem;
+}
+
+.top-inner p i {
+    display: inline-block;
+    background: #ffda2a;
+    width: .72rem;
+    height: .83rem;
+    margin-right: 1%;
+    line-height: .95rem;
+    vertical-align: text-bottom;
+    font-size: .6rem;
+    color: #231815;
+}
+
+.top-inner img {
+    position: absolute;
+    right: .2rem;
+    bottom: .1rem;
+    width: .8rem;
+    height: .76rem;
+}
+
+.header-nav {
+    width: 100%;
+    height: .8rem;
+    line-height: .8rem;
+    padding: 0 .15rem;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -moz-box-pack: justify;
+    -ms-flex-pack: justify;
+    -webkit-box-align: center;
+    -moz-box-align: justify;
+    -ms-flex-align: center;
+    justify-content: space-between;
+    text-align: center;
+    background-color: #303030;
+}
+
+.header-nav a {
+    position: relative;
+    display: block;
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    text-align: center;
+    color: #ffda2a;
+    font-size: .32rem;
+    text-decoration: none;
+}
+
+.header-nav a.active::after {
+    content: '';
+    position: absolute;
+    bottom: .12rem;
+    left: 0;
+    width: 100%;
+    height: .02rem;
+    background-color: #ffda2a;
+}
+
+.header-nav i {
+    color: #fff;
+    font-size: .3rem;
+}
+
+
+/*搜索*/
+
+.photo-search {
+    margin: .32rem 0;
+    text-align: center;
+}
+
+.box-search {
+    position: relative;
+    display: inline-block;
+    width: 6.15rem;
+    height: .8rem;
+    line-height: .8rem;
+    vertical-align: middle;
+    background: #fff;
+    border-radius: .08rem;
+    overflow: hidden;
+}
+
+.box-search input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: transparent;
+    font-size: .32rem;
+    font-family: 'hyshuaixian', 'Microsoft YaHei', 'arial';
+}
+
+.box-search input[type=text] {
+    padding-left: .3rem;
+    padding-right: 1.5rem;
+    box-sizing: border-box;
+    border-radius: .08rem;
+    color: #666;
+    vertical-align: top;
+}
+
+.box-search input[type=submit] {
+    position: absolute;
+    top: .12rem;
+    right: .1rem;
+    width: 1.2rem;
+    height: .57rem;
+    border-radius: .08rem;
+    background: #303030;
+    color: #ffda2a;
+    text-align: center;
+}
+
+.box-all {
+    display: inline-block;
+    width: 25%;
+    height: .8rem;
+    line-height: .8rem;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 15px;
+    background: #303030;
+    color: #ffda2a;
+    font-size: .35rem;
+}
+
+
+/*照片墙*/
+
+.photo-list {
+    overflow: hidden;
+}
+
+
+/*插件*/
+
+.list-box {
+    position: relative;
+    width: 7.4rem;
+    margin: 0 auto 1.05rem .08rem;
+    padding: 0 0 0 0;
+    background: #ffda2a;
+}
+
+.my-gallery {}
+
+.my-gallery figure {
+    float: none;
+}
+
+.pswp {
+    font-size: .5rem;
+}
+
+.pswp__counter {
+    font-size: .34rem;
+}
+
+.pswp__button.pswp__button--close {
+    height: 1rem;
+    width: .8rem;
+    padding-bottom: .4rem;
+    color: #ccc;
+    font-size: .45rem;
+    vertical-align: top;
+}
+.pswp__button, .pswp__button--arrow--left:before, .pswp__button--arrow--right:before {
+    background: none;
+}
+@media (-webkit-min-device-pixel-ratio: 1.1), (-webkit-min-device-pixel-ratio: 1.09375), (min-resolution: 105dpi), (min-resolution: 1.1dppx) {
+    .pswp--svg .pswp__button, .pswp--svg .pswp__button--arrow--left:before, .pswp--svg .pswp__button--arrow--right:before {
+        background-image: none;
+    }
+}
+.pswp__button,
+.pswp__button--arrow--left:before,
+.pswp__button--arrow--right:before {}
+
+.pswp--touch .pswp__button--arrow--left,
+.pswp--touch .pswp__button--arrow--right {
+    visibility: visible;
+}
+
+.pswp__button.pswp__button--arrow--left,
+.pswp__button.pswp__button--arrow--right {
+    font-size: .8rem;
+    background-color: rgba(0, 0, 0, 0.3);
+    color: #ccc;
+}
+
+.pswp__button.pswp__button--arrow--left {
+    padding-right: 15px;
+    border-bottom-right-radius: 100%;
+    border-top-right-radius: 100%;
+}
+
+.pswp__button.pswp__button--arrow--right {
+    padding-left: 15px;
+    border-bottom-left-radius: 100%;
+    border-top-left-radius: 100%;
+}
+
+.pswp__button--arrow--left:before,
+.pswp__button--arrow--right:before {
+    background-color: transparent;
+    display: none;
+}
+
+.pswp--svg .pswp__button,
+.pswp--svg .pswp__button--arrow--left:before,
+.pswp--svg .pswp__button--arrow--right:before {
+    /* display: none; */
+}
+
+.pswp__caption__center {
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 10rem;
+    font-size: .3rem;
+    text-align: center;
+    align-items: center;
+    line-height: .68rem;
+}
+.pswp__caption__center > span,.pswp__caption__center > a{
+    flex-grow: 1;
+    text-align: center;
+}
+.pswp__caption__center > span:first-child{
+    
+}
+.pswp__caption__center > span:first-child i{
+    font-size: .4rem;
+    vertical-align: text-bottom;
+    margin-top: .01rem;
+    margin-right: .08rem;
+}
+.pswp__caption__center .downImg{
+    text-decoration: none;
+}
+.pswp__caption__center .downImg i{
+    font-size: .3rem;
+}
+.glyphicon-heart{
+    color: red;
+}
+
+#list-box .box {
+    float: left;
+    width: 49%;
+    margin: 0 3px 3px 0;
+    padding: 1px;
+    background: #000;
+    box-shadow: 0 0 8px #ccc;
+}
+
+.opacity {
+    -webkit-animation: opacity 0.3s linear;
+    animation: opacity .5s linear;
+}
+.my-gallery a{
+    display: block;
+    position: relative;
+    background: url("../../images/photos/bg_default.png");
+    background-size: 100% 100%;
+    overflow: hidden;
+}
+.my-gallery img {
+    width: 100%;
+    height: 2.35rem;
+    display: block;
+    float: left;
+}
+.my-gallery a::before{
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0);
+}
+.pswp__item::after{
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    background: rgba(0,0,0,0);
+}
+
+
+/*底部分页*/
+
+.list-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0%;
+    z-index: 99;
+    width: 100%;
+    height: 1rem;
+    line-height: 1rem;
+    background: #303030;
+    color: #fefefe;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -moz-box-pack: justify;
+    -ms-flex-pack: justify;
+    -webkit-box-align: center;
+    -moz-box-align: justify;
+    -ms-flex-align: center;
+    justify-content: space-between;
+    font-size: .35rem;
+}
+
+.list-footer a {
+    color: #fefefe;
+}
+
+.footer-left {
+    -webkit-box-flex: 2;
+    -moz-box-flex: 2;
+    -webkit-flex: 2;
+    -ms-flex: 2;
+    flex: 2;
+    padding: 0 0 0 .55rem;
+}
+
+.footer-left {}
+
+.footer-left span {
+    padding: 0 2%;
+}
+
+.footer-right {
+    text-align: left;
+    overflow: hidden;
+    -webkit-box-flex: 3;
+    -moz-box-flex: 3;
+    -webkit-flex: 3;
+    -ms-flex: 3;
+    flex: 3;
+    padding-left: .5rem;
+}
+
+.footer-right span {
+    display: inline;
+}
+
+.footer-right input {
+    display: inline;
+    color: #fefefe;
+    font-size: .35rem;
+    font-family: 'hyshuaixian', 'Microsoft YaHei', 'arial';
+    background: transparent;
+    border: none;
+}
+
+.footer-right input[type=number] {
+    width: .8rem;
+    margin: 0 2%;
+    background: transparent;
+    border: 2px solid #fefefe;
+    text-align: center;
+    padding: 0;
+}
+
+.footer-right input[type=submit] {
+    font-size: .35rem;
+    margin-left: 0;
+}
+
+
+/*赛事列表  */
+
+.match-list {
+    margin: 0;
+}
+
+.match-list .box-search {
+    margin: .48rem 0 .4rem;
+}
+
+.match-listBox {
+    padding-bottom: .5rem;
+}
+
+.listBox-list {
+    width: 100%;
+    height: 2.03rem;
+    padding: .2rem .19rem;
+    border-bottom: .01rem solid #303030;
+}
+.listBox-list > a > span{
+    float: left;
+    width: 2.48rem;
+    height: 1.62rem;
+    border: .01rem solid #303030;
+    background: url('http://static.mperfit.com/wechat/images/photos/bg_default.png') no-repeat;
+    background-size: 100% 100%;
+}
+.listBox-list img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.listBox-list figcaption {
+    float: left;
+    width: 4.32rem;
+    margin-left: .3rem;
+    color: #333;
+    font-size: .3rem;
+}
+
+.listBox-list figcaption h3 {
+    margin-bottom: .14rem;
+    font-weight: bold;
+    font-size: .32rem;
+    color: #303030;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.listBox-list figcaption address {
+    margin-bottom: .14rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.listBox-list figcaption p {
+    overflow: hidden;
+}
+
+.listBox-list figcaption span {
+    float: right;
+}
+
+/*赛事云风采  */
+.match-style{
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    color: #303030;
+    font-size: .34rem;
+}
+..style_header{
+    position: relative;
+    width: 100%;
+    height: auto;
+}
+.style_headT{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: .8rem;
+    line-height: .8rem;
+    color: #ffda2a;
+    background-color: rgba(0, 0, 0, .4);
+    font-size: .36rem;
+}
+.style_BigImg{
+    width: 100%;
+    height: auto;
+}
+.main_tit{
+    position: relative;
+    margin: .7rem 0 1.2rem;
+}
+.style_icon{
+    display: inline;
+    color: #ffda2a;
+    background-color: #000;
+    border-radius: 50%;
+    font-size: .26rem;
+    padding: .04rem .06rem;
+    margin-right: .16rem;
+    vertical-align: text-bottom;
+}
+.main_btnG{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: 0 .5rem;
+}
+.main_btnG a{
+    width: 1.58rem;
+    height: .7rem;
+    line-height: .7rem;
+    background-color: #fff8d4;
+    border-radius: .1rem;
+}
+.main_btnG a.active{
+    color: #fff;
+    background-color: #d8b305;
+}
+.payBtn{
+    display: block;
+    width: 5.86rem;
+    height: .9rem;
+    line-height: .9rem;
+    margin: 1.16rem auto .78rem;
+    background-color: #303030;
+    color: #ffda2a;
+    font-size: .37rem;
+}
+.main_footerT{
+    margin-top: .83rem;
+    font-size: .3rem;
+}
+.style_footer{
+    border-top: .18rem solid #d8b305;
+}
+.footer_tit{
+    height: 1.47rem;
+    line-height: 1.47rem;
+}
+.styleF_icon{
+    margin-right: .16rem;
+}
+.footer_img{
+    padding: 0 0 .12rem .24rem;
+    overflow: hidden
+}
+.footer_img > a{
+    float: left;
+    margin-right: .32rem;
+}
+.footer_img img{
+    display: block;
+    width: 3.3rem;
+    height: 2.8rem;
+}
+.footer_img span{
+    display: block;
+    height: .72rem;
+    line-height: .72rem;
+    padding: 0 .2rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/*动画  */
+
+@-webkit-keyframes opacity {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes opacity {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@media screen and all(min-width:641px) {}

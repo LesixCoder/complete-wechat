@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.UserAdmin">
+
+	<typeAlias alias="UserAdmin" type="com.lunchtasting.server.po.lt.UserAdmin" />
+
+	<resultMap id="userAdmin" class="com.lunchtasting.server.po.lt.UserAdmin">
+		<result column="id" property="id"/>
+        <result column="account" property="account"/> 	
+	    <result column="password" property="password"/>
+	</resultMap>
+	
+	<select id="getById" parameterClass="map" resultMap="userAdmin">
+		SELECT * FROM user WHERE id = #id:BIGINT#
+	</select>
+
+	<!-- 查询 -->
+   <select id="systemUsersLogin" parameterClass="map" resultMap="userAdmin">
+	 	SELECT
+		 	id,
+			account,
+			password
+		FROM  user_admin  
+		WHERE 1=1
+		<isNotNull property="id" prepend="AND">
+		id = #id#
+		</isNotNull>
+		<isNotNull property="account" prepend="AND">
+		account = #account#
+		</isNotNull>
+		<isNotNull property="password" prepend="AND">
+		password = #password#
+		</isNotNull>
+  </select>
+</sqlMap>

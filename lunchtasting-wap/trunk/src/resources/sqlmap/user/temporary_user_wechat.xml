@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.TemporaryUserWeChat">
+
+	<typeAlias alias="TemporaryUserWeChat" type="com.lunchtasting.server.po.lt.TemporaryUserWeChat" />
+
+	<resultMap id="TemporaryUserWeChatResult" class="com.lunchtasting.server.po.lt.TemporaryUserWeChat">
+		<result property="id" column="id" jdbcType="BIGINT" />
+		<result property="openId" column="open_id" jdbcType="VARCHAR" />
+		<result property="nickName" column="nick_name" jdbcType="VARCHAR" />
+		<result property="sex" column="sex" jdbcType="INT" />
+		<result property="province" column="province" jdbcType="VARCHAR" />
+		<result property="city" column="city" jdbcType="VARCHAR" />
+		<result property="headImgUrl" column="head_img_url" jdbcType="VARCHAR" />
+		<result property="createdTime" column="created_time" jdbcType="DATETIME" />
+		<result property="updatedTime" column="updated_time" jdbcType="DATETIME" />
+		<result property="outTradeNo" column="out_trade_no" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<insert id="create" parameterClass="TemporaryUserWeChat">
+    <![CDATA[
+   		INSERT INTO temporary_user_weChat (
+   		  id
+    	, open_id
+    	, nick_name
+    	, sex
+    	, province
+    	, city
+    	, head_img_url
+    	, out_trade_no
+    	, created_time
+    	, updated_time
+    	) VALUES (
+    	  #id#
+    	, #openId#
+    	, #nickName#
+    	, #sex#
+    	, #province#
+    	, #city#
+    	, #headImgUrl#
+    	, #outTradeNo#
+    	, now()
+    	, now()
+    	)
+    ]]>
+	</insert>
+
+	<update id="updateTemporaryUserWeChat" parameterClass="TemporaryUserWeChat">
+        <![CDATA[ UPDATE temporary_user_weChat ]]>
+		SET
+			<isNotEmpty property="openId">
+				open_id = #openId#,
+            </isNotEmpty>
+			<isNotEmpty property="nickName">
+				nick_name = #nickName#,
+            </isNotEmpty>
+			<isNotEmpty  property="sex">
+				sex = #sex#,
+            </isNotEmpty>
+			<isNotEmpty  property="province">
+				province = #province#,
+            </isNotEmpty>
+			<isNotEmpty  property="city">
+				city = #city#,
+            </isNotEmpty>
+            <isNotEmpty  property="headImgUrl">
+				head_img_url = #headImgUrl#,
+            </isNotEmpty>
+            updated_time = now()
+		WHERE id = #id#
+	</update>
+
+	<select id="getByOpenId" parameterClass="map" resultMap="TemporaryUserWeChatResult">
+		SELECT * FROM temporary_user_weChat WHERE open_id = #openId#
+	</select>
+	
+	<select id="getByUserId" parameterClass="map" resultMap="TemporaryUserWeChatResult">
+        SELECT * FROM temporary_user_weChat WHERE id = #id#
+    </select>
+    
+    <update id="updateOutTradeNoById" parameterClass="map">
+        <![CDATA[ UPDATE temporary_user_weChat ]]>
+			SET
+				out_trade_no = #outTradeNo#,
+            	updated_time = now()
+			WHERE 
+				id = #id#
+	</update>
+
+</sqlMap>

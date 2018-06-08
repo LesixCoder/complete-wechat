@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.Medal">
+
+	<typeAlias alias="Medal" type="com.lunchtasting.server.po.lt.Medal" />
+        <resultMap class="com.lunchtasting.server.po.lt.Medal" id="Medal">
+	    <result property="id" column="id" jdbcType="BIGINT" />
+		<result property="name" column="name" jdbcType="VARCHAR" />
+		<result property="imgUrl" column="img_url" jdbcType="VARCHAR" />
+		<result property="bizName" column="biz_name" jdbcType="VARCHAR" />
+		<result property="bizType" column="biz_type" jdbcType="INT" />
+	</resultMap>
+
+    <!-- 新建 -->
+    <insert id="create" parameterClass="Medal">
+     <![CDATA[
+   		INSERT IGNORE INTO medal (
+   		        id,
+		    	name,
+		    	img_url,
+		    	biz_type,
+		    	biz_name		    
+    	) VALUES (
+    	        #id#,
+		    	#name#,
+		    	#imgUrl#,
+		    	#bizType#,
+		    	#bizName#
+    	)
+      ]]>
+		<selectKey resultClass="long" keyProperty="id">
+			SELECT @@IDENTITY
+			AS id
+    </selectKey>
+    </insert>
+
+    <!-- 更新 -->
+        <update id="update" parameterClass="Medal">
+                UPDATE medal 
+ 		<dynamic prepend="set">
+ 		    <isNotEmpty property="name" prepend=",">
+	 			name = #name#
+	 		</isNotEmpty> 
+	 		<isNotEmpty property="imgUrl" prepend=",">
+	 			img_url = #imgUrl#
+	 		</isNotEmpty>
+	 		<isNotEmpty property="bizType" prepend=",">
+	 			biz_type = #bizType#
+	 		</isNotEmpty>
+	 		<isNotEmpty property="bizName" prepend=",">
+	 			biz_name = #bizName#
+	 		</isNotEmpty>
+ 		</dynamic>
+ 		WHERE 
+  			id = #id#
+    </update>
+
+	<!-- 查询 ById-->
+    <select id="queryMedalById" parameterClass="map"  resultMap="Medal">
+	 	SELECT
+	 	    *
+		FROM  medal  
+		WHERE 1=1
+		<isNotNull property="id" prepend="AND">
+		id = #id#
+		</isNotNull>
+  </select>
+  
+  <!-- 查询 -->
+  <select id="queryMedalList" parameterClass="map"  resultMap="Medal">
+	 	SELECT * FROM  medal 
+		<isNotNull property="pageSize">
+            <![CDATA[LIMIT #curPage#,#pageSize#]]>
+        </isNotNull>
+  </select>
+  
+  <!-- 总条数 -->
+  <select id="queryMedalCount" parameterClass="Map" resultClass="int">
+		select count(*) from medal
+  </select>
+  <!-- 删除 -->
+  <update id="deleteMedal" parameterClass="Map">
+       delete from medal where id = #id#
+  </update>
+  
+  <select id="queryMedalByName" parameterClass="Map" resultClass="int">
+		 select
+		     count(*)
+		from
+			medal where name = #name#
+  </select>
+  
+  <select id="queryMedalNotLimit"  resultMap="Medal">
+	 	SELECT * FROM medal 
+  </select>
+</sqlMap>

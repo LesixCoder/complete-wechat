@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.MessageNotification">
+
+    <typeAlias alias="MessageNotification" type="com.lunchtasting.server.po.lt.MessageNotification" />
+
+    <resultMap id="MessageNotificationResult" class="com.lunchtasting.server.po.lt.MessageNotification">
+        <result property="id" column="id"  jdbcType="BIGINT" />
+        <result property="srcUserId" column="src_user_id"  jdbcType="BIGINT" />
+        <result property="desUserId" column="des_user_id"  jdbcType="BIGINT" />
+        <result property="bizId" column="biz_id"  jdbcType="BIGINT" />
+        <result property="bizType" column="biz_type" jdbcType="INT" />
+        <result property="title" column="title" jdbcType="VARCHAR" />
+        <result property="content" column="content" jdbcType="VARCHAR" />
+        <result property="imgUrl" column="img_url" jdbcType="VARCHAR" />
+        <result property="isRead" column="is_read" jdbcType="VARCHAR" />
+        <result property="createTime" column="create_time" jdbcType="DATETIME" />
+        <result property="flag" column="flag" jdbcType="INT" />
+    </resultMap>
+    
+    <insert id="create" parameterClass="MessageNotification">
+    <![CDATA[
+        INSERT INTO message_notification (
+        id
+        , src_user_id
+        , des_user_id
+        , biz_id
+        , biz_type
+        , title
+        , content
+        , img_url
+        , create_time
+        ) VALUES (
+        #id#
+        , #srcUserId#
+        , #desUserId#
+        , #bizId#
+        , #bizType#
+        , #title#
+        , #content#
+        , #imgUrl#
+        , now()
+        )
+    ]]>
+    </insert>
+    
+	<select id="getNotificationCount"  parameterClass="map" resultClass="java.lang.Integer">
+		SELECT COUNT(id) FROM message_notification WHERE src_user_id = #userId# AND flag = 0
+			AND biz_type IN(101,204,205)
+	</select>
+    
+    <select id="queryNotificationList"  parameterClass="map" resultClass="java.util.HashMap">
+    	(
+    		SELECT id AS message_id,src_user_id,des_user_id,IFNULL(title,'') AS title
+    				,IFNULL(content,'') AS content,IFNULL(img_url,'') AS img_url
+    				,biz_id,biz_type,is_read,create_time FROM message_notification 
+    				
+    			WHERE src_user_id = #userId# AND biz_type IN(101) AND flag = 0
+    			
+    	)
+    	UNION ALL
+    	(
+    		SELECT a.id AS message_id,a.src_user_id,a.des_user_id,IFNULL(b.name,'') AS title
+    				,IFNULL(b.content,'') AS content,IFNULL(b.img_url,'') AS img_url
+    				,a.biz_id,a.biz_type,a.is_read,a.create_time 
+    				
+    				FROM (SELECT * FROM message_notification
+    					WHERE src_user_id = #userId# AND biz_type IN(204) AND flag = 0) a
+    				
+    				LEFT JOIN matchs b ON(a.biz_id = b.id)
+    	)
+    	UNION ALL
+    	(
+    		SELECT a.id AS message_id,a.src_user_id,a.des_user_id,IFNULL(b.name,'') AS title
+    				,IFNULL(b.content,'') AS content,IFNULL(b.img_url,'') AS img_url
+    				,a.biz_id,a.biz_type,a.is_read,a.create_time 
+    				
+    				FROM (SELECT * FROM message_notification 
+    					WHERE src_user_id = #userId# AND biz_type IN(205) AND flag = 0) a
+    				
+    				LEFT JOIN activity b ON(a.biz_id = b.id)
+    	)
+    	ORDER BY create_time DESC LIMIT #page#, #pageSize#
+    </select>	
+    
+    <select id="getCommentNotificationCount"  parameterClass="map" resultClass="java.lang.Integer">
+		SELECT COUNT(id) FROM message_notification WHERE src_user_id = #userId# 
+			AND biz_type IN(202) AND flag = 0
+	</select>
+    
+    <select id="queryCommentNotificationList"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT a.id AS message_id,b.id AS user_id,b.name AS user_name
+				,b.img_url AS user_img_url,a.img_url,IFNULL(a.content,'') AS content
+				,a.create_time,a.biz_id
+				
+			FROM (SELECT * FROM message_notification 
+					WHERE src_user_id = #userId# AND biz_type IN(202) AND flag = 0
+					ORDER BY create_time DESC LIMIT #page#, #pageSize#) a 
+			
+			LEFT JOIN user b ON(a.des_user_id = b.id)
+    </select>	
+    
+    <select id="getLikeNotificationCount"  parameterClass="map" resultClass="java.lang.Integer">
+		SELECT COUNT(id) FROM message_notification WHERE src_user_id = #userId# 
+			AND biz_type IN(201) AND flag = 0
+	</select>
+    
+    <select id="queryLikeNotificationList"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT a.id AS message_id,b.id AS user_id,b.name AS user_name
+				,b.img_url AS user_img_url,a.img_url,a.create_time,a.biz_id
+				
+			FROM (SELECT * FROM message_notification 
+					WHERE src_user_id = #userId# AND biz_type IN(201) AND flag = 0
+					ORDER BY create_time DESC LIMIT #page#, #pageSize#) a 
+			
+			LEFT JOIN user b ON(a.des_user_id = b.id)
+    </select>
+    
+    <select id="getUnreadNotificationCount"  parameterClass="map" resultClass="java.lang.Integer">
+    	SELECT COUNT(id) FROM message_notification WHERE src_user_id = #userId# 
+    		AND is_read = 0 AND flag = 0
+    </select>
+    
+   	<select id="getUnreadMap"  parameterClass="map" resultClass="java.util.HashMap">
+   		SELECT 
+   			IFNULL(b.friend_count,0) AS friend_count
+   			,IFNULL(c.like_count,0) AS like_count
+   			,IFNULL(d.comment_count,0) AS comment_count
+   			,IFNULL(e.notify_count,0) AS notification_count
+   		 
+   			FROM(SELECT id FROM user WHERE id = #userId#) a
+   			
+   			LEFT JOIN (SELECT COUNT(id) friend_count,src_user_id FROM message_notification 
+   				WHERE src_user_id = #userId# AND biz_type = 203 AND is_read = 0
+   					AND flag = 0) b ON(a.id = b.src_user_id)
+   					
+   			LEFT JOIN (SELECT COUNT(id) like_count,src_user_id FROM message_notification 
+   				WHERE src_user_id = #userId# AND biz_type IN(201) AND is_read = 0 
+   					AND flag = 0) c ON(a.id = c.src_user_id)
+   					
+   			LEFT JOIN (SELECT COUNT(id) comment_count,src_user_id FROM message_notification 
+   				WHERE src_user_id = #userId# AND biz_type IN(202) AND is_read = 0 
+   					AND flag = 0) d ON(a.id = d.src_user_id)
+   			
+   			LEFT JOIN (SELECT COUNT(id) notify_count,src_user_id FROM message_notification 
+   				WHERE src_user_id = #userId# AND flag = 0 AND biz_type IN(101,204,205)
+   					AND is_read = 0) e ON(a.id = e.src_user_id)
+    </select>
+    
+    <update id="updateIsRead"  parameterClass="map">
+    	UPDATE message_notification SET is_read = 1 WHERE src_user_id = #userId#
+    		AND biz_type = #bizType#
+    </update>
+    
+    <update id="updateNotifyIsRead" parameterClass="map">
+    	UPDATE message_notification SET is_read = 1 WHERE src_user_id = #userId#
+    		AND biz_type IN (101,204,205)
+    </update>
+    
+    <select id="getSameFriendCount"  parameterClass="map" resultClass="java.lang.Integer">
+    	SELECT COUNT(id) FROM message_notification WHERE src_user_id = #srcUserId# 
+    		AND des_user_id = #desUserId# AND biz_type = 203
+    </select>
+    
+    <select id="getSameNoteLikeCount"  parameterClass="map" resultClass="java.lang.Integer">
+    	SELECT COUNT(id) FROM message_notification WHERE src_user_id = #srcUserId# 
+    		AND des_user_id = #desUserId# AND biz_type = 201 AND biz_id = #bizId#
+    </select>
+</sqlMap>

@@ -1,0 +1,406 @@
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    box-sizing: border-box;
+    -webkit-overflow-scrolling: touch;
+    overflow-scrolling: touch;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    tap-highlight-color: rgba(0, 0, 0, 0)
+}
+
+@font-face {
+    font-family: 'hyshuaixian';
+    src: url('../../fonts/HYSHUAIXIANTIW.TTF') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html {
+    font-size: 625%;
+}
+
+body {
+    line-height: 1.5;
+    font-family: 'hyshuaixian', 'Microsoft YaHei', 'arial';
+    background: #ffda2a;
+    color: #ffda2a;
+    font-size: .48rem;
+}
+
+
+/* 清除chrome浏览器input[type=number]默认样式 */
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
+}
+input[type="submit"],
+input[type="reset"],
+input[type="button"],
+button {
+-webkit-appearance: none;
+}
+input,textarea,button{
+    outline:none;
+}
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+a {
+    text-decoration: none;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+em,
+i,
+address {
+    font-style: normal;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-weight: 400;
+}
+
+.clearfix:after {
+    content: '';
+    height: 0;
+    display: block;
+    clear: both;
+    visibility: hidden;
+}
+.none{
+    display: none;
+}
+.filter{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    background: rgba(0,0,0,.7);
+    display: none;
+}
+.wrapper-box {
+    position: relative;
+    width: 7.5rem;
+    margin: 0 auto;
+    background: #ffda2a;
+}
+
+/*头部*/
+.vote-header{
+    padding-top: 8%;
+    text-align: center;
+}
+.vote-header img{
+    margin: 0 auto;
+}
+.header-explain,.header-lapiao{
+    display: inline-block;
+    margin: 5% auto 4%;
+}
+.header-lapiao{
+    margin-left: 5%;
+}
+/*投票区*/
+.box-tit{
+    position: relative;
+    text-align: center;
+    color: #fff;
+}
+.box-tit span{
+    display: block;
+    width: 30%;
+    margin: 0 auto;
+    background: #ffda2a;
+    overflow: hidden;
+}
+.box-tit::before{
+    content: '';
+    position: absolute;
+    top: 40%;
+    right: 0;
+    width: 30%;
+    height: 3px;
+    background: #fff;
+}
+.box-tit::after{
+    content: '';
+    position: absolute;
+    top: 40%;
+    left: 0;
+    width: 30%;
+    height: 3px;
+    background: #fff;
+}
+.box-btnG{
+    margin: 3% 0 5%;
+    text-align: center;
+}
+.box-btnG a{
+    display: inline-block;
+    width: 30%;
+    height: .7rem;
+    line-height: .7rem;
+    background: url('../../images/vote/bg_w.png') no-repeat;
+    background-size: 100% 100%;
+    text-align: center;
+    color: #666;
+    font-size: .4rem;
+}
+.box-btnG a.active{
+    background: url('../../images/vote/bg_y.png') no-repeat;
+    background-size: 100% 100%;
+    color: #fff;
+}
+/*搜索*/
+.box-search{
+    width: 65%;
+    height: .8rem;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.box-search input{
+    float: left;
+    height: 100%;
+    border: none;
+    background: transparent;
+    font-size: .35rem;
+    font-family: 'hyshuaixian', 'Microsoft YaHei', 'arial';
+}
+.box-search input[type=text]{
+    width: 70%;
+    padding-left: 5%;
+    border-radius: 10px;
+    color: #666;
+}
+.box-search input[type=submit]{
+    float: right;
+    width: 23%;
+    height: .6rem;
+    margin: .1rem 2% 0 0;
+    border-radius: 15px;
+    background: #303030;
+    color: #ffda2a;
+}
+/*投票人员列表*/
+.box-list{
+    
+}
+.list-l{
+    padding: 6% 3% 5%;
+    text-align: center;
+    overflow: hidden;
+}
+.list-fig{
+    display: inline-block;
+    width: 48%;
+}
+
+.list-fig > span{
+    display: block;
+    position: relative;
+}
+.list-fig > span i{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: .77rem;
+    height: .83rem;
+    line-height: .7rem;
+    color: #fff;
+    background: url('../../images/vote/big.png') no-repeat;
+    background-size: contain;
+    font-size: .38rem;
+}
+.list-fig > span img{
+    width: 100%;
+    height: 3.56rem;
+}
+.list-fig figcaption{
+    padding: 2% 0 1%;
+    background: #303030;
+    overflow: hidden;
+    font-size: .35rem;
+}
+.list-fig figcaption .fp-left{
+    float: left;
+    width: 68%;
+    line-height: .4rem;
+    padding: 3% 0 0 5%;
+    text-align: left;
+}
+.list-fig figcaption .fp-right{
+    float: right;
+    width: 30%;
+}
+.fp-right .voteBtn{
+    display: block;
+    width: .86rem;
+    height: .46rem;
+    line-height: .46rem;
+    margin: .1rem 0 0 .05rem;
+    background: #ffda2a;
+    color: #303030;
+}
+.fp-right .voteBtn.active{
+    background: #999;
+}
+.fp-right span{
+    display: block;
+    width: 100%;
+    margin-left: -.05rem;
+    text-align: center;
+}
+
+/*底部分页*/
+.list-footer{
+    height: 1rem;
+    line-height: 1rem;
+    background: #303030;
+    color: #fefefe;
+    font-size: .43rem;
+}
+.list-footer a{
+    color: #fefefe;
+}
+.footer-left,.footer-right{
+    float: left;
+    width: 50%;
+    padding: 0 0 0 8%;
+}
+.footer-left{
+    
+}
+.footer-left span{
+    padding: 0 2%;
+}
+.footer-right{
+    padding: 0 0 0 5%;
+}
+.footer-right input{
+    display: inline-block;
+    color: #fefefe;
+    font-size: .43rem;
+    font-family: 'hyshuaixian', 'Microsoft YaHei', 'arial';
+    background: transparent;
+    border: none;
+}
+.footer-right input[type=number]{
+    width: 25%;
+    margin: 0 2%;
+    background: transparent;
+    border: 2px solid #fefefe;
+    text-align: center;
+    padding: 0 2%;
+}
+.footer-right input[type=submit]{
+    font-size: .43rem;
+}
+/*投票说明*/
+.explainBox{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 20;
+    width: 6rem;
+    height: 6rem;
+    padding: 8% 0;
+    background: #f8e89f;
+    color: #000;
+    border: 10px solid #ffda2a;
+    border-radius: 100%;
+    text-align: center;
+    font-size: .4rem;
+    display: none;
+}
+.explainBox span{
+    position: absolute;
+    top: -20%;
+    right: 12%;
+    z-index: 20;
+    width: .75rem;
+    height: 1.74rem;
+    background: url('../../images/vote/close.png') no-repeat;
+}
+.explainBox span a{
+    display: block;
+    width: .75rem;
+    height: .75rem;
+}
+
+.explainBox .p1{
+    
+}
+.explainBox .p2{
+    
+}
+
+
+/*投票详情*/
+.vote-details{
+    text-align: center;
+}
+.del-img{
+    width: 100%;
+    margin: 8% auto 0;
+    padding: 5%;
+    background: url('../../images/vote/bg.png') no-repeat center center;
+    background-size: contain;
+}
+.del-img .list-fig{
+    width: 5.57rem;
+    border: 8px solid #fff;
+}
+
+.del-img .list-fig img{
+    height: 5.34rem;
+}
+.del-img .list-fig figcaption {
+    font-size: .45rem;
+}
+.del-img .list-fig figcaption .fp-left {
+    line-height: .5rem;
+}
+.del-img .fp-right .voteBtn {
+    width: 1.3rem;
+    height: .6rem;
+    line-height: .6rem;
+    margin: .1rem 0 0 .05rem;
+}
+.del-img .fp-right span {
+    margin-left: -.1rem;
+}
+.pullVote{
+    display: block;
+    width: 5.57rem;
+    height: .9rem;
+    line-height: .9rem;
+    margin: 6% auto 8%;
+    color: #ffda2a;
+    background: #303030;
+}
+.del-ercode img{
+    width: 3.45rem;
+    height: 3.45rem;
+    margin: 0 auto;
+}
+.del-ercode p{
+    color: #303030;
+    padding: 3% 0 8%;
+}

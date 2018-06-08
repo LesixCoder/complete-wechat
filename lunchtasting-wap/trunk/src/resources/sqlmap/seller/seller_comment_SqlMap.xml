@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.SellerComment">
+
+    <typeAlias alias="SellerComment" type="com.lunchtasting.server.po.lt.SellerComment" />
+
+    <select id="getShareCommentByCourseTop2"  parameterClass="map" resultClass="java.util.HashMap">
+       SELECT 
+			sc.*,
+			DATE_FORMAT(sc.create_time,'%m月%d日') as time,
+			u.name,
+			u.img_url
+	   FROM
+			(SELECT * FROM seller_comment WHERE flag = 0 AND seller_id=(SELECT seller_id FROM course WHERE id =#crouseId# )) sc 
+			LEFT JOIN (SELECT id,name,img_url FROM user ) u ON (sc.user_id = u.id)
+	   ORDER BY sc.create_time desc
+	   LIMIT 2	
+    </select>
+</sqlMap>

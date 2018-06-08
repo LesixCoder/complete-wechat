@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.Orders">
+
+    <typeAlias alias="Orders" type="com.lunchtasting.server.po.lt.Orders" />
+
+    <resultMap id="OrdersResult" class="com.lunchtasting.server.po.lt.Orders">
+        <result property="id" column="id" jdbcType="BIGINT" />
+        <result property="userId" column="user_id" jdbcType="BIGINT" />
+        <result property="courseId" column="course_id" jdbcType="BIGINT" />
+        <result property="sellerId" column="seller_id" jdbcType="BIGINT" />
+        <result property="price" column="price" jdbcType="DOUBLE" />
+        <result property="originalPrice" column="original_price" jdbcType="DOUBLE" />
+        <result property="payPrice" column="pay_price" jdbcType="DOUBLE" />
+        <result property="number" column="number" jdbcType="INT" />
+        <result property="code" column="code" jdbcType="VARCHAR" />
+        <result property="payType" column="pay_type" jdbcType="INT" />
+<!--         <result property="settlementId" column="settlement_id" jdbcType="BIGINT" /> -->
+        <result property="couponId" column="coupon_id" jdbcType="BIGINT" />
+        <result property="status" column="status" jdbcType="INT" />
+        <result property="createTime" column="create_time" jdbcType="DATETIME" />
+    </resultMap>
+
+    <!-- 查询 -->
+    <select id="queryOrdersList"  parameterClass="map" resultMap="OrdersResult">
+            SELECT  id,
+			        user_id,
+			        course_id,
+			        seller_id,
+			        price,
+			        original_price,
+			        pay_price,
+			        number,
+			        code,
+			        pay_type,
+			        coupon_id,
+			        status,
+			        create_time
+            FROM orders
+            WHERE 
+            1 = 1
+            <isNotEmpty property="sellerId" prepend="AND">
+		    seller_id = #sellerId#
+		    </isNotEmpty>
+		    <isNotEmpty property="status" prepend="AND">
+		    status = #status#
+		    </isNotEmpty>
+            ORDER BY create_time DESC
+            <isNotNull property="pageSize">
+            <![CDATA[LIMIT #curPage#,#pageSize#]]>
+            </isNotNull> 
+	</select>
+
+    <!-- 新建 -->
+<!-- 	<insert id="create" parameterClass="Seller">
+    <![CDATA[
+   		INSERT INTO seller (
+   		 id
+   		,account
+    	, password
+    	, phone
+    	, name
+    	, introduction
+    	, img_url
+    	, img_array
+    	, area_id
+    	, address
+    	, longitude
+    	, latitude
+    	, tag
+    	, business_hours
+    	, update_time
+    	, create_time
+    	, specific_address
+    	) VALUES (
+    	 #id#
+    	,#account#
+    	, #password#
+    	, #phone#
+    	, #name#
+    	, #introduction#
+    	, #imgUrl#
+    	, #imgArray#
+    	, #areaId#
+    	, #address#
+    	, #longitude#
+    	, #latitude#
+    	, #tag#
+    	, #businessHours#
+    	, now()
+    	, now()
+    	, #specificAddress#
+    	)
+    ]]>
+	<selectKey resultClass="long" keyProperty="id">
+	   SELECT @@IDENTITY
+	   AS id
+    </selectKey>
+	</insert> -->
+	
+	<!-- 查询ById -->
+	<!-- <select id="getById" parameterClass="map" resultMap="SellerResult">
+		SELECT * FROM seller WHERE id = #id:BIGINT#
+	</select> -->
+	
+    <!-- 总条数 -->    
+    <select id="getOrdersCount"  parameterClass="map" resultClass="java.lang.Integer">
+        SELECT COUNT(id) FROM orders 
+            WHERE 
+            1 = 1
+            <isNotEmpty property="sellerId" prepend="AND">
+		    seller_id = #sellerId#
+		    </isNotEmpty>
+		    <isNotEmpty property="status" prepend="AND">
+		    status = #status#
+		    </isNotEmpty>
+    </select>
+    
+    <!-- 更新 -->
+    <!-- <update id="update" parameterClass="Seller">
+        UPDATE seller SET
+            account = #account#, 
+            password = #password#, 
+  		 	name = #name#,
+  			phone = #phone#,
+  			introduction = #introduction#,
+  			address = #address#,
+  			img_url = #imgUrl#,
+  			img_array = #imgArray#,
+  			tag = #tag#,
+  			area_id = #areaId#,
+  			longitude = #longitude#,
+  			latitude = #latitude#,
+  			business_hours = #businessHours#,
+  			specific_address = #specificAddress#,
+  			update_time = now()
+  		WHERE id = #id#
+    </update> -->
+    
+    <!-- 删除(改状态) -->
+ <!--  <update id="deleteSeller" parameterClass="Map">
+       update seller set flag = #flag# where id = #id#
+  </update> -->
+    
+    <!-- 查询 For settlement-->
+    <select id="queryOrdersNotLimit"  parameterClass="map" resultMap="OrdersResult">
+            SELECT  id,
+			        user_id,
+			        course_id,
+			        seller_id,
+			        price,
+			        original_price,
+			        pay_price,
+			        number,
+			        code,
+			        pay_type,
+			        coupon_id,
+			        status,
+			        create_time
+            FROM orders
+            WHERE 
+            1 = 1
+            <isNotEmpty property="sellerId" prepend="AND">
+		    seller_id = #sellerId#
+		    </isNotEmpty>
+		      <isNotEmpty property="startDate" prepend="AND">
+		    create_time BETWEEN #startDate# AND #endDate#
+		    </isNotEmpty>
+            ORDER BY create_time DESC
+	</select>
+    
+</sqlMap>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.CommonCollect">
+
+	<typeAlias alias="CommonCollect" type="com.lunchtasting.server.po.lt.CommonCollect" />
+
+	<resultMap id="CommonCollectResult" class="com.lunchtasting.server.po.lt.CommonCollect">
+		<result property="id" column="id" jdbcType="BIGINT" />
+		<result property="userId" column="user_id" jdbcType="BIGINT" />
+		<result property="bizId" column="biz_id" jdbcType="BIGINT" />
+		<result property="bizType" column="biz_type" jdbcType="INT" />
+		<result property="createTime" column="create_time" jdbcType="DATETIME" />
+	</resultMap>
+
+
+	<insert id="create" parameterClass="CommonCollect">
+    <![CDATA[
+   		INSERT INTO common_collect (
+   		id
+    	, user_id
+    	, biz_id
+    	, biz_type
+    	, create_time
+    	) VALUES (
+    	#id#
+    	, #userId#
+    	, #bizId#
+    	, #bizType#
+    	, now()
+    	)
+    ]]>
+	</insert>
+    
+    <select id="getCollectId" parameterClass="map" resultClass="java.lang.Long">
+        SELECT id FROM common_collect WHERE user_id = #userId# 
+            AND biz_id = #bizId# AND biz_type = #bizType#
+    </select>
+    
+    <select id="getUserCollectCount"  parameterClass="map" resultClass="java.lang.Integer">
+        SELECT COUNT(id) FROM common_collect WHERE user_id = #userId#
+        <isNotNull property="bizType">
+            AND biz_type = #bizType#
+        </isNotNull>
+    </select>    
+    
+    <select id="queryActivtyCollectList"  parameterClass="map" resultClass="java.util.HashMap">
+        SELECT b.id AS activity_id,b.name,b.address,b.img_url,b.begin_time,b.end_time
+            FROM (SELECT biz_id FROM common_collect WHERE user_id = #userId# AND biz_type = 1
+                    ORDER BY create_time DESC LIMIT #page#, #pageSize#) a
+            JOIN (SELECT * FROM activity WHERE flag = 0) b ON(a.biz_id = b.id)
+    </select>
+    
+    <select id="queryArticleCollectList"  parameterClass="map" resultClass="java.util.HashMap">
+        SELECT b.id AS article_id,b.name,b.img_url
+            FROM (SELECT biz_id FROM common_collect WHERE user_id = #userId# AND biz_type = 2
+                    ORDER BY create_time DESC LIMIT #page#, #pageSize#) a
+            JOIN (SELECT * FROM article WHERE flag = 0) b ON(a.biz_id = b.id)
+    </select>
+    
+    <select id="querySellerCollectList"  parameterClass="map" resultClass="java.util.HashMap">
+        SELECT b.id AS seller_id,b.name,b.introduction,b.img_url,b.address
+            FROM (SELECT biz_id FROM common_collect WHERE user_id = #userId# AND biz_type = 3
+                    ORDER BY create_time DESC LIMIT #page#, #pageSize#) a
+            JOIN seller b ON(a.biz_id = b.id)
+    </select>
+    
+    <delete id="deleteCollect" parameterClass="map">
+        DELETE FROM common_collect WHERE user_id = #userId# AND biz_type = #bizType#
+            AND biz_id IN($ids$)
+    </delete>
+    
+</sqlMap>

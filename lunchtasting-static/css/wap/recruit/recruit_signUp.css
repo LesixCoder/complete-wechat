@@ -1,0 +1,238 @@
+@charset "utf-8";
+
+/* CSS 初始化 */
+
+body,html,div,h1,h2,h3,h4,h5,p,em,i,b,span,input,textarea,section,figure,figcaption,a,ul,li,ol,header,footer,nav,time,address,img {
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+
+html{
+    font-size: 625%;
+    overflow-x: hidden; 
+}
+
+body {
+    font-family: "Microsoft YaHei", "SimSun", Verdana, Arial, Helvetica, sans-serif;
+    background-color: #e5e5e5;
+    color: #202125;
+    font-size: .18rem;
+    position: relative;
+    overflow-x: hidden;
+}
+/* 清除chrome浏览器input[type=number]默认样式 */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
+}
+input[type=number] {  
+    -moz-appearance:textfield;  
+}
+/*去除ios按钮默认样式*/
+input[type='submit'],button,textarea {
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+input,textarea,button{
+    outline: none;
+}
+
+a {
+    text-decoration: none;
+    color: #202125;
+}
+em,i,address{
+    font-style: normal;
+}
+img{
+    display: block;
+    max-width: 100%;
+}
+div,figcaption,textarea,input,p,span{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+h1,h2,h3,h4,h5{
+    font-weight: 400;
+}
+.none{
+    display: none;
+}
+.clearfix:after{
+    content: '';
+    height: 0;
+    display: block;
+    clear: both;
+    visibility: hidden;
+}
+/*通用样式*/
+.wrapper-Box{
+    width: 100%;
+    max-width: 6.4rem;
+    margin: 0 auto;
+}
+
+/*招募报名*/
+.header{
+    padding: 5% 0 0 0;
+}
+.header span{
+    display: block;
+    width: 1.6rem;
+    height: 1.6rem;
+    margin: 0 auto;
+    border-radius: 100%;
+    overflow: hidden;
+}
+.recruit-sign{
+    padding: 3% 3% 14%;
+}
+.recruit-sign > h3{
+    font-size: .2rem;
+    color: #666;
+}
+.sign-form p{
+    margin: 3% 0 0;
+}
+.sign-form p input{
+    display: inline-block;
+    width: 100%;
+    height: .5rem;
+    line-height: .5rem;
+    padding: 0 0 0 5%;
+    font-size: .16rem;
+    border: none;
+    border-radius: 5px;
+}
+.sign-form p input:focus:invalid{
+/*    border:solid 1px #F5192F;*/
+    box-shadow: 0 1px 10px #F5192F;
+}
+.sign-form p input:focus:valid{
+/*    border:solid 1px #5cb85c;*/
+    box-shadow: 0 1px 10px #5cb85c;
+}
+.sign-form p.p-tel input{
+    width: 68%;
+}
+.sign-form p.p-tel .getCode{
+    float: right;
+    width: 28%;
+    height: .5rem;
+    line-height: .4rem;
+    padding: 0;
+    text-align: center;
+    border: 1px solid #fff;
+    background: #e5e5e5;
+    border-radius: 5px;
+    color: #999;
+    font-size: .15rem;
+    cursor: pointer;
+}
+.nice-select.wide{
+    height: .5rem;
+    line-height: .48rem;
+    margin: 0 0 3%;
+    color: #aba9a9;
+    border: none;
+}
+
+/*兑换按钮*/
+.footer{
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    max-width: 6.4rem;
+    width: 100%;
+    height: .5rem;
+    text-align: center;
+    font-size: .2rem;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+.footer a{
+    display: block;
+    width: 100%;
+    height: 100%;
+    line-height: .5rem;
+    background: #ec2121;
+    color: #fff;
+}
+
+/*媒体查询，小于640px*/
+@media screen and (max-width:640px){
+    
+}
+/*媒体查询，小于375px*/
+@media screen and (max-width:375px){
+    body{
+        font-size: .16rem;
+    }
+    .header span {
+        width: 1.4rem;
+        height: 1.4rem;
+    }
+    .recruit-sign > h3 {
+        font-size: .18rem;
+    }
+    .sign-form p input {
+        height: .45rem;
+        line-height: .45rem;
+        font-size: .15rem;
+    }
+    .sign-form p.p-tel .getCode{
+        height: .45rem;
+        line-height: .43rem;
+        font-size: .14rem;
+    }
+    .nice-select.wide{
+        height: .45rem;
+        line-height: .43rem;
+    }
+    .footer{
+        height: .45rem;
+        font-size: .18rem;
+    }
+    .footer a{
+        line-height: .45rem;
+    }
+}
+/*媒体查询，小于320px*/
+@media screen and (max-width:320px){
+    body{
+        font-size: .15rem;
+    }
+    .header span {
+        width: 1.2rem;
+        height: 1.2rem;
+    }
+    .recruit-sign > h3 {
+        font-size: .16rem;
+    }
+    .sign-form p input {
+        height: .4rem;
+        line-height: .4rem;
+        font-size: .13rem;
+    }
+    .sign-form p.p-tel .getCode{
+        height: .4rem;
+        line-height: .38rem;
+        font-size: .12rem;
+    }
+    .nice-select.wide{
+        height: .4rem;
+        line-height: .38rem;
+    }
+    .footer{
+        height: .4rem;
+        font-size: .16rem;
+    }
+    .footer a{
+        line-height: .4rem;
+    }
+}
+

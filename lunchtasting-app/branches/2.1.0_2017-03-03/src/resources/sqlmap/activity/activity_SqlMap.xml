@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.Activity">
+
+	<typeAlias alias="Activity" type="com.lunchtasting.server.po.lt.Activity" />
+
+	<resultMap id="ActivityResult" class="com.lunchtasting.server.po.lt.Activity">
+		<result property="id" column="id"  jdbcType="BIGINT" />
+		<result property="sellerId"  column="seller_id" jdbcType="BIGINT" />
+		<result property="name" column="name" jdbcType="VARCHAR" />
+		<result property="content" column="content" jdbcType="VARCHAR" />
+		<result property="imgText" column="img_text" jdbcType="VARCHAR" />
+		<result property="imgUrl" column="img_url" jdbcType="VARCHAR" />
+		<result property="type" column="type" jdbcType="INT" />
+		<result property="tag" column="tag" jdbcType="VARCHAR" />
+		<result property="price" column="price" jdbcType="DOUBLE" />
+		<result property="marketPrice" column="market_price" jdbcType="DOUBLE" />
+		<result property="address" column="address" jdbcType="VARCHAR" />
+	    <result property="specificAddress" column="specific_address" jdbcType="VARCHAR" />
+	    <result property="longitude" column="longitude" jdbcType="DOUBLE" />
+        <result property="latitude" column="latitude" jdbcType="DOUBLE" />
+		<result property="enrollNum" column="enroll_num" jdbcType="INT" />
+		<result property="beginTime" column="begin_time" jdbcType="DATETIME" />
+		<result property="endTime" column="end_time" jdbcType="DATETIME" />
+		<result property="createTime" column="create_time" jdbcType="DATETIME" />
+		<result property="updateTime" column="update_time" jdbcType="DATETIME" />
+	</resultMap>
+	
+    <insert id="create" parameterClass="Activity">
+    <![CDATA[
+        INSERT INTO activity (
+        seller_id
+        , name
+        , content
+        , img_text
+        , img_url
+        , type
+        , tag
+        , price
+        , market_price
+        , address
+        , specific_address
+        , enroll_num
+        , begin_time
+        , end_time
+        , update_time
+        , create_time
+        ) VALUES (
+        #sellerId#
+        , #name#
+        , #content#
+        , #imgText#
+        , #imgUrl#
+        , #type#
+        , #tag#
+        , #price#
+        , #marketPrice#
+        , #address#
+        , #specificAddress#
+        , #enrollNum#
+        , #beginTime#
+        , #endTime#
+        , now()
+        , now()
+        )
+    ]]>
+    <selectKey resultClass="long" keyProperty="id">
+       SELECT @@IDENTITY
+       AS id
+    </selectKey>
+    </insert>
+	
+	<select id="getById" resultMap="ActivityResult" parameterClass="map">
+		SELECT * FROM activity WHERE id = #id:BIGINT#
+	</select>
+	
+	<select id="getIndexCount"  parameterClass="map" resultClass="java.lang.Integer">
+        SELECT SUM(cnt) 
+        FROM( 
+                (
+                    SELECT COUNT(id) cnt FROM activity WHERE flag = 0 AND <![CDATA[ now() < end_time ]]> 
+                )
+                UNION ALL
+                (   
+                    SELECT COUNT(id) cnt FROM article WHERE flag = 0
+                )
+        ) t
+    </select>
+	
+	<!-- 1活动 ，2文章 -->
+    <select id="queryIndexList"  parameterClass="map" resultClass="java.util.HashMap">
+        (
+            SELECT 1 AS biz_type,a.id AS biz_id,a.name,a.content,a.img_url,a.update_time,a.create_time
+                    ,IFNULL(a.tag,'') AS tag
+                    ,a.price,a.market_price,a.address,a.begin_time,a.end_time
+                    ,a.address,a.sort
+                FROM activity a WHERE flag = 0 AND <![CDATA[ now() < end_time ]]> 
+        )
+            
+        UNION ALL
+        (
+            SELECT 2 AS biz_type,a.id AS biz_id,a.name,a.content,a.img_url,a.update_time,a.create_time
+                    ,IFNULL(a.tag,'') AS tag
+                    ,NULL AS price,NULL AS market_price,NULL AS address,NULL AS begin_time,NULL AS end_time
+                    ,NULL AS address,sort
+                FROM article a WHERE type = 0 AND flag = 0
+        )
+        ORDER BY sort ASC,update_time DESC
+        <isNotNull property="pageSize">
+            <![CDATA[LIMIT #page#,#pageSize#]]>
+        </isNotNull>
+    </select>
+	
+    
+    <select id="getActivityCount"  parameterClass="map" resultClass="java.lang.Integer">
+        SELECT COUNT(1) FROM activity WHERE flag = 0 AND <![CDATA[ now() < end_time ]]> 
+    </select>
+    	
+	<select id="queryActivityList"  parameterClass="map" resultClass="java.util.HashMap">
+	   SELECT id AS biz_id,name,content,address,img_url,IFNULL(tag,'') AS tag,price,market_price
+	       ,begin_time,end_time
+	       FROM activity WHERE flag = 0 AND <![CDATA[ now() < end_time ]]> 
+       	   ORDER BY sort ASC,update_time DESC
+	       LIMIT #page#, #pageSize#
+	</select>
+    
+    <select id="getActivityDetail"  parameterClass="map" resultClass="java.util.HashMap" remapResults="true" >
+        SELECT id AS activity_id,name,content,img_url,img_text,address,specific_address
+                    ,IFNULL(tag,'') AS tag,price,market_price,enroll_num,begin_time,end_time
+                    ,IFNULL(b.now_enroll_num,0) AS now_enroll_num
+                    ,IFNULL(a.longitude,0) AS longitude,IFNULL(a.latitude,0) AS latitude
+                    <isNotNull property="userId">
+                    ,IFNULL(c.biz_id,'') AS is_collect
+                    ,IFNULL(d.activity_id,'') AS is_enroll
+                    </isNotNull>
+            FROM 
+     			(SELECT * FROM activity  WHERE id = #activityId# AND flag = 0) a
+           	 	LEFT JOIN (SELECT COUNT(id) AS now_enroll_num,activity_id FROM activity_enroll 
+            		WHERE activity_id = #activityId# ) b ON(a.id = b.activity_id)
+            	<isNotNull property="userId">
+            	LEFT JOIN (SELECT biz_id FROM common_collect WHERE user_id = #userId# 
+            		AND biz_id = #activityId# AND biz_type = 1) c ON (a.id = c.biz_id)
+            	LEFT JOIN (SELECT activity_id FROM activity_enroll WHERE activity_id = #activityId# 
+            		AND user_id = #userId#) d ON(a.id = d.activity_id)
+            	</isNotNull>
+    </select>
+    
+    <select id="getEnrollActivity"  parameterClass="map" resultClass="java.util.HashMap">
+        SELECT a.id AS activity_id,a.name,a.price,a.specific_address
+        		,a.enroll_num,IFNULL(b.now_enroll_num,0) AS now_enroll_num
+        		,a.begin_time,a.end_time
+            FROM 
+            	(SELECT * FROM activity WHERE id = #activityId# AND flag = 0) a 
+            	LEFT JOIN (SELECT COUNT(id) AS now_enroll_num,activity_id FROM activity_enroll 
+            		WHERE activity_id = #activityId# ) b ON(a.id = b.activity_id)
+            
+    </select>
+    
+    <select id="queryVenueActivityList"  parameterClass="map" resultClass="java.util.HashMap">
+        SELECT id AS activity_id,name,content,img_url,price
+        		,market_price,begin_time,end_time 
+        	FROM activity WHERE seller_id = #sellerId# AND flag = 0
+        	ORDER BY create_time DESC
+    </select>
+	
+</sqlMap>

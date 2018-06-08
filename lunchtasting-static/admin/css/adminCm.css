@@ -1,0 +1,58 @@
+/* 公共样式 */
+.color-red{
+    color: red;
+}
+.handle .btn-Success{
+    background: #4cae4c;
+}
+.handle .btn-Warning{
+    background: #eea236;
+}
+.handle .btn-Danger{
+    background: #d43f3a;
+}
+.disabled{
+    background-color: #ccc;
+    outline: none;
+    border: none;
+}
+.disabled:hover{
+    background-color: #ccc;
+}
+/* 场馆 */
+.gym_photos_box > div{
+    position: relative;
+    display: inline-block;
+    margin-bottom: 5px;
+}
+.gym_photos_box > div i{
+    position: absolute;
+    top: 3px;
+    right: 8px;
+    font-size: 26px;
+    color: #eee;
+    background-color: #000;
+    border-radius: 50%;
+}
+.list-style input[type="text"]:focus:invalid,.list-style textarea:focus:invalid {
+    border:solid 1px #F5192F;
+    box-shadow: 0 1px 10px #F5192F;
+    outline: none;
+}
+
+.list-style input[type="text"]:focus:valid,.list-style textarea:focus:valid {
+    border:solid 1px #5cb85c;
+    box-shadow: 0 1px 10px #5cb85c;
+    outline: none;
+}
+.list-style textarea{
+    resize: unset;
+}
+.handle a{
+    display: inline-block;
+    border: 1px #8ca3c0 solid;
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: #96aecd;
+    color: #fff;
+}

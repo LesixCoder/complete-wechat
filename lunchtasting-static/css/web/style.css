@@ -1,0 +1,308 @@
+@charset "utf-8";
+
+/* CSS 初始化 */
+
+body,html,div,h1,h2,h3,h4,h5,p,em,i,b,span,input,textarea,section,figure,figcaption,a,ul,li,ol,header,footer,nav,time,address,img {
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+/*字体库*/
+/*
+@font-face{
+    font-family: myFirstFont;
+    src: ;
+}
+*/
+html{
+    font-size: 625%;
+}
+
+body {
+    font-family: "Lato Regular", "Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    font-size: .16rem;
+    position: relative;
+    min-width: 768px;
+}
+/* 清除chrome浏览器input[type=number]默认样式 */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
+}
+input[type=number] {  
+    -moz-appearance:textfield;  
+}
+/*去除ios按钮默认样式*/
+input[type='submit'],button,textarea {
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+input,textarea,button{
+    outline: none;
+}
+textarea{
+    resize: none;
+}
+ul,
+ol {
+    list-style: outside none none;
+}
+
+a {
+    text-decoration: none;
+    color: #999;
+}
+a:hover{
+    text-decoration: none;
+}
+em,i,address{
+    font-style: normal;
+}
+img{
+    display: block;
+    max-width: 100%;
+}
+div,figure,figcaption,textarea,input,p,span{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+h1,h2,h3,h4,h5{
+    font-weight: 400;
+}
+.none{
+    display: none;
+}
+.clearfix:after{
+    content: '';
+    height: 0;
+    display: block;
+    clear: both;
+    visibility: hidden;
+}
+/*a链接过渡效果*/
+body a {
+    transition: 0.5s all;
+    -webkit-transition: 0.5s all;
+    -moz-transition: 0.5s all;
+    -o-transition: 0.5s all;
+    -ms-transition: 0.5s all;
+}
+/*模糊效果*/
+.blur {	
+    filter: url(blur.svg#blur); /* FireFox, Chrome, Opera */
+    
+    -webkit-filter: blur(3px); /* Chrome, Opera */
+       -moz-filter: blur(3px);
+        -ms-filter: blur(3px);    
+            filter: blur(3px);
+    
+    filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=3, MakeShadow=false); /* IE6~IE9 */
+}
+/*通用样式*/
+.filter{
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.4);
+}
+#contain{
+    position: relative;
+    background: url("http://static.mperfit.com/image/web/body-bg.jpg") no-repeat fixed;
+    background-size: cover;
+    height: 100%;
+    min-height: 100%;
+    overflow: hidden;
+}
+/*导航栏*/
+#mynav{
+    height: .8rem;
+    z-index: 9999;
+    background: rgba(0,0,0,0);
+    border: none;
+}
+
+.navbar-brand{
+    font-size: .25rem;
+    color: #ccc;
+    line-height: .5rem;
+}
+.navbar-brand:hover{
+    color: #fff;
+}
+/*头部*/
+#header{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    margin: .8rem 0;
+    overflow: hidden;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    
+    
+}
+.header-bg{
+    position: relative;
+}
+.header-body{
+    margin-top: 3%;
+}
+.body-inner{
+
+}
+.body-download{
+    margin-top: 3%;
+}
+.body-download h3{
+    font-family: '方正舒体';
+    font-size: .4rem;
+    color: #fff;
+    margin: 0 0 6% 0;
+}
+.body-download p{
+    color: #fff;
+    font-size: .24rem;
+    font-family: '华文行楷';
+    line-height: .4rem;
+}
+.body-download .btnGroup{
+    position: relative;
+    margin-top: 15%;
+    margin-left: 0%;
+}
+.body-download .btnGroup a{
+    display: block;
+    color: #fefefe;
+    font-size: .2rem;
+    font-weight: 400;
+    border: 2px solid #fefefe;
+    border-radius: 7px;
+    padding: 0 15px 0 15px;
+    height: .45rem;
+    line-height: .45rem;
+    float: left;
+    clear: both;
+}
+.body-download .btnGroup a.downloadBtn{
+    position: relative;   
+    text-decoration: none;
+    padding-left: 50px;
+    margin-bottom: 5%;
+}
+.body-download .btnGroup a:hover{
+    color: #20b3a3;
+    border: 2px solid #202125;
+    background: #202125;
+}
+.body-download .btnGroup a.downloadBtn i{
+    position: absolute;
+    left: 5%;
+    top: 0;
+    width: 35px;
+    height: 100%;
+    background: url('http://static.mperfit.com/image/web/img-sprite.png') no-repeat -504px 4px;
+}
+.body-download .btnGroup a.qrCode{
+    
+}
+/*二维码*/
+.qrCodeBox{
+    position: relative;
+    z-index: 20;
+    right: -40px;
+    /* top: -122px; */
+    float: left;
+    margin: -77px -120px 0 0;
+    display: none;
+}
+.qrCodeBox img{
+    border-radius: 5px;
+}
+.qrCodeBox i{
+    position: absolute;
+    left: -30px;
+    top: 50%;
+    width: 0;
+    height: 0;
+    border-width: 15px;
+    border-style: solid;
+    border-color: transparent #fff transparent transparent;
+    margin-top: -15px;
+
+}
+.body-slide{
+    background: url("http://static.mperfit.com/image/web/phoneBg.png") no-repeat left center;
+    background-size: contain;
+    height: 506px;
+    width: 262px;
+    padding: 54px 27px 5px 10px;
+    margin: 0 0 0 10%;
+}
+.carousel{
+    width: 100%;
+    height: 100%;
+}
+/*底部*/
+.header-footer{
+    position: fixed;
+    bottom: 0;
+    z-index: 20;
+    width: 100%;
+    height: .8rem;
+    line-height: .8rem;
+    background: rgba(0,0,0,.7);
+    text-align: center;
+}
+.header-footer a{
+    font-size: .14rem;
+}
+
+/*媒体查询，小于1350px*/
+@media screen and (max-width:1350px){
+    .imgbg{
+        padding-bottom: 55%;
+    }
+}
+/*媒体查询，小于1250px*/
+@media screen and (max-width:1250px){
+    .imgbg{
+        padding-bottom: 58%;
+    }
+}
+/*媒体查询，小于1200px*/
+@media screen and (max-width:1200px){
+    .imgbg{
+        padding-bottom: 60%;
+    }
+}
+/*媒体查询，小于1050px*/
+@media screen and (max-width:1050px){
+    .imgbg{
+        padding-bottom: 63%;
+    }
+    .body-slide{
+        height: 430px;
+        width: 227px;
+        padding: 45px 26px 2px 9px;
+    }
+}
+/*媒体查询，小于997px*/
+@media screen and (max-width:997px){
+    .body-slide{
+        height: 400px;
+        width: 212px;
+        padding: 42px 26px 0px 8px;
+        margin-left: 20%;
+    }
+}

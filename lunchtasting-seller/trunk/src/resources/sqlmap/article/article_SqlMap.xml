@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.Article">
+
+	<typeAlias alias="Article" type="com.lunchtasting.server.po.lt.Article" />
+
+	<resultMap id="ArticleResult" class="com.lunchtasting.server.po.lt.Article">
+		<result property="id" column="id"  jdbcType="BIGINT" />
+		<result property="name" column="name" jdbcType="VARCHAR" />
+		<result property="content" column="content" jdbcType="VARCHAR" />
+		<result property="imgText" column="img_text" jdbcType="VARCHAR" />
+		<result property="imgUrl" column="img_url" jdbcType="VARCHAR" />
+		<result property="type" column="type" jdbcType="VARCHAR" />
+		<result property="createTime" column="create_time" jdbcType="DATETIME" />
+		<result property="updateTime" column="update_time" jdbcType="DATETIME" />
+		<result property="flag" column="flag" jdbcType="INT" />
+		<result property="sort" column="sort" jdbcType="INT" />
+	</resultMap>
+	
+	<!-- 新建 -->
+    <insert id="create" parameterClass="Article">
+    <![CDATA[
+        INSERT INTO article (
+	        name,
+	        content, 
+	        img_text, 
+	        img_url, 
+	        update_time, 
+	        create_time, 
+	        sort, 
+	        flag
+        ) VALUES (
+	        #name#,
+	        #content#, 
+	        #imgText#, 
+	        #imgUrl#, 
+	        now(), 
+	        now(), 
+	        #sort#, 
+	        1
+        )
+    ]]>
+    <selectKey resultClass="long" keyProperty="id">
+       SELECT @@IDENTITY
+       AS id
+    </selectKey>
+    </insert>
+	
+<!-- 查询 ById-->
+   <select id="queryArticleById" parameterClass="map"  resultMap="ArticleResult">
+	 	SELECT
+	 	    id,
+		   	name,
+		   	content,
+		   	img_url,
+		   	img_text,
+		   	type,
+		   	create_time,
+		   	update_time,
+		   	flag,
+		   	sort
+		FROM  article  
+		WHERE 1=1
+		<isNotNull property="id" prepend="AND">
+		id = #id#
+		</isNotNull>
+  </select>
+    
+    <!-- 总条数 -->
+    <select id="getArticleCount"  parameterClass="map" resultClass="java.lang.Integer">
+        SELECT COUNT(1) FROM article 
+    </select>
+    
+    <!-- 查询 -->	
+	<select id="queryArticleList"  parameterClass="map" resultMap="ArticleResult">
+            SELECT  id,
+			        name,
+			        content,
+			        img_text,
+			        img_url,
+			        type,
+			        create_time,
+			        update_time,
+			        flag,
+			        sort
+            FROM 
+            	article
+            WHERE 
+	            flag = 1 or flag = 0
+            ORDER BY create_time DESC
+            <isNotNull property="pageSize">
+            <![CDATA[LIMIT #curPage#,#pageSize#]]>
+            </isNotNull>
+	</select>
+    
+	<!-- 更新 -->
+    <update id="update" parameterClass="Article">
+        UPDATE 
+       		 article
+         SET 
+  			name = #name#,
+  			content = #content#,
+  			img_url = #imgUrl#,
+  			img_text = #imgText#,
+  			update_time = now(),
+  			sort = #sort#
+  		WHERE 
+  			id = #id#
+    </update>
+    
+    <!-- 删除(改状态) -->
+  <update id="deleteArticle" parameterClass="Map">
+       update article set flag = #flag# where id = #id#
+  </update>
+</sqlMap>

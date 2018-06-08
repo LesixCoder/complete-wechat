@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=320, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, minimal-ui, user-scalable=no">
+    <title>报名信息</title>
+    <meta name="renderer" content="webkit">
+    <meta name='apple-itunes-app' content='app-id=1155981225'>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telphone=yes, email=yes">
+    <meta name="HandheldFriendly" content="true">
+    <meta name="MobileOptimized" content="320">
+    <meta name="browsermode" content="application">
+    <meta name="x5-page-mode" content="app">
+    <meta name="msapplication-tap-highlight" content="no">
+    <link rel="stylesheet" href="../../../../../lunchtasting-static/css/wap/recruit/plugs/nice-select.css" />
+    <link rel="stylesheet" href="../../../../../lunchtasting-static/css/wap/recruit/plugs/mobiscroll_date.css" />
+    <link rel="stylesheet" href="../../../../../lunchtasting-static/css/wap/recruit/recruit_signUp.css" />
+</head>
+
+<body>
+    <div class="wrapper-Box">
+        <header class="header">
+            <span><img src="../../../../../lunchtasting-static/image/wap/recruit/signup/sign-head.jpg" alt=""></span>
+        </header>
+        <section class="recruit-sign">
+            <h3>填写报名信息</h3>
+            <div class="sign-form">
+                <p>
+                    <input type="text" id="nickname" placeholder="姓名" required pattern="^[\u4e00-\u9fa5a-zA-Z0-9_]+$">
+                </p>
+                <p>
+                    <select class="wide">
+                        <option value="男" data-display="男">男</option>
+                        <option value="女">女</option>
+                    </select>
+                </p>
+                <p>
+                    <input type="text" id="user-age" placeholder="出生日期">
+                </p>
+                <p class="p-tel clearfix">
+                    <input type="text" id="tel" name="tel" placeholder="手机号" required pattern="^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$">
+                    <input class="getCode" id="verNum" type="button" value="获取验证码">
+                </p>
+                <p>
+                    <input type="text" id="verCode" placeholder="验证码" maxlength="6" pattern="^\d{6}\b" required>
+                </p>
+            </div>
+        </section>
+        <footer class="footer">
+            <a id="signBtn" href="javascript:void(0)">确认信息</a>
+        </footer>
+    </div>
+</body>
+<script src="../../../../../lunchtasting-static/js/common_js/jquery-1.12.0.min.js"></script>
+<script src="../../../../../lunchtasting-static/js/wap/recruit/plugs/jquery.nice-select.min.js"></script>
+<script src="../../../../../lunchtasting-static/js/wap/recruit/plugs/mobiscroll_date.js" charset="gb2312"></script>
+<script src="../../../../../lunchtasting-static/js/wap/recruit/plugs/mobiscroll.js"></script>
+<script src="../../../../../lunchtasting-static/js/wap/recruit/recruit.js"></script>
+<script>
+    jQuery("#signBtn").click(function() {
+        let data = {
+            name: jQuery("#nickname").val(),
+            sex: jQuery(".wide option:selected").val(),
+            date: jQuery("#user-age").val(),
+            tel: jQuery("#tel").val(),
+            verCode: jQuery("#verCode").val()
+        };
+        let reg1=/^[\u4e00-\u9fa5a-zA-Z0-9_]+$/;//匹配姓名
+        let reg2=/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/;//手机号
+        if(!reg1.test(data.name)){
+            return alert("姓名不正确！");
+        }else if(!reg2.test(data.tel)){
+            return alert("手机号不正确！");
+        }
+        if(data.name!=='' && data.sex!=='' && data.date!=='' && data.tel!=='' && data.verCode!==''){
+            if(confirm("确定要提交信息吗?")){
+                jQuery.ajax({
+                    url: '',
+                    data: data,
+                    type: 'post',
+                    dataType: 'json',
+                    success: function(data) {
+                        
+                    },
+                    error: function() {
+                        alert("服务器连接失败！");
+                    }
+                });
+            }
+        }else{
+            alert('请补全信息!');
+        }   
+        return false;
+    });
+</script>
+
+</html>

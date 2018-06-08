@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.UsersInfo">
+
+    <typeAlias alias="UsersInfo" type="com.lunchtasting.server.po.lt.UsersInfo" />
+
+    <resultMap id="UsersInfoResult" class="com.lunchtasting.server.po.lt.UsersInfo">
+        <result property="userId" column="user_id" jdbcType="BIGINT" />
+        <result property="userName" column="user_name" jdbcType="VARCHAR" />
+        <result property="telephone" column="telephone" jdbcType="VARCHAR" />
+        <result property="nickName" column="nick_name" jdbcType="VARCHAR" />
+        <result property="password" column="password" jdbcType="VARCHAR" />
+        <result property="sex" column="sex" jdbcType="INT" />
+        <result property="province" column="province" jdbcType="VARCHAR" />
+        <result property="city" column="city" jdbcType="VARCHAR" />
+        <result property="country" column="country" jdbcType="VARCHAR" />
+        <result property="headImgUrl" column="head_img_url" jdbcType="VARCHAR" />
+        <result property="createdTime" column="created_time" jdbcType="DATETIME" />
+        <result property="updatedTime" column="updated_time" jdbcType="DATETIME" />
+    </resultMap>
+
+	<insert id="create" parameterClass="UsersInfo">
+    <![CDATA[
+   		INSERT INTO users_info (
+    	user_name
+    	, telephone
+    	, password
+    	, nick_name
+    	, sex
+    	, province
+    	, city
+    	, country
+    	, head_img_url
+    	, updated_time
+    	, created_time
+    	) VALUES (
+    	#userName#
+    	, #telephone#
+    	, #password#
+    	, #nickName#
+    	, #sex#
+    	, #province#
+    	, #city#
+    	, #country#
+    	, #headImgUrl#
+    	, now()
+    	, now()
+    	)
+    ]]>
+	<selectKey resultClass="long" keyProperty="userId">
+	   SELECT @@IDENTITY
+	   AS user_id
+    </selectKey>
+	</insert>
+
+	<select id="getById" parameterClass="map" resultMap="UsersInfoResult">
+		SELECT *
+		FROM users_info WHERE id = #id:BIGINT#
+	</select>
+
+	<select id="getByPhone" parameterClass="map" resultClass="java.lang.String">
+		SELECT user_id FROM users_info WHERE telephone = #phone#
+	</select>
+
+	<select id="getByPhoneAndPwd" parameterClass="map" resultMap="UsersInfoResult">
+	   SELECT * FROM users_info WHERE telephone = #phone# AND password = #pwd#
+	</select>
+</sqlMap>

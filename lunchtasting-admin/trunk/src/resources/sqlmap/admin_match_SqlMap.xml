@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.Match">
+
+	<typeAlias alias="Match" type="com.lunchtasting.server.po.lt.Match" />
+        <resultMap class="com.lunchtasting.server.po.lt.Match" id="match">
+	    <result property="id" column="id" jdbcType="BIGINT" />
+		<result property="name" column="name" jdbcType="VARCHAR" />
+		<result property="content" column="content" jdbcType="VARCHAR" /> 
+		<result property="imgUrl" column="img_url" jdbcType="VARCHAR" />
+		<result property="imgText" column="img_text" jdbcType="TEXT" />
+ 		<result property="specificAddress" column="specific_address" jdbcType="VARCHAR" /> 
+		<result property="price" column="price" jdbcType="DOUBLE" />
+		<result property="marketPrice" column="market_price" jdbcType="DOUBLE" />
+		<result property="address" column="address" jdbcType="VARCHAR" />
+		<result property="enrollNum" column="enroll_num" jdbcType="INT" />
+		<result property="beginTime" column="begin_time" jdbcType="DATETIME" />
+		<result property="endTime" column="end_time" jdbcType="DATETIME" />
+		<result property="createTime" column="create_time" jdbcType="DATETIME" />
+		<result property="updateTime" column="update_time" jdbcType="DATETIME" />
+		<result property="flag" column="flag" jdbcType="INT" />
+		<result property="sort" column="sort" jdbcType="INT" />
+		<result property="longitude" column="longitude" jdbcType="DOUBLE" />
+        <result property="latitude" column="latitude" jdbcType="DOUBLE" />
+        <result property="isLock" column="is_lock" jdbcType="INT" />
+        <result property="categoryId" column="category_id" jdbcType="BIGINT" />
+        <result property="categoryName" column="category_Name" jdbcType="VARCHAR" />
+	</resultMap>
+
+    <!-- 新建 -->
+    <insert id="create" parameterClass="Match">
+     <![CDATA[
+   		INSERT IGNORE INTO matchs (
+   		        id,
+		    	name,
+		    	content,
+		    	img_url,
+		    	img_text,
+		    	specific_address,
+		    	price,
+		    	market_price,
+		    	address,
+		    	begin_time,
+		    	end_time,
+		    	create_time,
+		    	update_time,
+		    	flag,
+		    	sort,
+		    	longitude,
+		    	latitude,
+		    	enroll_num,
+		    	is_lock,
+		    	category_id
+    	) VALUES (
+    	        #id#,
+		    	#name#,
+		    	#content#,
+		    	#imgUrl#,
+		    	#imgText#,
+		    	#specificAddress#,
+		    	#price#,
+		    	#marketPrice#,
+		    	#address#,
+		    	#beginTime#,
+		    	#endTime#,
+		    	now(),
+		    	now(),
+		    	1,
+		    	#sort#,
+		    	#longitude#,
+		    	#latitude#,
+		    	#enrollNum#,
+		    	#isLock#,
+		    	#categoryId#
+    	)
+      ]]>
+		<selectKey resultClass="long" keyProperty="id">
+			SELECT @@IDENTITY
+			AS id
+    </selectKey>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="update" parameterClass="Match">
+        UPDATE matchs SET 
+  			name = #name#,
+  			content = #content#,
+  			<isNotEmpty property="imgUrl">
+			img_url = #imgUrl#,
+            </isNotEmpty>
+  			img_text = #imgText#,
+  			specific_address = #specificAddress#,
+  			price = #price#,
+  			address = #address#,
+  			begin_time = #beginTime#,
+  			end_time = #endTime#,
+  			update_time = now(),
+  			sort = #sort#,
+  			longitude = #longitude#,
+  			latitude = #latitude#,
+  			enroll_num = #enrollNum#,
+  			market_price = #marketPrice#,
+  			is_lock = #isLock#,
+  			category_id = #categoryId#
+  		WHERE id = #id#
+    </update>
+
+	<!-- 查询 ById-->
+   <select id="queryMatchById" parameterClass="map"  resultMap="match">
+	 	SELECT
+	 	        id,
+		    	name,
+		    	content,
+		    	img_url,
+		    	img_text,
+		    	specific_address,
+		    	price,
+		    	market_price,
+		    	address,
+		    	begin_time,
+		    	end_time,
+		    	create_time,
+		    	update_time,
+		    	flag,
+		    	sort,
+		    	longitude,
+		    	latitude,
+		    	enroll_num,
+		    	is_lock,
+		    	category_id,
+		    	(select name from match_category where id = matchs.category_id) category_name
+		FROM  matchs  
+		WHERE 1=1
+		<isNotNull property="id" prepend="AND">
+		id = #id#
+		</isNotNull>
+  </select>
+  
+  <!-- 查询 -->
+  <select id="queryMatchList" parameterClass="map"  resultMap="match">
+	 	SELECT
+	 	        id,
+		    	name,
+		    	content,
+		    	img_url,
+		    	img_text,
+		    	specific_address,
+		    	price,
+		    	market_price,
+		    	address,
+		    	begin_time,
+		    	end_time,
+		    	create_time,
+		    	update_time,
+		    	flag,
+		    	sort,
+		    	longitude,
+		    	latitude,
+		    	enroll_num,
+		    	is_lock,
+		    	category_id,
+		    	(select name from match_category where id = matchs.category_id) category_name
+		FROM  matchs 
+		WHERE 
+		flag != 2
+		<isNotEmpty property="type" prepend="AND">
+		category_id = #type#
+		</isNotEmpty>
+		<isNotEmpty property="name" prepend="AND">
+		name like concat('%', #name:VARCHAR#, '%')
+		</isNotEmpty>
+		<isNotEmpty property="address" prepend="AND">
+		address like concat('%', #address:VARCHAR#, '%')
+		</isNotEmpty>
+		<isNotEmpty property="beginTime" prepend="AND">
+		(begin_time BETWEEN #beginTime# AND #endTime#
+		</isNotEmpty>
+		<isNotEmpty property="endTime" prepend="OR">
+		end_time BETWEEN #beginTime# AND #endTime#
+		</isNotEmpty>
+		<isNotEmpty property="beginTime" prepend="OR">
+		(begin_time >=#beginTime#
+		</isNotEmpty>
+		<isNotEmpty property="endTime" prepend="AND">
+		end_time &lt;=#endTime#))
+		</isNotEmpty>
+		ORDER BY create_time DESC
+		<isNotNull property="pageSize">
+            <![CDATA[LIMIT #curPage#,#pageSize#]]>
+        </isNotNull>
+  </select>
+  
+  <!-- 总条数 -->
+  <select id="queryMatchCount" parameterClass="Map" resultClass="int">
+		select count(*) from matchs
+		WHERE 
+		flag != 2
+		<isNotEmpty property="flag" prepend="AND">
+		category_id = #flag#
+		</isNotEmpty>
+		<isNotEmpty property="name" prepend="AND">
+		name like concat('%', #name:VARCHAR#, '%')
+		</isNotEmpty>
+		<isNotEmpty property="address" prepend="AND">
+		address like concat('%', #address:VARCHAR#, '%')
+		</isNotEmpty>
+		<isNotEmpty property="beginTime" prepend="AND">
+		(begin_time BETWEEN #beginTime# AND #endTime#
+		</isNotEmpty>
+		<isNotEmpty property="endTime" prepend="OR">
+		end_time BETWEEN #beginTime# AND #endTime#
+		</isNotEmpty>
+		<isNotEmpty property="beginTime" prepend="OR">
+		(begin_time >=#beginTime#
+		</isNotEmpty>
+		<isNotEmpty property="endTime" prepend="AND">
+		end_time &lt;=#endTime#))
+		</isNotEmpty>  
+  </select>
+  <!-- 删除(改状态) -->
+  <update id="deleteMatch" parameterClass="Map">
+       update matchs set flag = #flag# where id = #id#
+  </update>
+  
+  <update id="topMatch" parameterClass="Map">
+       update matchs set update_time = now(),sort = 1 where id = #id#
+  </update>
+  
+  <select id="queryMatchNotLimit" parameterClass="map"  resultMap="match">
+	 	SELECT 
+	 	        id,
+		    	name,
+		    	content,
+		    	img_url,
+		    	img_text,
+		    	specific_address,
+		    	price,
+		    	market_price,
+		    	address,
+		    	begin_time,
+		    	end_time,
+		    	create_time,
+		    	update_time,
+		    	flag,
+		    	sort,
+		    	longitude,
+		    	latitude,
+		    	enroll_num,
+		    	is_lock,
+		    	category_id,
+		    	(select name from match_category where id = matchs.category_id) category_name
+        FROM matchs WHERE flag != 2 ORDER BY create_time DESC
+  </select>
+</sqlMap>

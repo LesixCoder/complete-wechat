@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.Seller">
+
+    <typeAlias alias="Seller" type="com.lunchtasting.server.po.lt.Seller" />
+
+    <resultMap id="SellerResult" class="com.lunchtasting.server.po.lt.Seller">
+        <result property="id" column="id" jdbcType="BIGINT" />
+        <result property="account" column="account" jdbcType="VARCHAR" />
+        <result property="password" column="password" jdbcType="VARCHAR" />
+        <result property="phone" column="phone" jdbcType="VARCHAR" />
+        <result property="name" column="name" jdbcType="VARCHAR" />
+        <result property="introduction" column="introduction" jdbcType="VARCHAR" />
+        <result property="address" column="address" jdbcType="VARCHAR" />
+        <result property="specificAddress" column="specific_address" jdbcType="VARCHAR" />
+        <result property="imgUrl" column="img_url" jdbcType="VARCHAR" />
+        <result property="imgArray" column="img_array" jdbcType="VARCHAR" />
+        <result property="areaId" column="area_id" jdbcType="VARCHAR" />
+        <result property="longitude" column="longitude" jdbcType="DOUBLE" />
+        <result property="latitude" column="latitude" jdbcType="DOUBLE" />
+        <result property="updateTime" column="update_time" jdbcType="DATETIME" />
+        <result property="createTime" column="create_time" jdbcType="DATETIME" />
+        <result property="flag" column="flag" jdbcType="INT" />
+        <result property="tag" column="tag" jdbcType="VARCHAR" />
+        <result property="businessHours" column="business_hours" jdbcType="VARCHAR" />
+        <result property="settlementDate" column="settlement_date"  jdbcType="DATETIME" />
+        <result property="settlementEndDate" column="settlement_end_date"  jdbcType="VARCHAR" />
+    </resultMap>
+
+    <!-- 新建 -->
+	<insert id="create" parameterClass="Seller">
+    <![CDATA[
+   		INSERT INTO seller (
+   		 id
+   		,account
+    	, password
+    	, phone
+    	, name
+    	, introduction
+    	, img_url
+    	, img_array
+    	, area_id
+    	, address
+    	, longitude
+    	, latitude
+    	, tag
+    	, business_hours
+    	, update_time
+    	, create_time
+    	, specific_address
+    	, settlement_date
+    	) VALUES (
+    	 #id#
+    	,#account#
+    	, 'e10adc3949ba59abbe56e057f20f883e'
+    	, #phone#
+    	, #name#
+    	, #introduction#
+    	, #imgUrl#
+    	, #imgArray#
+    	, #areaId#
+    	, #address#
+    	, #longitude#
+    	, #latitude#
+    	, #tag#
+    	, #businessHours#
+    	, now()
+    	, now()
+    	, #specificAddress#
+    	, #settlementDate#
+    	)
+    ]]>
+	<selectKey resultClass="long" keyProperty="id">
+	   SELECT @@IDENTITY
+	   AS id
+    </selectKey>
+	</insert>
+	
+	<!-- 查询ById -->
+	<select id="getById" parameterClass="map" resultMap="SellerResult">
+		SELECT *,'' as settlement_end_date FROM seller WHERE id = #id:BIGINT#
+	</select>
+	
+    <!-- 总条数 -->    
+    <select id="getSellerCount"  parameterClass="map" resultClass="java.lang.Integer">
+        SELECT COUNT(id) FROM seller WHERE flag != 2
+            <isNotEmpty property="flag" prepend="AND">
+		    flag = #flag#
+		    </isNotEmpty>
+		    <isNotEmpty property="name" prepend="AND">
+		    name like concat('%', #name:VARCHAR#, '%')
+		    </isNotEmpty>
+		    <isNotEmpty property="specificAddress" prepend="AND">
+		    specific_address like concat('%', #specificAddress:VARCHAR#, '%')
+		    </isNotEmpty>
+		    <isNotEmpty property="phone" prepend="AND">
+		    phone like concat('%', #phone:VARCHAR#, '%')
+		    </isNotEmpty>
+            <isNotEmpty property="areaId">
+            AND area_id = #areaId#
+            </isNotEmpty>
+    </select>
+    
+   <!-- 查询 -->
+    <select id="querySellerList"  parameterClass="map" resultMap="SellerResult">
+            SELECT  id,
+			        account,
+			        password,
+			        phone,
+			        name,
+			        introduction,
+			        address,
+			        img_url,
+			        img_array,
+			        longitude,
+			        latitude,
+			        area_id,
+			        flag,
+			        tag,
+			        business_hours,
+			        create_time,
+			        update_time,
+			        specific_address,
+			        settlement_date,
+			        '' as settlement_end_date
+            FROM seller
+            WHERE 
+            flag != 2
+            <isNotEmpty property="flag" prepend="AND">
+		    flag = #flag#
+		    </isNotEmpty>
+		    <isNotEmpty property="name" prepend="AND">
+		    name like concat('%', #name:VARCHAR#, '%')
+		    </isNotEmpty>
+		    <isNotEmpty property="specificAddress" prepend="AND">
+		    specific_address like concat('%', #specificAddress:VARCHAR#, '%')
+		    </isNotEmpty>
+		    <isNotEmpty property="phone" prepend="AND">
+		    phone like concat('%', #phone:VARCHAR#, '%')
+		    </isNotEmpty>
+            ORDER BY create_time DESC
+            <isNotNull property="pageSize">
+            <![CDATA[LIMIT #curPage#,#pageSize#]]>
+            </isNotNull>
+	</select>
+    
+    <!-- 更新 -->
+    <update id="update" parameterClass="Seller">
+        UPDATE seller SET
+            account = #account#, 
+<!--             password = #password#,  -->
+  		 	name = #name#,
+  			phone = #phone#,
+  			introduction = #introduction#,
+  			address = #address#,
+  			img_url = #imgUrl#,
+  			img_array = #imgArray#,
+  			tag = #tag#,
+  			area_id = #areaId#,
+  			longitude = #longitude#,
+  			latitude = #latitude#,
+  			business_hours = #businessHours#,
+  			specific_address = #specificAddress#,
+  			update_time = now()
+  		WHERE id = #id#
+    </update>
+    
+    <!-- 删除(改状态) -->
+  <update id="deleteSeller" parameterClass="Map">
+       update seller set flag = #flag# where id = #id#
+  </update>
+    
+    <!-- 账号是否存在 -->
+    <select id="querySellerExist" parameterClass="Map" resultClass="java.lang.Long">
+		SELECT count(1) FROM seller WHERE account = #account#
+  </select>
+    
+    <!-- 查询 -->
+    <select id="querySellerNotLimit"  parameterClass="map" resultMap="SellerResult">
+            SELECT  id,
+			        account,
+			        password,
+			        phone,
+			        name,
+			        introduction,
+			        address,
+			        img_url,
+			        img_array,
+			        longitude,
+			        latitude,
+			        area_id,
+			        flag,
+			        tag,
+			        business_hours,
+			        create_time,
+			        update_time,
+			        specific_address,
+			        settlement_date,
+			        '' as settlement_end_date
+            FROM seller
+            WHERE 
+            flag = 0
+            ORDER BY create_time DESC
+	</select>
+    
+    <select id="querySellerByName" parameterClass="map" resultMap="SellerResult">
+ 		select *,'' as settlement_end_date from seller where name = #name#			
+    </select>
+    
+    <!-- 下一个结算日期 -->
+    <select id="getSellerNextSettDate" parameterClass="map" resultMap="SellerResult">
+	SELECT
+		id,
+		name,
+		account,
+        password,
+        phone,
+        introduction,
+        address,
+        img_url,
+        img_array,
+        longitude,
+        latitude,
+        area_id,
+        flag,
+        tag,
+        business_hours,
+        create_time,
+        update_time,
+        specific_address,
+		DATE_FORMAT(settlement_date,'%Y-%m-%d') AS settlement_date,
+		<!-- (SELECT COUNT(*) FROM week_day WHERE w_date BETWEEN
+		date_format(seller.settlement_date,'%Y-%m-%d') AND
+		date_format(now(),'%Y-%m-%d') AND w_flag = 0) AS apart, -->
+		(SELECT date_format(w_date,'%Y-%m-%d') FROM week_day WHERE
+		DATE_FORMAT(w_date,'%Y-%m-%d') >=
+		date_format(seller.settlement_date,'%Y-%m-%d') AND w_flag = 0 ORDER BY
+		w_date ASC LIMIT 15,1) AS settlement_end_date
+	from seller 
+	WHERE flag = 0
+	<isNotEmpty property="id" prepend="AND">
+		id = #id#
+    </isNotEmpty>		
+    </select>
+</sqlMap>

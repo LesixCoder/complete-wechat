@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.Meals">
+
+    <typeAlias alias="Meals" type="com.lunchtasting.server.po.lt.Meals" />
+    <typeAlias alias="Chefs" type="com.lunchtasting.server.po.lt.Chefs" />
+    <typeAlias alias="MealsPictures" type="com.lunchtasting.server.po.lt.MealsPictures" />
+    
+    <resultMap id="meals" class="com.lunchtasting.server.po.lt.Meals">
+        <result column="meal_id" property="mealId" /> 
+        <result column="chef_id" property="chefId" />
+        <result column="meal_name" property="mealName" />
+        <result column="tag" property="tag" />
+        <result column="state" property="state" />
+        <result column="category_id" property="categoryId" />
+        <result column="spicy" property="spicy" /> 
+        <result column="vegetables" property="vegetables" />
+        <result column="clitocybine" property="clitocybine" /> 
+        <result column="price" property="price" /> 
+        <result column="supply_week" property="supplyWeek" /> 
+        <result column="stock" property="stock" /> 
+        <result column="buy_num" property="buyNum" /> 
+        <result column="nutrition_value" property="nutritionValue" /> 
+        <result column="description" property="description" />
+        <result column="created_time" property="createdTime" /> 
+        <result column="created_user" property="createdUser" /> 
+        <result column="updated_time" property="updatedTime" /> 
+        <result column="updated_user" property="updatedUser" />
+        <result column="concession_price" property="concessionPrice" />
+   </resultMap>
+ 	 <!-- 查询列表-->
+ 	 <select id="queryTodayMeals" parameterClass="map" resultClass="java.util.HashMap">
+		SELECT 
+			m.meal_id,
+			m.meal_name,
+			m.tag,
+			m.spicy,
+			m.vegetables,
+			m.price,
+			mp.image,
+			m.nutrition_value,
+			m.description,
+			m.clitocybine,
+			c.chef_name,
+			ag.agent_name,
+			ag.description as description2
+		FROM
+			meals m,area a,agents ag,chefs c,meal_pictures mp
+		WHERE 
+			a.area_id=ag.area_id
+			AND ag.agent_id = c.agent_id 
+			AND m.meal_id=mp.meal_id 
+			AND c.chef_id = m.chef_id 
+			AND a.area_id = #areaId# 
+			AND m.state='1' 
+			AND (m.supply_week=#supplyWeek# or m.supply_week=7) order by ag.level desc,tag asc 
+ 	 </select>
+ 	 
+ 	 <!-- 根据Id查询菜品信息 -->
+   <select id="queryMealById" parameterClass="map" resultClass="java.util.HashMap">
+		SELECT 
+			m.meal_id,m.chef_id,m.meal_name,m.tag,m.state,m.category_id,m.spicy,m.vegetables,
+			m.price,m.supply_week,m.stock,
+			(SELECT SUM(ol.quantity) FROM order_lines ol,orders o where ol.delivery_date = #deliveryDate# and ol.meal_id=#mealId# and ol.order_id=o.order_id and o.state != 5)
+			as buy_num,
+			m.nutrition_value,m.description,m.clitocybine,
+			m.created_time,m.created_user,m.updated_time,m.updated_user,ag.agent_id
+		FROM
+			meals m,
+			chefs c,agents ag
+		WHERE
+			c.chef_id = m.chef_id AND c.agent_id=ag.agent_id AND m.meal_id = #mealId#
+	</select>
+	
+	
+	  <!-- 修改已购数量 -->
+ 	 <update id="updateMealsBuyNum" parameterClass="map">
+  			UPDATE meals SET buy_num=#{buyNum}  where meal_id=#{mealId}
+ 	 </update>
+ 	 
+ 	 <!--  根据Id查询菜品信息queryMealByIdto -->
+ 	 
+ 	 <select id="queryMealByIdTo" parameterClass="map" resultClass="meals">
+		SELECT 
+			m.meal_id,
+			m.chef_id,
+			m.meal_name,
+			m.tag,
+			m.state,
+			m.category_id,
+			m.spicy,
+			m.vegetables,
+			m.price,
+			m.supply_week,
+			m.stock,
+			(SELECT SUM(ol.quantity) FROM order_lines ol,orders o where ol.delivery_date = #deliveryDate# and ol.meal_id=#mealId# and ol.order_id=o.order_id and o.state != 5)
+			as buy_num,
+			m.nutrition_value,
+			m.description,
+			m.clitocybine,
+			m.created_time,
+			m.created_user,
+			m.updated_time,
+			m.updated_user,
+			ag.agent_id
+		FROM
+			meals m,
+			chefs c,
+			agents ag
+		WHERE
+			c.chef_id = m.chef_id
+			AND c.agent_id=ag.agent_id
+			AND m.meal_id = #mealId#
+	</select>
+</sqlMap>

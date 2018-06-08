@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.BannerIndex">
+
+	<typeAlias alias="BannerIndex" type="com.lunchtasting.server.po.lt.BannerIndex" />
+
+	<resultMap id="PhotoCarouselResult" class="com.lunchtasting.server.po.lt.BannerIndex">
+		<result column="id" property="id" jdbcType="BIGINT" />
+		<result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
+		<result column="depict" property="depict" jdbcType="VARCHAR" />
+	    <result column="url" property="url" jdbcType="VARCHAR" />
+		<result column="flag" property="flag" jdbcType="INT" />
+		<result column="sort" property="sort" jdbcType="INT" />
+		<result column="create_time" property="createTime" jdbcType="DATETIME" />
+		<result column="biz_id" property="bizId" jdbcType="BIGINT" />
+		<result column="biz_type" property="bizType" jdbcType="INT" />
+		<result column="is_click" property="isClick" jdbcType="INT" />
+	</resultMap>
+	
+    <!-- 查询列表 -->
+    <select id="queryPhotoCarouselList"  parameterClass="map" resultMap="PhotoCarouselResult">
+    	select
+		     id
+		    ,img_url
+		    ,depict
+		    ,url
+		    ,flag
+		    ,sort
+		    ,biz_id
+		    ,biz_type
+		    ,create_time
+		    ,is_click
+		from
+			banner_index
+		where
+			flag != 2
+		 ORDER BY create_time DESC
+		<isNotNull property="pageSize">
+            <![CDATA[LIMIT #curPage#,#pageSize#]]>
+        </isNotNull>
+        
+    </select>
+    
+    <select id="getById" parameterClass="map" resultMap="PhotoCarouselResult">
+		SELECT * FROM banner_index WHERE id = #id:BIGINT#
+	</select>
+    
+    <!-- 新建 -->
+	<insert id="create" parameterClass="BannerIndex">
+    <![CDATA[
+   		INSERT INTO banner_index (
+   		  id
+   		, img_url
+    	, depict
+    	, url
+    	, flag
+    	, sort
+    	, biz_id
+    	, biz_type
+    	, create_time
+    	, is_click
+    	) VALUES (
+    	  #id#
+    	, #imgUrl#
+    	, #depict#
+    	, #url#
+    	, 1
+    	, #sort#
+    	, #bizId#
+    	, #bizType#
+    	, now()
+    	, #isClick#
+    	)
+    ]]>
+	<selectKey resultClass="long" keyProperty="id">
+	   SELECT @@IDENTITY
+	   AS id
+    </selectKey>
+	</insert>
+    
+    <!-- 更新 -->
+    <update id="update" parameterClass="BannerIndex">
+ 		UPDATE banner_index 
+ 		<dynamic prepend="set">  
+	 		<isNotEmpty property="imgUrl" prepend=",">
+	 			img_url = #imgUrl#
+	 		</isNotEmpty>
+	 		<isNotEmpty property="depict" prepend=",">
+	 			depict = #depict#
+	 		</isNotEmpty>
+	 		<isNotEmpty property="url" prepend=",">
+	 			url = #url#
+	 		</isNotEmpty>	
+	 		<isNotEmpty property="sort" prepend=",">
+	 			sort = #sort#
+	 		</isNotEmpty>
+	 		<isNotEmpty property="bizId" prepend=",">
+	 			biz_id = #bizId#
+	 		</isNotEmpty> 
+	 		<isNotEmpty property="bizType" prepend=",">
+	 			biz_type = #bizType#
+	 		</isNotEmpty>
+	 		<isNotEmpty property="isClick" prepend=",">
+	 			is_click = #isClick#
+	 		</isNotEmpty>   
+ 		</dynamic>
+ 		WHERE 
+  			id = #id#
+ 	</update>
+    
+    <!-- 查询总条数-->
+	 <select id="queryPhotoCarouselListCount" parameterClass="Map" resultClass="int">
+		 select
+		     count(*)
+		from
+			banner_index
+  	</select>
+  	<!-- 删除(改状态) -->
+  <update id="deletePhotoCarousel" parameterClass="Map">
+       update banner_index set flag = #flag# where id = #id#
+  </update>
+</sqlMap>

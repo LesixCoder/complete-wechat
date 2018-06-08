@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.UserAddress">
+
+    <typeAlias alias="UserAddress" type="com.lunchtasting.server.po.lt.UserAddress" />
+
+    <resultMap id="UserAddressResult" class="com.lunchtasting.server.po.lt.UserAddress">
+        <result property="id" column="id" jdbcType="BIGINT" />
+        <result property="userId" column="user_id" jdbcType="VARCHAR" />
+        <result property="name" column="name" jdbcType="VARCHAR" />
+        <result property="sex" column="sex" jdbcType="INT" />
+        <result property="phone" column="phone" jdbcType="VARCHAR" />
+        <result property="province" column="province" jdbcType="VARCHAR" />
+        <result property="city" column="city" jdbcType="VARCHAR" />
+        <result property="town" column="town" jdbcType="VARCHAR" />
+        <result property="detail" column="detail" jdbcType="VARCHAR" />
+        <result property="postalCode" column="postal_code" jdbcType="VARCHAR" />
+        <result property="isFrequently" column="is_frequently" jdbcType="INT" />
+        <result property="longitude" column="longitude" jdbcType="DOUBLE" />
+        <result property="latitude" column="latitude" jdbcType="DOUBLE" />
+    </resultMap>
+
+	<insert id="create" parameterClass="UserAddress">
+    <![CDATA[
+   		INSERT INTO user_address (
+   		id
+   		, user_id
+    	, name
+    	, sex
+    	, phone
+    	, province
+    	, city
+    	, town
+    	, detail
+    	, postal_code
+    	, is_frequently
+    	, longitude
+    	, latitude
+    	, create_time
+    	) VALUES (
+    	#id#
+   		, #userId#
+    	, #name#
+    	, #sex#
+    	, #phone#
+    	, #province#
+    	, #city#
+    	, #town#
+    	, #detail#
+    	, #postalCode#
+    	, #isFrequently#
+    	, #longitude#
+    	, #latitude#
+    	, now()
+    	)
+    ]]>
+	</insert>
+	
+	<update id="update" parameterClass="UserAddress">
+	   	<![CDATA[ UPDATE user_address ]]>
+		<dynamic prepend="set">
+			<isNotEmpty prepend="," property="userId">
+				user_id = #userId#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="name">
+				name = #name#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="sex">
+				sex = #sex#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="phone">
+				phone = #phone#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="province">
+				province = #province#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="city">
+				city = #city#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="town">
+				town = #town#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="detail">
+				detail = #detail#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="postalCode">
+				postal_code = #postalCode#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="isFrequently">
+				is_frequently = #isFrequently#
+			</isNotEmpty>
+		</dynamic>
+		WHERE id = #id#
+	</update>
+	
+	<select id="getById" parameterClass="map" resultMap="UserAddressResult">
+		SELECT * FROM user_address WHERE id = #id:BIGINT#
+	</select>
+	
+	<select id="queryUserAddressList"  parameterClass="map" resultClass="java.util.HashMap">
+    	SELECT * FROM user_address
+    		WHERE user_id = #userId# ORDER BY is_frequently DESC
+           	<isNotNull property="pageSize">
+           		LIMIT #pageSize# 
+            </isNotNull>
+	</select>
+	
+	<update id="clearDefault" parameterClass="java.lang.Long">
+		UPDATE user_address SET is_frequently = 0 WHERE user_id = #userId# AND is_frequently = 1
+	</update>
+	
+	<select id="getFrequentlyAddress" parameterClass="map" resultClass="java.util.HashMap">
+		SELECT * FROM user_address WHERE user_id = #userId# AND is_frequently = 1 
+	</select>
+	
+	<select id="getByAddressId" parameterClass="map" resultClass="java.util.HashMap">
+		SELECT * FROM user_address WHERE id = #addressId#
+	</select>
+	
+	<update id="clearFrequently" parameterClass="map">
+		UPDATE user_address SET is_frequently = 0 WHERE user_id = #userId# AND is_frequently = 1
+	</update>
+	
+	<update id="updateFrequently" parameterClass="map">
+		UPDATE user_address SET is_frequently = 1 WHERE id = #addressId# AND user_id = #userId#
+	</update>
+	    
+	<delete id="removeAddress" parameterClass="map">
+		DELETE FROM user_address WHERE id = #addressId# AND user_id = #userId#
+	</delete>    
+	
+	<select id="queryProvinceList" resultClass="java.util.HashMap">
+		SELECT * FROM address_province WHERE flag = 0
+	</select>
+	
+	<select id="queryCityList" parameterClass="map" resultClass="java.util.HashMap">
+		SELECT * FROM address_city WHERE province_code = #provinceCode# AND flag = 0
+	</select>
+	
+	<select id="queryTownList" parameterClass="map" resultClass="java.util.HashMap">
+		SELECT * FROM address_town WHERE city_code = #cityCode# AND flag = 0
+	</select>
+	
+	<select id="queryAllCityList" resultClass="java.util.HashMap">
+		SELECT a.name AS province_name,a.code AS province_code
+				,b.name AS city_name,b.code AS city_code
+				,c.name AS town_name,c.code AS town_code
+	
+        	FROM(SELECT * FROM address_province WHERE flag = 0) a
+
+        	LEFT JOIN(SELECT * FROM address_city WHERE flag = 0) 
+        		b ON(a.code = b.province_code)
+
+       	 	LEFT JOIN (SELECT * FROM address_town WHERE flag = 0) c ON(b.code = c.city_code)
+	</select>
+</sqlMap>

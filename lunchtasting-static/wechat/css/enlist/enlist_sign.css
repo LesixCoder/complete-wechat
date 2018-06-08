@@ -1,0 +1,134 @@
+/* 通用 */
+.wrap_enter,.wrap_enterDz{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+/* 报名首页入口 */
+.wrap_enter{
+    background: url("../../images/enlist/enter_bg.png") repeat;
+    font: .3rem/.48rem;
+    color: #272827;
+}
+.enter_header{
+    width: 100%;
+}
+.enter_header img{
+    width: 100%;
+    height: auto;
+    margin: 0;
+}
+.enter_intro{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: url("../../images/enlist/enter_mainBg.png") no-repeat center 4.3rem;
+}
+.eIntro_a{
+    padding: .7rem .2rem;
+    font-weight: bold;
+}
+.eIntro_a p{
+    padding: .77rem .84rem .62rem .88rem;
+    background: url("../../images/enlist/enter_a_pre.png") no-repeat left top, url("../../images/enlist/enter_a_next.png") no-repeat right bottom;
+}
+.eIntro_b,.eIntro_c{
+    color: #fff000;
+}
+.eIntro_b{
+    background: url("../../images/enlist/enter_b.png") no-repeat center center;
+    background-size: 100% 100%;
+}
+.eIntro_b p{
+    padding: 1.27rem 3.48rem 1.33rem .75rem;
+}
+.eIntro_c{
+    margin-top: 1.4rem;
+    background: url("../../images/enlist/enter_c.png") no-repeat center center;
+    background-size: 100% 100%;
+}
+.eIntro_c p{
+    padding: 1.85rem .2rem 1.35rem 3.2rem;
+}
+.enter_btnG{
+    width: 100%;
+    padding: .83rem 0 1.37rem;
+}
+.enter_btnG .box_content{
+    padding: 0 1.05rem;
+}
+.enter_btnG .box_content a,.enterDz_btn .box_content a{
+    height: .9rem;
+    line-height: .9rem;
+}
+
+/* 大众组介绍入口 */
+.wrap_enterDz {
+    background-color: #fff000;
+    font-size: .34rem;
+    line-height: .48rem;
+}
+
+.enterDz_header {
+    width: 100%;
+    height: 5.63rem;
+    background: url("../../images/enlist/dz_tit.png") no-repeat center center;
+    background-size: 100% 100%;
+}
+
+.enterDz_intro {
+    padding: 0 .64rem;
+    background: url("../../images/enlist/dz_bgIcon.png") no-repeat right 1.75rem;
+}
+
+.enterDz_content {
+    display: flex;
+    flex-direction: column;
+    margin: -2rem 0 0;
+    padding: 0 0 1rem;
+    color: #fff;
+    background: rgba(7, 7, 7, .54);
+}
+.dzContent_tit,.enterDz_content h4{
+    font-size: .4rem;
+    color: #272827;
+    font-weight: bold;
+    text-align: center;
+}
+.dzContent_tit{
+    position: relative;
+    height: .9rem;
+    line-height: .9rem;
+    margin: 0 0 .5rem;
+    overflow: hidden;
+}
+.dzContent_tit span,.dzContent_tit em{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+}
+.dzContent_tit span{
+    z-index: 10;
+    height: 100%;
+}
+.dzContent_tit em {
+    height: 0;
+    border-top: 1rem solid #fff000;
+    border-left: 1rem solid transparent;
+    border-right: 1rem solid transparent;
+}
+.enterDz_content p{
+    margin: 0 .5rem;
+}
+.enterDz_content h4{
+    width: 2.2rem;
+    height: .73rem;
+    line-height: .73rem;
+    margin: .35rem 0 .45rem .5rem;
+    background-color: #fff000;
+}
+.enterDz_btn{
+    margin: .8rem 0 1.1rem;
+    padding: 0 .32rem;
+}

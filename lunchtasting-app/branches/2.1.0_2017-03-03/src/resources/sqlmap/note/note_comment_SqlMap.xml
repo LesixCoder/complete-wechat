@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.NoteComment">
+
+    <typeAlias alias="NoteComment" type="com.lunchtasting.server.po.lt.NoteComment" />
+
+    <resultMap id="NoteCommentResult" class="com.lunchtasting.server.po.lt.NoteComment">
+        <result property="id" column="id"  jdbcType="BIGINT" />
+        <result property="userId" column="user_id" jdbcType="BIGINT" />
+        <result property="noteId" column="note_id" jdbcType="BIGINT" />
+        <result property="noteUserId" column="note_user_id" jdbcType="BIGINT" />
+        <result property="content" column="content" jdbcType="VARCHAR" />
+        
+        <result property="createTime" column="create_time" jdbcType="DATETIME" />
+    </resultMap>
+    
+    <insert id="create" parameterClass="NoteComment">
+    <![CDATA[
+        INSERT INTO note_comment(
+        id
+        , user_id
+        , note_id
+        , content
+        , note_user_id
+        , create_time
+        ) VALUES (
+        #id#
+        , #userId#
+        , #noteId#
+        , #content#
+        , #noteUserId#
+        , now()
+        )
+    ]]>
+    </insert>
+    
+    <select id="queryNoteCommentList"  parameterClass="map" resultClass="java.util.HashMap" remapResults="true">
+		SELECT nc.id,nc.user_id,nc.content,nc.create_time ,u.img_url as icon,u.name
+		FROM note_comment nc 
+			JOIN (SELECT * FROM note WHERE flag = 0 ) n ON n.id=nc.note_id
+			LEFT JOIN user u ON nc.user_id = u.id
+		WHERE n.id= #noteId#
+        ORDER BY nc.create_time ASC
+        
+        LIMIT #page#, #pageSize#
+    </select>
+    
+    <select id="getNoteCommenCount"  parameterClass="map" resultClass="java.lang.Integer">
+		SELECT COUNT(nc.id)
+		FROM note_comment nc 
+			JOIN (SELECT * FROM note WHERE flag = 0 ) n ON n.id=nc.note_id
+			LEFT JOIN user u ON nc.user_id = u.id
+		WHERE n.id= #noteId#
+    </select>
+	    
+</sqlMap>

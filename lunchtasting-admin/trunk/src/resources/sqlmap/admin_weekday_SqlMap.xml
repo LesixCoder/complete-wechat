@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.WeekDay">
+
+    <typeAlias alias="WeekDay" type="com.lunchtasting.server.po.lt.WeekDay" />
+
+    <resultMap id="WeekDayResult" class="com.lunchtasting.server.po.lt.WeekDay">
+        <result property="id" column="id" jdbcType="BIGINT" />
+        <result property="wYear" column="w_year" jdbcType="VARCHAR" />
+        <result property="wMonth" column="w_month" jdbcType="VARCHAR" />
+        <result property="wDay" column="w_day" jdbcType="VARCHAR" />
+        <result property="wDate" column="w_date" jdbcType="DATETIME" />
+        <result property="wFlag" column="w_flag" jdbcType="INT" />
+        <result property="wWeek" column="w_week" jdbcType="VARCHAR" />
+        <result property="wLastDay" column="w_last_day" jdbcType="DATETIME" />
+        <result property="wNextDay" column="w_next_day" jdbcType="DATETIME" />
+        <result property="flag" column="flag" jdbcType="INT" />
+        <result property="createTime" column="create_time" jdbcType="DATETIME" />
+    </resultMap>
+
+    <!-- 查询    -->
+    <select id="queryDays"  parameterClass="map" resultMap="WeekDayResult">
+            SELECT  * FROM week_day WHERE
+	            w_flag = 0
+	            <isNotEmpty property="wYear" prepend="AND">
+			    w_year = #wYear#
+			    </isNotEmpty>
+			    <isNotEmpty property="wMonth" prepend="AND">
+			    w_month = #wMonth#
+			    </isNotEmpty>
+			    <isNotEmpty property="wDay" prepend="AND">
+			    w_day = #wDay#
+			    </isNotEmpty>
+            ORDER BY w_day 
+	</select>
+
+    <!-- 新建 -->
+	<insert id="create" parameterClass="WeekDay">
+    <![CDATA[
+   		INSERT INTO week_day (
+   		  id
+   		, w_year
+    	, w_month
+    	, w_day
+    	, w_date
+    	, w_flag
+    	, w_week
+    	, w_last_day
+    	, w_next_day
+    	, create_time
+    	, flag
+    	) VALUES (
+    	  #id#
+    	, #wYear#
+    	, #wMonth#
+    	, #wDay#
+    	, #wDate#
+    	, #wFlag#
+    	, #wWeek#
+    	, #wLastDay#
+    	, #wNextDay#
+    	, now()
+    	, 0
+    	)
+    ]]>
+	<selectKey resultClass="long" keyProperty="id">
+	   SELECT @@IDENTITY
+	   AS id
+    </selectKey>
+	</insert>
+	
+	<!-- 查询下个工作日 -->
+	<select id="getWNextDay" parameterClass="map" resultMap="WeekDayResult">
+		SELECT * FROM week_day WHERE 1=1
+		 <isNotEmpty property="wDate" prepend="AND">
+		    w_date = #wDate#
+		 </isNotEmpty>
+	</select>
+    
+</sqlMap>

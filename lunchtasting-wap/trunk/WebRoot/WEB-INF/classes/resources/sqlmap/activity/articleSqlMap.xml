@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.Article">
+
+	<typeAlias alias="Article" type="com.lunchtasting.server.po.lt.Article" />
+
+	<resultMap id="ArticleResult" class="com.lunchtasting.server.po.lt.Article">
+		<result property="id" column="id" jdbcType="BIGINT" />
+		<result property="name" column="name" jdbcType="VARCHAR" />
+		<result property="content" column="content" jdbcType="VARCHAR" /> 
+		<result property="imgUrl" column="img_url" jdbcType="VARCHAR" />
+		<result property="imgText" column="img_text" jdbcType="TEXT" />
+		<result property="createTime" column="create_time" jdbcType="DATETIME" />
+		<result property="updateTime" column="update_time" jdbcType="DATETIME" />
+		<result property="flag" column="flag" jdbcType="INT" />
+		<result property="status" column="status" jdbcType="INT" />
+		<result property="sort" column="sort" jdbcType="INT" />
+	</resultMap>
+
+	<sql id="userQb">
+		id
+    	, name
+    	, content
+    	, img_url
+    	, img_text
+    	, update_time
+    	, create_time
+    	, status
+    	, sort
+    	, flag  
+	</sql>
+	
+	<!-- 查询文章列表 -->
+	<select id="queryArticleList" parameterClass="map" resultClass="java.util.HashMap">
+		 SELECT 
+			a.id
+	    	, a.name
+	    	, a.content
+	    	, a.img_url
+	    	, '' as address
+	    	, NULL as enroll_num
+	    	, NULL as begin_time
+	    	, NULL as end_time
+	    	, a.flag
+			, a.sort
+			, 2 as TABLEtype
+		   FROM
+		     article a
+	   <isNotNull property="pageSize">
+	   LIMIT 
+	   	#page#, #pageSize#
+	   </isNotNull>
+	   ORDER BY 
+	   	create_time
+	</select>
+	
+	<!-- 根据id查询文章 -->
+	<select id="queryArticleById" parameterClass="map" resultMap="ArticleResult">
+		 SELECT 
+			a.id
+	    	, a.name
+	    	, a.content
+	    	, a.img_url
+	    	, a.img_text
+	    	, a.update_time
+	    	, a.create_time
+	    	, a.status
+	    	, a.sort
+	    	, a.flag 
+		   FROM
+		     article a
+		   WHERE
+		     a.id = #id#
+	</select>
+	
+</sqlMap>

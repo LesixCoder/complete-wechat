@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.CourseOrderVote">
+
+	<typeAlias alias="CourseOrderVote" type="com.lunchtasting.server.po.lt.CourseOrderVote" />
+
+	<resultMap id="CourseOrderVoteResult" class="com.lunchtasting.server.po.lt.CourseOrderVote">
+		<result property="id" column="id"  jdbcType="BIGINT" />
+		<result property="userId" column="user_id"  jdbcType="BIGINT" />
+		<result property="desUserId"  column="des_user_id" jdbcType="BIGINT" />
+		<result property="courseOrderId"  column="course_order_id" jdbcType="BIGINT" />
+		<result property="courseMealId"  column="course_meal_id" jdbcType="BIGINT" />
+		<result property="createTime"  column="create_time" jdbcType="DATETIME" />
+	</resultMap>
+	
+	
+	<insert id="create" parameterClass="CourseOrderVote">
+    <![CDATA[
+        INSERT INTO course_order_vote (
+        id
+        , user_id
+        , des_user_id
+        , course_order_id
+        , course_meal_id
+        , create_time
+        ) VALUES (
+        #id#
+        , #userId#
+        , #desUserId#
+        , #courseOrderId#
+        , #courseMealId#
+        , now()
+        )
+    ]]>
+    </insert>
+    
+	<select id="getById" parameterClass="map" resultMap="CourseOrderVoteResult">
+		SELECT * FROM course_order_vote WHERE id = #id:BIGINT#
+	</select>
+	
+	<select id="queryOrderVoteList"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT a.id AS order_id,a.user_id,b.name AS user_name,b.img_url AS user_img_url,IFNULL(c.vote_count,0) AS vote_count
+			,d.vote_str
+		
+			FROM (SELECT id,user_id,create_time FROM course_order 
+					WHERE course_meal_id = #courseMealId# AND status != 1 ) a
+				  
+			JOIN user b ON(a.user_id = b.id)
+			
+			LEFT JOIN (SELECT COUNT(id) vote_count,course_order_id 
+				FROM course_order_vote GROUP BY course_order_id) 
+				c ON (a.id = c.course_order_id)
+				
+			LEFT JOIN (
+				SELECT t1.course_order_id,
+					GROUP_CONCAT(t2.id,'@',t2.img_url SEPARATOR '|') AS vote_str 
+				
+					FROM (SELECT user_id,course_order_id FROM course_order_vote ORDER BY create_time DESC) t1
+					
+					JOIN user t2 ON(t1.user_id = t2.id)
+					GROUP BY course_order_id
+			) d ON(a.id = d.course_order_id)
+			ORDER BY IFNULL(c.vote_count,0) DESC,a.create_time DESC
+	</select>
+	
+	<select id="getOrderVoteCount" parameterClass="map" resultClass="java.lang.Integer">
+		SELECT COUNT(id) FROM course_order WHERE course_meal_id = #courseMealId# 
+			AND status != 1 AND status != 3
+	</select>
+	
+	<select id="queryUserVoteList"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT a.user_id,b.name AS user_name,b.img_url AS user_img_url 
+		
+			FROM (SELECT * FROM course_order_vote WHERE course_order_id = #orderId# 
+				AND des_user_id = #desUserId# ORDER BY create_time DESC 
+				<isNotNull property="pageSize">
+					LIMIT #page#, #pageSize# 
+				</isNotNull>
+				) a
+				
+			JOIN user b ON(a.user_id = b.id) 
+	</select>
+	
+	<select id="getUserVoteCount" parameterClass="map" resultClass="java.lang.Integer">
+		SELECT COUNT(id) FROM course_order_vote WHERE course_order_id = #orderId# 
+				des_user_id = #desUserId# 
+	</select>
+	
+	<select id="getVote" parameterClass="map" resultClass="java.lang.Integer">
+		SELECT COUNT(id) FROM course_order_vote 
+			WHERE course_meal_id = #courseMealId# AND user_id = #userId#
+	</select>
+	
+	<select id="getCourseOrderVoteDetail"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT a.id AS order_id,a.user_id,a.course_meal_id,a.sex
+			,b.name AS user_name,b.img_url AS user_img_url 
+			,IFNULL(c.vote_count,0) AS vote_count
+		
+			FROM (SELECT * FROM course_order WHERE id = #orderId# 
+				AND status != 1 AND status !=3) a
+			
+			JOIN user b ON(a.user_id = b.id)
+			
+			LEFT JOIN (SELECT COUNT(id) vote_count,course_order_id 
+				FROM course_order_vote GROUP BY course_order_id) 
+				c ON (a.id = c.course_order_id)
+	</select>
+</sqlMap> 

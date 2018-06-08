@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.Note">
+
+    <typeAlias alias="Note" type="com.lunchtasting.server.po.lt.Note" />
+
+    <resultMap id="NoteResult" class="com.lunchtasting.server.po.lt.Note">
+        <result property="id" column="id"  jdbcType="BIGINT" />
+        <result property="userId" column="user_id"  jdbcType="BIGINT" />
+        <result property="content" column="content" jdbcType="VARCHAR" />
+        <result property="videoUrl" column="video_url" jdbcType="VARCHAR" />
+        <result property="imgUrl" column="img_url" jdbcType="VARCHAR" />
+        <result property="createTime" column="create_time" jdbcType="DATETIME" />
+        <result property="flag" column="flag" jdbcType="INT" />
+        <result property="type" column="type" jdbcType="INT" />
+        <result property="imgWidth" column="img_width" jdbcType="INT" />
+        <result property="imgHeight" column="img_height" jdbcType="INT" />
+    </resultMap>
+    
+    <insert id="create" parameterClass="Note">
+    <![CDATA[
+        INSERT INTO note (
+        id
+        , img_width
+        , img_height
+        , user_id
+        , type
+        , content
+        , video_url
+        , img_url
+        , create_time
+        , flag
+        ) VALUES (
+        #id#
+        , #imgWidth#
+        , #imgHeight#
+        , #userId#
+        , #type#
+        , #content#
+        , #videoUrl#
+        , #imgUrl#
+        , now()
+        , #flag#
+        )
+    ]]>
+    </insert>
+    
+    <select id="getById" parameterClass="map" resultMap="NoteResult">
+		SELECT 
+		id
+        , img_width
+        , img_height
+        , user_id
+        , type
+        , content
+        , video_url
+        , img_url
+        , create_time
+        , flag
+ 		FROM note 
+ 		WHERE id = #id:BIGINT#
+	</select>
+    
+    <select id="queryNoteList"  parameterClass="map" resultClass="java.util.HashMap" remapResults="true">
+        SELECT n.id,IFNULL(n.content,'') AS content,n.type,n.user_id,n.img_url,u.name as user_name,u.img_url as icon,n.create_time,
+        n.img_height,n.img_width,
+        (SELECT COUNT(nl.id) FROM note_like nl WHERE nl.note_id=n.id) as like_count,
+        <isNotNull property="userId">
+	        case (SELECT COUNT(f.id) FROM friend f WHERE f.des_user_id=n.user_id and f.src_user_id=#userId#) 
+	        when "0" then "0"  else "1" end as friend,
+	        case (SELECT COUNT(nl.id) FROM note_like nl WHERE nl.user_id =#userId# AND n.id = nl.note_id)
+			when "0" then "0"  else "1" end as 'like', 
+        </isNotNull>
+        (SELECT COUNT(nc.id) FROM note_comment nc WHERE nc.note_id=n.id) as comment_count
+
+        
+            FROM (SELECT * FROM note WHERE flag = 0 ) n
+            JOIN user u ON (u.id = n.user_id)
+        ORDER BY n.create_time DESC
+        
+        LIMIT #page#, #pageSize#
+    </select>
+    
+    <select id="queryNoteListByTopic"  parameterClass="map" resultClass="java.util.HashMap" remapResults="true">
+        SELECT n.id,IFNULL(n.content,'') AS content,n.type,n.user_id,n.img_url,u.name as user_name,u.img_url as icon,n.create_time,
+        n.img_height,n.img_width,
+        (SELECT COUNT(nl.id) FROM note_like nl WHERE nl.note_id=n.id) as like_count,
+        <isNotNull property="userId">
+	        case (SELECT COUNT(f.id) FROM friend f WHERE f.des_user_id=n.user_id and f.src_user_id=#userId#) 
+	        when "0" then "0"  else "1" end as friend,
+	        case (SELECT COUNT(nl.id) FROM note_like nl WHERE nl.user_id =#userId# AND n.id = nl.note_id)
+			when "0" then "0"  else "1" end as 'like', 
+        </isNotNull>
+        (SELECT COUNT(nc.id) FROM note_comment nc WHERE nc.note_id=n.id) as comment_count
+            FROM (SELECT * FROM note WHERE flag = 0 ) n JOIN user u ON (u.id = n.user_id) , topic_note_middle tnm
+        WHERE
+        	tnm.topic_id = #topicId#
+        	and tnm.note_id = n.id
+        ORDER BY n.create_time DESC
+        LIMIT #page#, #pageSize#
+    </select>
+    
+    <select id="getNoteById"  parameterClass="map" resultClass="java.util.HashMap" remapResults="true">
+        SELECT n.id,n.content,n.type,n.user_id,n.img_url,u.name as user_name,u.img_url as icon,n.create_time,
+        n.img_height,n.img_width,
+        (SELECT COUNT(nc.id) FROM note_comment nc WHERE nc.note_id=n.id) as comment_count,
+        <isNotNull property="userId">
+     		 IFNULL(c.note_id,'') AS is_like,
+     		 case (SELECT COUNT(f.id) FROM friend f WHERE f.des_user_id=n.user_id and f.src_user_id=#userId#) 
+	         when "0" then "0"  else "1" end as friend,
+        </isNotNull>
+        (SELECT COUNT(nl.id) FROM note_like nl WHERE nl.note_id=n.id) as like_count
+        	FROM (SELECT * FROM note WHERE id = #noteId# AND flag = 0 ) n
+        	JOIN user u ON (u.id = n.user_id)
+        	<isNotNull property="userId">
+        	LEFT JOIN (SELECT note_id FROM note_like WHERE user_id = #userId# 
+        		AND note_id = #noteId#) c ON(n.id = c.note_id)
+        	</isNotNull>
+    </select>
+    
+    <select id="getNoteByTopicCount"  parameterClass="map" resultClass="java.lang.Integer">
+       	SELECT COUNT(n.id)
+            FROM (SELECT * FROM note WHERE flag = 0 ) n JOIN user u ON (u.id = n.user_id) , topic_note_middle tnm
+        WHERE
+        	tnm.topic_id = #topicId#
+        	and tnm.note_id = n.id
+    </select>
+    
+    <select id="getNoteCount"  parameterClass="map" resultClass="java.lang.Integer">
+        SELECT COUNT(n.id)  FROM (SELECT * FROM note WHERE flag = 0 ) n
+            JOIN user u ON (u.id = n.user_id)
+    </select>
+    
+    <select id="getUserNoteCount" parameterClass="map" resultClass="java.lang.Integer">
+    	SELECT COUNT(id) FROM note WHERE user_id = #userId# AND flag = 0
+    </select>
+    
+    <select id="queryUserNoteList"  parameterClass="map" resultClass="java.util.HashMap">
+    	SELECT id AS note_id,img_url FROM note WHERE user_id = #userId# AND flag = 0
+    		ORDER BY create_time DESC LIMIT #page#, #pageSize#
+    </select>
+	
+    <select id="getUserLikeNoteCount" parameterClass="map" resultClass="java.lang.Integer">
+    	SELECT COUNT(a.note_id) 
+    		FROM (SELECT note_id FROM note_like WHERE user_id = #userId#) a
+    		JOIN (SELECT id FROM note WHERE flag = 0) b ON(a.note_id = b.id)
+    </select>
+    
+    <select id="queryUserLikeNoteList" parameterClass="map" resultClass="java.util.HashMap">
+    	SELECT b.id AS note_id,b.img_url 
+    		FROM (SELECT * FROM note_like WHERE user_id = #userId# 
+    			ORDER BY create_time DESC LIMIT #page#, #pageSize#) a
+    		JOIN (SELECT id,img_url FROM note WHERE flag = 0) b ON(a.note_id = b.id)
+    </select>
+    
+   <select id="queryUserFriendNoteList" parameterClass="map" resultClass="java.util.HashMap">
+    	 SELECT n.id,IFNULL(n.content,'') AS content,n.type,n.user_id,n.img_url,u.name as user_name,u.img_url as icon,n.create_time,
+    	 n.img_height,n.img_width,
+        	(SELECT COUNT(nl.id) FROM note_like nl WHERE nl.note_id=n.id) as like_count,
+       		(SELECT COUNT(nc.id) FROM note_comment nc WHERE nc.note_id=n.id) as comment_count,
+	        case (SELECT COUNT(nl.id) FROM note_like nl WHERE nl.user_id =#userId# AND n.id = nl.note_id)
+			when "0" then "0"  else "1" end as 'like', 
+			"1" as friend
+         FROM (SELECT * FROM note WHERE flag = 0 ) n
+            JOIN user u ON (u.id = n.user_id) , friend f 
+		WHERE
+			f.src_user_id=#userId#
+			and f.des_user_id=n.user_id
+        ORDER BY n.create_time DESC
+        LIMIT #page#, #pageSize#
+    </select>
+    
+    <select id="getUserFriendNoteCount" parameterClass="map" resultClass="java.lang.Integer">
+    	SELECT COUNT(n.id) 
+    		 FROM (SELECT * FROM note WHERE flag = 0 ) n
+            JOIN user u ON (u.id = n.user_id) , friend f 
+		WHERE
+			f.src_user_id=#userId#
+			and f.des_user_id=n.user_id
+    </select>
+    
+     	<!-- 改状态 -->
+	  <update id="updateNote" parameterClass="Map">
+	       update note set flag = #flag# where id = #id#
+	  </update>
+</sqlMap>

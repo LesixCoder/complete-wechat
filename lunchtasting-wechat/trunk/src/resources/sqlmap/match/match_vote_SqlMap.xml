@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.MatchVote">
+
+    <typeAlias alias="MatchVote" type="com.lunchtasting.server.po.lt.MatchVote" />
+	
+	<resultMap id="MatchVoteResult" class="com.lunchtasting.server.po.lt.MatchVote">
+		<result property="id" column="id"  jdbcType="BIGINT" />
+		<result property="orderId" column="order_id" jdbcType="BIGINT" />
+	    <result property="userId" column="user_id" jdbcType="BIGINT" />
+		<result property="createTime" column="create_time" jdbcType="DATETIME" />
+	</resultMap>
+	
+	<insert id="create" parameterClass="MatchVote">
+    <![CDATA[
+        INSERT INTO match_vote (
+        id
+        , order_id
+        , user_id
+        , create_time
+        ) VALUES (
+        #id#
+        , #orderId#
+        , #userId#
+        , now()
+        )
+    ]]>
+    </insert>
+	
+	<select id="getIsVote"  parameterClass="map" resultClass="java.lang.Integer">
+        SELECT COUNT(id) FROM match_vote WHERE order_id = #orderId# AND user_id = #userId#
+        	AND DATE_FORMAT(create_time,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')
+    </select>
+    
+    <select id="getMatchVoteDetail"  parameterClass="map" resultClass="java.util.HashMap">
+    	SELECT a.id AS order_id,a.name,a.user_id,b.img_url
+			,IFNULL(c.vote_count,0) AS vote_count 
+		    ,d.id AS is_vote 
+    	
+    		FROM(SELECT * FROM match_order WHERE id = #orderId# AND status = 2 
+				AND type = 1) a
+				
+			JOIN user b ON(a.user_id = b.id)
+    		
+			LEFT JOIN (SELECT COUNT(id) vote_count,order_id FROM match_vote 
+				WHERE order_id = #orderId# GROUP BY order_id) c ON(a.id = c.order_id)
+			
+			LEFT JOIN (SELECT id,order_id FROM match_vote WHERE order_id = #orderId# 
+					AND user_id = #userId# AND DATE_FORMAT(create_time,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')) 
+				d ON(a.id = d.order_id)    
+	</select>
+
+</sqlMap>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.payment.AlipayNotifity">
+
+	<typeAlias alias="AlipayNotifity" type="com.lunchtasting.server.po.lt.payment.AlipayNotifity" />
+
+	
+    <insert id="createAlipayNotifity" parameterClass="map">
+    <![CDATA[
+        INSERT INTO alipay_notifity (
+        id
+        , biz_type
+        , notify_time
+        , notify_type
+        , notify_id
+        , app_id
+        , sign_type
+        , sign
+        , trade_no
+        , out_trade_no
+        , out_biz_no
+        , buyer_id
+        , buyer_logon_id
+        , seller_id
+        , seller_email
+        , trade_status
+        , total_amount
+        , receipt_amount
+        , invoice_amount
+        , buyer_pay_amount
+        , point_amount
+        , refund_fee
+        , subject
+        , body
+        , gmt_create
+        , gmt_payment
+        , gmt_refund
+        , gmt_close
+        , fund_bill_list
+        , create_time
+        ) VALUES (
+        #id#
+        , #biz_type#
+        , #notify_time#
+        , #notify_type#
+        , #notify_id#
+        , #app_id#
+        , #sign_type#
+        , #sign#
+        , #trade_no#
+        , #out_trade_no#
+        , #out_biz_no#
+        , #buyer_id#
+        , #buyer_logon_id#
+        , #seller_id#
+        , #seller_email#
+        , #trade_status#
+        , #total_amount#
+        , #receipt_amount#
+        , #invoice_amount#
+        , #buyer_pay_amount#
+        , #point_amount#
+        , #refund_fee#
+        , #subject#
+        , #body#
+        , #gmt_create#
+        , #gmt_payment#
+        , #gmt_refund#
+        , #gmt_close#
+        , #fund_bill_list#
+        , now()
+        )
+    ]]>
+    </insert>
+	
+	<select id="getNumber"  parameterClass="map" resultClass="java.lang.Integer">
+		SELECT COUNT(id) FROM alipay_notifity WHERE biz_type = #bizType# 
+			AND trade_status = #tradeStatus#  AND out_trade_no = #outTradeNo#   
+    </select>
+    
+    <select id="getAlipayNotifity"  parameterClass="map" resultClass="java.util.HashMap">
+    	SELECT * FROM alipay_notifity WHERE biz_type = #bizType# 
+    			AND trade_status = #tradeStatus# AND out_trade_no = #outTradeNo#
+    </select>
+	
+	
+</sqlMap>

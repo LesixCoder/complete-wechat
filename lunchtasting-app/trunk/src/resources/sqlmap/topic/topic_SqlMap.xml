@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.Topic">
+
+    <typeAlias alias="Topic" type="com.lunchtasting.server.po.lt.Topic" />
+
+    <resultMap id="TopicResult" class="com.lunchtasting.server.po.lt.Topic">
+        <result property="id" column="id"  jdbcType="BIGINT" />
+        <result property="name" column="name" jdbcType="VARCHAR" />
+        <result property="sort" column="sort" jdbcType="INT" />
+        <result property="flag" column="flag" jdbcType="INT" />
+        <result property="type" column="type" jdbcType="INT" />
+        <result property="color" column="color" jdbcType="INT" />
+    </resultMap>
+    
+    <insert id="create" parameterClass="Topic">
+    <![CDATA[
+        INSERT INTO note (
+        id
+        , name
+        , type
+        , sort
+        , color
+        , flag
+        ) VALUES (
+        #id#
+        , #name#
+        , #type#
+        , #sort#
+        , #color#
+        , #flag#
+        )
+    ]]>
+    </insert>
+    
+    
+    <select id="queryTopicList"  parameterClass="map" resultClass="java.util.HashMap" remapResults="true">
+        SELECT t.id,t.name,t.color
+            FROM (SELECT * FROM topic WHERE flag = 0 ) t
+        ORDER BY sort
+        LIMIT #page#, #pageSize#
+    </select>
+    
+    <select id="queryTopicListByNote"  parameterClass="map" resultClass="java.util.HashMap" remapResults="true">
+        SELECT t.name,t.id,t.color
+            FROM (SELECT * FROM topic WHERE flag = 0 ) t , topic_note_middle tnm
+        WHERE
+        	tnm.note_id = #noteId#
+        	and tnm.topic_id = t.id
+        ORDER BY sort
+    </select>
+    
+    <select id="getTopicCount"  parameterClass="map" resultClass="java.lang.Integer">
+        SELECT COUNT(id) FROM topic WHERE flag = 0
+    </select>
+    
+    <insert id="createConnect" parameterClass="map">
+    <![CDATA[
+        INSERT INTO topic_note_middle (
+   			topic_id,
+   			note_id
+        ) VALUES (
+			#topicId#,
+			#noteId#
+        )
+    ]]>
+    </insert>
+</sqlMap>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.CommunityPraise">
+
+	<typeAlias alias="CommunityPraise" type="com.lunchtasting.server.po.lt.CommunityPraise" />
+
+	<resultMap id="CommunityPraiseResult" class="com.lunchtasting.server.po.lt.CommunityPraise">
+		<result property="id" column="id"  jdbcType="BIGINT" />
+		<result property="userId"  column="user_id" jdbcType="BIGINT" />
+		<result property="communityId" column="community_id" jdbcType="BIGINT" />
+		<result property="createTime" column="create_time" jdbcType="DATETIME" />
+	</resultMap>
+	
+    <insert id="create" parameterClass="CommunityPraise">
+    <![CDATA[
+        INSERT INTO community_praise (
+        user_id
+        , community_id
+        , create_time
+        ) VALUES (
+        #userId#
+        , #communityId#
+        , now()
+        )
+    ]]>
+    <selectKey resultClass="long" keyProperty="id">
+       SELECT @@IDENTITY
+       AS id
+    </selectKey>
+    </insert>
+	
+</sqlMap>

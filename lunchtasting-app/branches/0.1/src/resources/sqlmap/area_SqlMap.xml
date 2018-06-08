@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.Area">
+
+    <typeAlias alias="Area" type="com.lunchtasting.server.po.lt.Area" />
+
+<!--     <resultMap id="AreaResult" class="com.lunchtasting.server.po.lt.Area">
+        <result column="id" property="id" jdbcType="BIGINT" /> 
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="BIGINT"/>
+         <result column="p_id" property="pid" jdbcType="BIGINT" />
+        <result column="state" property="state" jdbcType="BIGINT" />  
+        <result column="type_name" property="typeName" /> 
+        <result column="state_name" property="stateName" />
+        <result column="p_name" property="pname" />
+    </resultMap> -->
+   
+  	<resultMap id="dataModel" class="com.lunchtasting.server.vo.DataModel">
+   		<result column="area_id" property="value"  jdbcType="BIGINT"/> 
+        <result column="area_name" property="label" jdbcType="VARCHAR"/>
+   </resultMap> 
+   
+    <resultMap id="areaNew" class="com.lunchtasting.server.po.lt.Area">
+        <result column="area_id" property="areaId"  jdbcType="BIGINT"/> 
+        <result column="area_name" property="areaName"  jdbcType="VARCHAR"/>
+        <result column="p_id" property="pId" jdbcType="BIGINT"/>
+   </resultMap>
+
+	<!-- 查询列表-->
+ 	 <!-- <select id="queryAreaList" parameterClass="map" resultClass="java.util.HashMap">
+		SELECT id, name, type, p_id, state,case type when 0 then '顶级' when 1 then '城市' else 'CBD' end as type_name,case state when 0 then '正常' else '无效' end as state_name,(select b.name from area b where b.id= a.p_id) as p_name FROM area a 
+		WHERE 1=1 and a.p_id != 0 
+		<isNotNull prepend="AND" property="id">
+			id=#id# 
+		</isNotNull>
+		<isNotNull prepend="AND" property="name">
+			name like concat('%', '#name#', '%')
+		</isNotNull>
+		<isNotNull prepend="AND" property="type">
+			 type=#type#  
+		</isNotNull>
+		<isNotNull prepend="AND" property="pid">
+			and p_id=#pid#
+		</isNotNull>
+		LIMIT #curPage#,#pageSize#
+  	</select>
+  	
+  	查询列表总条数
+ 	 <select id="queryAreaListCount" parameterClass="map" resultClass="int">
+		select count(*) from area where 1=1 
+		
+		<isNotNull prepend="AND" property="id">
+			id=#id# 
+		</isNotNull>
+		
+		<isNotEmpty prepend="AND" property="name">
+			name like concat('%', '$name$', '%')
+		</isNotEmpty>
+		
+		<isNotNull prepend="AND" property="type">
+			 type=#type#  
+		</isNotNull>
+		
+		<isNotNull prepend="AND" property="pid">
+			p_id=#pid#
+		</isNotNull>
+ 	 </select>
+ 	 
+ 	 更新区域
+ 	<update id="updateArea" parameterClass="AreaResult">
+  		UPDATE area SET 
+  			<isNotNull property="pid">
+  				p_id = #pid#, 
+  			</isNotNull>
+  			
+  			<isNotEmpty property="name">
+  				name = #name#
+  			</isNotEmpty>
+  		WHERE id = #id#
+ 	</update>
+ 	
+ 	 删除区域
+ 	<delete id="deleteArea">
+  		DELETE FROM area where id = #{id}
+  	</delete>
+  
+ 	  增加区域
+ 	 <insert id="addArea" parameterClass="Area">
+	 	  <![CDATA[
+		   INSERT INTO area
+		  		(
+		  			name, type, p_id, state
+		  		)
+		   VALUES
+		  		(
+		  			#name#, #type#, #pid#, 0
+		  		) 
+		  ]]>
+		  <selectKey resultClass="long" keyProperty="id">
+				SELECT @@IDENTITY
+				AS id
+	   	 </selectKey>
+ 	 </insert>  -->
+ 	<!-- 查找前台区域 -->
+	<select id="queryAreaListNew" parameterClass="map" resultMap="areaNew">
+		select area_id,area_name,p_id from area where 1 = 1
+		<isNotNull property="id">
+			and p_id = #id# 
+		</isNotNull>
+		<isNull property="id"> 
+			and p_id = 1
+		</isNull>
+	</select>
+	
+	<!-- 查询大厦 -->
+  <select id="queryEdificeList" parameterClass="map" resultMap="dataModel">
+  		select area_id,area_name from area where 1 = 1
+		<isNotNull property="id">
+			 and p_id=#id#
+		</isNotNull>
+		<!-- ORDER BY getDistance(#{locationX},#{locationY},coordinate_y,coordinate_x) asc -->
+  </select>
+</sqlMap>

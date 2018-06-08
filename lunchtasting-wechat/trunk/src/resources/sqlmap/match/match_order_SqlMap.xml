@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.MatchOrder">
+
+	<typeAlias alias="MatchOrder" type="com.lunchtasting.server.po.lt.MatchOrder" />
+
+	<resultMap id="MatchOrderResult" class="com.lunchtasting.server.po.lt.MatchOrder">
+		<result property="id" column="id"  jdbcType="BIGINT" />
+		<result property="userId"  column="user_id" jdbcType="BIGINT" />
+		<result property="matchId" column="match_id" jdbcType="BIGINT" />
+		<result property="price" column="price" jdbcType="DOUBLE" />
+		<result property="payPrice" column="pay_price" jdbcType="DOUBLE" />
+		<result property="status" column="status" jdbcType="INT" />
+		<result property="createTime" column="create_time" jdbcType="DATETIME" />
+	</resultMap>
+    
+    <select id="getById"  parameterClass="map" resultMap="MatchOrderResult">
+        SELECT * FROM match_order where id = #id:BIGINT#
+    </select> 
+    
+    
+    <insert id="createMatchOrder" parameterClass="map">
+    <![CDATA[
+        INSERT INTO match_order (
+        id
+        , user_id
+        , match_id
+        , signup_id
+        , ticket_id
+        , price
+        , pay_price
+        , ticket_price
+        , goods_price
+        , status
+        , create_time
+        ) VALUES (
+        #id#
+        , #userId#
+        , #matchId#
+        , #signupId#
+        , #ticketId#
+        , #price#
+        , #payPrice#
+        , #ticketPrice#
+        , #goodsPrice#
+        , #status#
+        , now()
+        )
+    ]]>
+    </insert>
+   
+    <insert id="createMatchOrderGoods" parameterClass="map">
+    <![CDATA[
+        INSERT INTO match_order_goods (
+        id
+        , match_order_id
+        , match_goods_id
+        , number
+        , price
+        , create_time
+        ) VALUES (
+        #id#
+        , #matchOrderId#
+        , #matchGoodsId#
+        , #number#
+        , #price#
+        , now()
+        )
+    ]]>
+    </insert> 
+    
+    <update id="updateOrderPay" parameterClass="map">
+		UPDATE match_order SET status = 2 WHERE id = #orderId# 
+	</update>
+	
+	<select id="queryUserOrderList"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT a.id AS order_id,a.price,a.pay_price,a.ticket_price,a.goods_price,a.create_time
+			,a.ticket_id,b.type AS ticket_type,b.kind AS ticket_kind
+			,c.id AS signup_id,c.field1,c.field2,c.field3,c.field4,c.field5,c.field6
+		 	,IFNULL(d.concat_str,'') AS concat_str 
+		 
+			FROM(SELECT * FROM match_order WHERE match_id = #matchId# AND user_id = #userId#
+				<isNotNull property="status">
+					AND status = #status#
+				</isNotNull>
+				ORDER BY create_time
+			) a
+			
+			LEFT JOIN match_ticket b ON(a.ticket_id = b.id)
+			
+			LEFT JOIN (
+				SELECT a.id,b.field1,b.field2,b.field3,b.field4,b.field5,b.field6
+				
+				FROM (SELECT * FROM match_ticket_signup WHERE match_id = #matchId# AND user_id = #userId#) a
+				
+				LEFT JOIN match_ticket_signup_info b ON(a.id = b.signup_id)
+				
+				GROUP BY a.id
+			) c ON(a.signup_id = c.id)
+			
+			LEFT JOIN (
+				SELECT a.match_order_id
+					,GROUP_CONCAT(b.name,'@',b.img_url,'@',a.number,'@',a.price SEPARATOR '|') AS concat_str 
+			
+				FROM match_order_goods a
+					
+				LEFT JOIN match_goods b ON(a.match_goods_id = b.id)		
+					
+				GROUP BY a.match_order_id	
+			) d ON(a.id = d.match_order_id)
+	</select>
+    
+    <!--  老版本备份代码
+    
+        <insert id="create" parameterClass="MatchOrder">
+    <![CDATA[
+        INSERT INTO match_order (
+        id
+        , user_id
+        , match_id
+        , match_code_id
+        , invite_user_id
+        , channel
+        , price
+        , pay_price
+        , phone
+        , name
+        , sex
+        , real_name
+        , certificate
+        , contact_name
+        , contact_phone
+        , type
+        , status
+        , create_time
+        ) VALUES (
+        #id#
+        , #userId#
+        , #matchId#
+        , #matchCodeId#
+        , #inviteUserId#
+        , #channel#
+        , #price#
+        , #payPrice#
+        , #phone#
+        , #name#
+        , #sex#
+        , #realName#
+        , #certificate#
+        , #contactName#
+        , #contactPhone#
+        , #type#
+        , #status#
+        , now()
+        )
+    ]]>
+    </insert>
+    
+    
+	<select id="getMatchOrderCount"  parameterClass="map" resultClass="java.lang.Integer">
+        SELECT COUNT(1) FROM match_order WHERE match_id = #matchId# AND status IN(1,2)
+    </select>
+    
+    <select id="getIsSignUp"  parameterClass="map" resultClass="java.lang.Integer">
+        SELECT COUNT(id) FROM match_order WHERE match_id = #matchId#
+        	 AND status  = 2
+        	 <isNotEmpty property="userId">
+        	 	AND user_id = #userId# 
+        	 </isNotEmpty>
+        	 <isNotEmpty property="phone">
+        	 	AND phone = #phone#
+        	 </isNotEmpty>
+        	 <isNotEmpty property="type">
+        	 	AND type = #type#
+        	 </isNotEmpty>
+    </select>
+    
+    <select id="getUserMatchOrderCount"  parameterClass="map" resultClass="java.lang.Integer">
+        SELECT COUNT(id) FROM match_order WHERE user_id = #userId#
+    </select>
+    
+    <select id="queryUserMatchOrderList"  parameterClass="map" resultClass="java.util.HashMap">
+        SELECT b.id AS match_id,b.name,b.address,b.img_url,b.begin_time,b.end_time
+            FROM (SELECT match_id FROM match_order WHERE user_id = #userId#
+                    ORDER BY create_time DESC LIMIT #page#, #pageSize#) a
+            JOIN (SELECT * FROM matchs WHERE flag = 0 ) b ON(a.match_id = b.id)
+    </select> 
+    
+    <select id="getOrderDetail"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT a.id AS order_id,a.pay_price,b.id AS match_id,b.name,b.img_url
+		
+			FROM(SELECT * FROM match_order WHERE id = #id# AND user_id = #userId#) a
+			
+			JOIN matchs b ON(a.match_id = b.id)
+    </select> 
+    
+    <update id="updateStatus" parameterClass="map">
+    	UPDATE match_order SET 
+		     status=#status#
+		WHERE id = #id#
+    </update>
+    
+   	<select id="queryMatchOrderUserList"  parameterClass="map" resultClass="java.util.HashMap">
+    	SELECT b.id AS user_id,b.name,b.sex,b.img_url,b.hobby
+    		,b.birth,b.profession,b.feeling,b.signature,b.tags
+    	
+    		FROM (SELECT * FROM match_order WHERE status = 2 AND match_id = #matchId#
+    			AND sex = #sex#  ORDER BY RAND() LIMIT #size#) a
+    			
+    		LEFT JOIN user b ON(a.user_id = b.id)
+    </select>
+	
+	<select id="getMatchCodeCount"  parameterClass="map" resultClass="java.lang.Integer">
+        SELECT COUNT(id) FROM match_order WHERE id = #matchId# 
+        	AND match_code_id = #matchCodeId# AND status = 2 
+    </select>
+	
+	<select id="getUserMatchOrder"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT a.id AS order_id,a.user_id,a.name,a.phone,a.type
+				,b.name AS match_name
+		
+			FROM (SELECT * FROM match_order WHERE match_id = #matchId# AND user_id = #userId# 
+				AND type = #type# AND status = 2 LIMIT 1) a
+			
+			JOIN matchs b ON(a.match_id = b.id)
+	</select>
+	
+	<select id="queryOrderPayUserList"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT a.id AS order_id,a.name,a.user_id,b.img_url
+			,IFNULL(c.vote_count,0) AS vote_count 
+		    ,d.id AS is_vote
+		    
+			FROM (SELECT * FROM match_order WHERE match_id = #matchId# AND status = 2 
+				AND type = 1
+				<isNotEmpty property="name">
+					AND name LIKE concat('%',#name#,'%')
+				</isNotEmpty>
+			) a
+			
+			JOIN user b ON(a.user_id = b.id)
+			
+			LEFT JOIN (SELECT COUNT(id) vote_count,order_id FROM match_vote 
+				GROUP BY order_id) c ON(a.id = c.order_id)
+			
+			LEFT JOIN (SELECT id,order_id FROM match_vote WHERE user_id = #userId# 
+				AND DATE_FORMAT(create_time,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')) 
+				d ON(a.id = d.order_id)
+			
+			<isEqual property="sortType" compareValue="1"> 
+				ORDER BY IFNULL(c.vote_count,0) DESC 
+			</isEqual>
+			<isEqual property="sortType" compareValue="2"> 
+				ORDER BY a.create_time DESC 
+			</isEqual>
+			LIMIT #page#, #pageSize#
+	</select>
+	
+	<select id="getOrderPayUserCount"  parameterClass="map" resultClass="java.lang.Integer">
+		SELECT COUNT(id) FROM match_order WHERE match_id = #matchId# AND status = 2 
+			AND type = 1
+			<isNotEmpty property="name">
+				AND name LIKE concat('%',#name#,'%')
+			</isNotEmpty>
+	</select>
+	
+	<select id="getUserMatchOrderTest"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT a.id AS order_id,a.user_id,a.name,a.phone,a.type
+				,b.name AS match_name
+		
+			FROM (SELECT * FROM match_order WHERE match_id = #matchId# AND user_id = #userId# 
+				AND type = #type# AND status = 2 LIMIT #start#, #end# ) a
+			
+			JOIN matchs b ON(a.match_id = b.id)
+	</select>
+	
+	<select id="getMatchGongyi"  parameterClass="map" resultClass="java.lang.Integer">
+		SELECT COUNT(id) FROM match_order WHERE match_id = #matchId#  
+			AND invite_user_id = #userId# AND status = 2
+	</select>	
+	
+	<select id="getUserMatchCount"  parameterClass="map" resultClass="java.lang.Integer">
+		SELECT COUNT(id) FROM match_order WHERE match_id = #matchId#  
+			AND user_id = #userId# AND status = 2
+	</select>	-->	    
+</sqlMap>

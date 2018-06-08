@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.Topic">
+	<typeAlias alias="Topic" type="com.lunchtasting.server.po.lt.Topic" />
+
+	<resultMap id="TopicRe" class="com.lunchtasting.server.po.lt.Topic">
+		<result column="id" property="id" jdbcType="BIGINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/> 	
+        <result column="type" property="type" jdbcType="INT"/> 	 
+        <result column="sort" property="sort" jdbcType="INT"/> 	
+        <result column="flag" property="flag" jdbcType="INT"/> 	
+	</resultMap>
+
+	<!--查询帖子话题列表 -->
+   <select id="queryTopicList" parameterClass="map" resultMap="TopicRe">
+	 	SELECT
+		 	id,
+		 	name,
+		 	type,
+		 	sort,
+		 	flag
+		FROM 
+			topic
+		WHERE 
+			flag != 2
+<!-- 			<isNotEmpty property="sellerId"> -->
+<!--         	and	seller_id = #sellerId# -->
+<!-- 			</isNotEmpty> -->
+<!-- 			<isNotEmpty property="flag"> -->
+<!--         	and	flag = #flag# -->
+<!-- 			</isNotEmpty> -->
+<!-- 			ORDER BY create_time DESC -->
+			<isNotNull property="pageSize">
+            <![CDATA[LIMIT #curPage#,#pageSize#]]>
+            </isNotNull>
+ 	</select>
+ 	
+ 	<!-- 查询帖子话题列表个数 -->
+    <select id="queryTopicCount" parameterClass="map" resultClass="java.lang.Integer">
+	 	SELECT
+		 	COUNT(1)
+		FROM 
+			topic
+		WHERE 
+			flag != 2
+<!-- 			<isNotEmpty property="sellerId"> -->
+<!--         	and	seller_id = #sellerId# -->
+<!-- 			</isNotEmpty> -->
+<!-- 			<isNotEmpty property="flag"> -->
+<!--         	and	flag = #flag# -->
+<!-- 			</isNotEmpty> -->
+    </select>
+    
+    <!-- 根据id查询帖子话题 -->
+ 	<select id="queryTopicById" parameterClass="map" resultMap="TopicRe">
+ 		SELECT
+ 	 		id,
+		 	name,
+		 	type,
+		 	sort,
+		 	flag
+ 	 	FROM
+ 	 		topic
+ 	 	WHERE 
+			id=#id#			
+ 	</select>
+    
+    <!-- 新建帖子话题-->
+ 	<insert id="create" parameterClass="Topic">
+ 	 <![CDATA[
+ 	 	INSERT INTO topic(
+ 	 		id,
+		 	name,
+		 	type,
+		 	sort,
+		 	color,
+		 	flag
+ 		)VALUES(
+ 	 		#id#,
+ 	 		#name#,
+ 	 		#type#,
+ 	 		#sort#,
+ 	 		(select FLOOR(1+RAND()*5)),
+ 	 		1
+ 		)
+ 	]]>
+ 	</insert>
+    
+ 	<!-- 更新帖子话题-->
+ 	<update id="update" parameterClass="Topic">
+ 		UPDATE topic 
+ 		<dynamic prepend="set">
+ 		    <isNotEmpty property="name" prepend=",">
+	 			name = #name#
+	 		</isNotEmpty>  
+ 		    <isNotEmpty property="type" prepend=",">
+	 			type = #type#
+	 		</isNotEmpty>  
+	 		<isNotEmpty property="sort" prepend=",">
+	 			sort = #sort#
+	 		</isNotEmpty>
+ 		</dynamic>
+ 		WHERE 
+  			id = #id#
+ 	</update>
+ 	
+ 	<!-- 改状态 -->
+  <update id="updateTopic" parameterClass="Map">
+       update topic set flag = #flag# where id = #id#
+  </update>
+  
+  <!-- 重名 -->
+  <select id="queryNameCount" parameterClass="map" resultClass="int">
+ 		select count(*) from topic where name = #name#			
+    </select>
+    
+    <select id="queryTopicNotLimit" parameterClass="map" resultMap="TopicRe">
+	 	SELECT
+		 	id,
+		 	name,
+		 	type,
+		 	sort,
+		 	flag
+		FROM 
+			topic
+		WHERE 
+			flag = 0
+ 	</select>
+ 	
+ 	<insert id="insertTNMiddle" parameterClass="Map">
+		<![CDATA[
+   		INSERT INTO topic_note_middle (
+   		  topic_id
+    	, note_id
+    	) VALUES (
+    	  #topicId#
+    	, #noteId#
+    	)
+    ]]>
+	</insert>
+ 	
+ 	<update id="updateTNMiddle" parameterClass="Map">
+	 	    UPDATE topic_note_middle 
+	 		<dynamic prepend="set">
+	 		    <isNotEmpty property="topicId" prepend=",">
+		 			topic_id = #topicId#
+		 		</isNotEmpty>  
+	 		</dynamic>
+	 		WHERE 
+	  			note_id = #noteId#
+ 	</update>
+ 	
+</sqlMap>

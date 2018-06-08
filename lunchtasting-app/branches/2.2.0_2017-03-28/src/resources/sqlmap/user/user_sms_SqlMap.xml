@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.UserSms">
+
+	<typeAlias alias="UserSms" type="com.lunchtasting.server.po.lt.UserSms" />
+
+	<resultMap id="UserSmsResult" class="com.lunchtasting.server.po.lt.UserSms">
+		<result property="id" column="id" jdbcType="BIGINT" />
+		<result property="phone" column="phone" jdbcType="VARCHAR" />
+		<result property="code" column="code" jdbcType="VARCHAR" />
+		<result property="type" column="type" jdbcType="INT" />
+		<result property="content" column="content" jdbcType="VARCHAR" />
+		<result property="status" column="status" jdbcType="INT" />
+		<result property="createTime" column="create_time" jdbcType="DATETIME" />
+	</resultMap>
+
+
+	<insert id="create" parameterClass="UserSms">
+    <![CDATA[
+   		INSERT INTO user_sms (
+   		id
+    	, phone
+    	, code
+    	, type
+    	, content
+    	, create_time
+    	) VALUES (
+    	#id#
+    	, #phone#
+    	, #code#
+    	, #type#
+    	, #content#
+    	, now()
+    	)
+    ]]>
+	</insert>
+
+	<select id="getByPhoneAndType" parameterClass="map" resultMap="UserSmsResult">
+		SELECT * FROM user_sms WHERE phone = #phone# AND type = #type# AND
+		      status = 0 ORDER BY create_time DESC LIMIT 0,1
+    </select>
+
+	<update id="updateCodeExpire" parameterClass="map">
+		UPDATE user_sms SET status = 1 WHERE id = #id#
+    </update>
+    
+</sqlMap>

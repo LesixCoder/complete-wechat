@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.Orders">
+<typeAlias alias="Orders" type="com.lunchtasting.server.po.lt.Orders" />
+<typeAlias alias="OrderLines" type="com.lunchtasting.server.po.lt.OrderLines" />
+<!-- 订单信息 -->
+   <resultMap id="orders" class="com.lunchtasting.server.po.lt.Orders">
+   		<result column="order_id" property="orderId" />
+   		<result column="only_id" property="onlyId" /> 
+        <result column="total" property="total" /> 
+        <result column="coupon_amount" property="couponAmount" />
+        <result column="actual_amount" property="actualAmount" />
+        <result column="state" property="state" />
+        <result column="payment_type" property="paymentType" />
+        <result column="user_id" property="userId" /> 
+        <result column="coupon_id" property="couponId" /> 
+        <result column="addr_id" property="addrId" /> 
+        <result column="invoice_title" property="invoiceTitle" />
+        <result column="order_time" property="orderTime" />
+        <result column="pay_time" property="payTime" />
+        <result column="prepared_time" property="preparedTime" />
+        <result column="delivered_time" property="deliveredTime" /> 
+        <result column="expected_delivery" property="expectedDelivery" />
+<!--         
+        <association property="receiverAddress" javaType="ReceiverAddress">
+	        <id column="addr_id" property="addrId" /> 
+	        <result column="receiver_name" property="receiverName" /> 
+	        <result column="telephone" property="telephone" />
+	        <result column="address_detail" property="addressDetail" />
+	        <association property="area" javaType="Area">
+	        	<id column="area_id" property="areaId" />
+	        	<result column="area_name" property="areaName" />
+	        </association>
+        </association>
+        
+        <collection property="orderLines" ofType="OrderLines">
+        	<id column="id" property="id" />
+        	<result column="delivery_date" property="deliveryDate" />
+        	<result column="quantity" property="quantity" />
+	        <result column="package_fee" property="packageFee" />
+	        <result column="price" property="price" />
+	        <result column="subtotal" property="subtotal" />
+	        <result column="comment" property="comment" /> 
+	        <result column="meal_id" property="mealId" /> 
+	        <result column="created_time" property="createdTime" />
+	        <result column="created_user" property="createdUser" />
+	        <result column="delivered_time" property="deliveredTime" />
+	        <association property="meals" javaType="Meals">
+	        	<id column="meal_id" property="mealId" /> 
+        		<result column="meal_name" property="mealName" />
+        		<association property="chefs" javaType="Chefs">
+		        	<id column="chef_id" property="chefId" />
+		        	<result column="chef_name" property="chefName" />
+		        	<association property="agents" javaType="Agents">
+			        	<id column="agent_id" property="agentId" />
+			        	<result column="agent_name" property="agentName" />
+			        	<result column="agent_addr_id" property="agentAddrId" />
+		        	</association>
+		        </association>
+	        </association>
+        </collection> -->
+        
+   </resultMap>
+
+  <!-- 查询订单列表 -->
+  <select id="queryOrdersList" parameterClass="map" resultClass="java.util.HashMap">
+		SELECT 
+			   ag.agent_name,
+			   m.meal_name,
+			   o.total,
+			   o.state,
+			   
+				 CASE o.state 
+				 WHEN '0' THEN '待支付'
+				 WHEN '1' THEN '已支付' 
+				 WHEN '2' THEN '已确认' 
+       			 WHEN '3' THEN '部分送达' 
+				 WHEN '4' THEN '已送达'
+				 WHEN '5' THEN '已取消' 
+				 ELSE '未知'
+				 END  AS state_name,
+				 
+				 
+				 CASE o.payment_type 
+				 WHEN '0' THEN '微信'
+				 WHEN '1' THEN '支付宝' 
+				 WHEN '2' THEN '网银' 
+				 ELSE '未知'
+				 END  AS payment_type_name,
+				 
+			   o.payment_type,
+			   o.coupon_id,
+			   o.addr_id,
+			   o.order_time,
+			   o.pay_time,
+			   o.only_id,
+			   o.prepared_time,
+					 ol.id,
+					 ol.delivery_date,
+					 ol.quantity,
+					 ol.package_fee,
+					 ol.price,
+					 ol.subtotal,
+					 ol.comment,
+					 ol.meal_id,
+					 ol.state,
+					 ol.delivered_time,
+			   a.area_name,
+			   r.receiver_name,
+			   r.telephone,
+			   r.address_detail
+		FROM  
+			   orders o,
+			   order_lines ol,
+			   receiver_address r,
+			   area a,
+			   meals m,
+			   chefs c,
+			   agents ag
+		WHERE 
+			   o.order_id = ol.order_id 
+			   AND o.addr_id=r.addr_id 
+			   AND a.area_id = r.area_id 
+			   AND m.meal_id=ol.meal_id 
+			  <!-- AND (SELECT TIMESTAMPDIFF(DAY,o.delivery_date,NOW()))<=7 -->
+			   AND c.chef_id = m.chef_id
+			   AND ag.agent_id = c.agent_id 
+			   AND o.user_id = #userId# 
+			   ORDER BY o.order_time DESC
+  </select>
+  
+	<!--  提交订单  -->
+  <insert id="submitOrder" parameterClass="Orders" >
+		  <![CDATA[
+			   INSERT INTO orders
+			  		(
+			  			  total
+			  			, only_id
+			  			, coupon_amount
+			  			, actual_amount
+			  			, state
+			  			, user_id
+			  			, coupon_id
+			  			, addr_id
+			  			, expected_delivery
+			  			, order_time
+			  			, delivery_date
+			  		)
+			   VALUES
+			  		(
+			  			  #total#
+			  			, concat(date_format(now(),'%Y%m%d')
+			  			, #orderId#
+			  			, #couponAmount#
+			  			, #actualAmount#
+			  			, 0
+			  			, #userId#
+			  			, #couponId#
+			  			, #addrId#
+			  			, #expectedDelivery#
+			  			, now()
+			  			, #deliveryDate# 
+			  		)
+		 ]]>
+	 <selectKey resultClass="int" keyProperty="orderId">
+	   SELECT @@IDENTITY
+	   AS order_id
+     </selectKey>
+  </insert>
+  
+	<!-- 修改订单  -->
+  <update id="updateOrder" parameterClass="Orders">
+  		<![CDATA[ UPDATE orders ]]>
+  		<dynamic prepend="set">
+	  		<isNotEmpty prepend=","  property="receiverName">
+	  			receiver_name = #receiverName#
+	  		</isNotEmpty>
+	  		<isNotEmpty prepend="," property="telephone" >
+	  			telephone = #telephone#
+	  		</isNotEmpty>
+	  		<isNotEmpty>
+	  			default = #addDefault#
+	  		</isNotEmpty>
+	  		<isNotEmpty prepend="," property="areaId">
+	  			area_id = #areaId#
+	  		</isNotEmpty>	
+	  			updated_time=now(), updated_user=#userId#
+  		</dynamic>
+  		WHERE only_id=#onlyId#
+  </update>
+  
+  <!-- 修改订单状态 -->
+  <update id="updateState" parameterClass="map">
+  		UPDATE orders SET
+  		<isNotNull property="state">
+	  		<isEqual property="state" compareValue="1">
+	  			pay_time = now(),
+	  		</isEqual>
+  		</isNotNull>
+  			 state = #state#
+  		WHERE only_id = #onlyId#
+  </update>
+
+
+
+</sqlMap>

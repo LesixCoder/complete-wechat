@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1 , user-scalable=no">
+    <title>PERFIT-相册</title>
+    <link rel="shortcut icon" href="images/title_icon.png" type="image/x-icon">
+    <link rel="icon" href="images/title_icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/chromagallery.min.css" />
+    <link rel="stylesheet" href="css/material-scrolltop.css" />
+    <link rel="stylesheet" href="css/photo.css" />
+</head>
+
+<body style="position:relative;">
+    <!--导航-->
+    <nav class="navbar navbar-default navbar-fixed-top selfNav">
+        <div class="container fixW">
+            <div class="navbar-header">
+                <button class="navbar-toggle" data-toggle="collapse" data-target="#myNav">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="index.html" class="navbar-brand"><img src="images/logo.png" width="200" height="50" alt=""></a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNav">
+                <ul class="nav navbar-nav navbar-right" role="tablist" id="menu">
+                    <li>
+                        <select class="form-control" id="photoList">
+                            <option>798运动会</option>
+                            <option selected>荷尔蒙活动</option>
+                            <option>一步咖体验</option>
+                            <option>怀旧运动会</option>
+                            <option>复古风运动</option>
+                        </select>
+                    </li>
+                    <li data-menuanchor="page1"><a href="index.html">返回首页</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div>
+        <!--第一屏-->
+        <section class="section" id="pageOne">
+            <img src="images/activity2.jpeg" alt="">
+        </section>
+        <!--第二屏-->
+        <section class="section" id="pageTwo">
+            <div class="fixW fixW1">
+                <div class="chroma-gallery mygallery">
+                    <img src="images/activity1.jpeg" alt="" data-largesrc="images/activity1.jpeg">
+                    <img src="images/activity1.jpeg" alt="" data-largesrc="images/activity1.jpeg">
+                    <img src="images/activity2.jpeg" alt="" data-largesrc="images/activity2.jpeg">
+                    <img src="images/activity3.jpeg" alt="" data-largesrc="images/activity3.jpeg">
+                    <img src="images/activity4.jpeg" alt="" data-largesrc="images/activity4.jpeg">
+                    <img src="images/activity4.jpeg" alt="" data-largesrc="images/activity4.jpeg">
+                    <img src="images/activity5.jpeg" alt="" data-largesrc="images/activity5.jpeg">
+                    <img src="images/activity5.jpeg" alt="" data-largesrc="images/activity5.jpeg">
+                    <img src="images/activity6.jpeg" alt="" data-largesrc="images/activity6.jpeg">
+                    <img src="images/activity6.jpeg" alt="" data-largesrc="images/activity6.jpeg">
+                    <img src="images/activity1.jpeg" alt="" data-largesrc="images/activity1.jpeg">
+                    <img src="images/activity2.jpeg" alt="" data-largesrc="images/activity2.jpeg">
+                    <img src="images/activity2.jpeg" alt="" data-largesrc="images/activity2.jpeg">
+                    <img src="images/activity3.jpeg" alt="" data-largesrc="images/activity3.jpeg">
+                    <img src="images/activity4.jpeg" alt="" data-largesrc="images/activity4.jpeg">
+                    <img src="images/activity4.jpeg" alt="" data-largesrc="images/activity4.jpeg">
+                    <img src="images/activity4.jpeg" alt="" data-largesrc="images/activity4.jpeg">
+                    <img src="images/activity4.jpeg" alt="" data-largesrc="images/activity4.jpeg">
+                    <img src="images/activity4.jpeg" alt="" data-largesrc="images/activity4.jpeg">
+                    <img src="images/activity4.jpeg" alt="" data-largesrc="images/activity4.jpeg">
+                    <img src="images/activity4.jpeg" alt="" data-largesrc="images/activity4.jpeg">
+                    <img src="images/activity4.jpeg" alt="" data-largesrc="images/activity4.jpeg">
+                    <img src="images/activity4.jpeg" alt="" data-largesrc="images/activity4.jpeg">
+                    <img src="images/activity4.jpeg" alt="" data-largesrc="images/activity4.jpeg">
+                    <img src="images/activity4.jpeg" alt="" data-largesrc="images/activity4.jpeg">
+                    <img src="images/activity4.jpeg" alt="" data-largesrc="images/activity4.jpeg">
+                    <img src="images/activity4.jpeg" alt="" data-largesrc="images/activity4.jpeg">
+                    <img src="images/activity4.jpeg" alt="" data-largesrc="images/activity4.jpeg">
+                    <img src="images/activity4.jpeg" alt="" data-largesrc="images/activity4.jpeg">
+                </div>
+            </div>
+        </section>
+    </div>
+    <div class="longB"></div>
+    <footer class="footer">
+        <!--第三屏-->
+        <section class="section" id="pageThree">
+            <!--页脚-->
+            <div class="container fixW">
+                <div class="pageThree-footer clearfix">
+                    <div class="footer-left pull-left">
+                        <a href="index.html">回到首页</a>
+                    </div>
+                    <div class="footer-right pull-right">
+                        <a class="email" href="javascript:void(0)"></a>
+                        <a class="weibo" href="http://weibo.com/u/6000286078"></a>
+                    </div>
+
+                </div>
+            </div>
+            <div class="pageThree-bottom">
+                <p>Copyright &copy; 2016 京ICP备15042729号 北京稼优佳文化传媒有限公司 版权所有</p>
+            </div>
+        </section>
+    </footer>
+    <button class="material-scrolltop" type="button"></button>
+</body>
+<script src="js/jquery-1.12.0.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/material-scrolltop.js"></script>
+<script src="js/chromagallery.pkgd.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('body').materialScrollTop({
+            duration: 400
+        });
+        $(".mygallery").chromaGallery({
+            color: '#000',
+            gridMargin: 6,
+            maxColumns: 3,
+            screenOpacity: 0.8
+        });
+    });
+</script>
+
+</html>

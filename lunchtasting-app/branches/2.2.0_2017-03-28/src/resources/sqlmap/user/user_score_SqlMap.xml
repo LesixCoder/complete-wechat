@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.UserScore">
+
+    <typeAlias alias="UserScore" type="com.lunchtasting.server.po.lt.UserScore" />
+
+    <resultMap id="UserScoreResult" class="com.lunchtasting.server.po.lt.UserScore">
+        <result property="id" column="id"  jdbcType="BIGINT" />
+       	<result property="bizId" column="biz_id"  jdbcType="BIGINT" />
+       	<result property="bizType" column="biz_type"  jdbcType="INT" />
+        <result property="userId" column="user_id"  jdbcType="BIGINT" />
+        <result property="phone" column="phone" jdbcType="VARCHAR" />
+        <result property="score" column="score" jdbcType="INT" />
+        <result property="content" column="content" jdbcType="VARCHAR" />
+        <result property="type" column="type" jdbcType="INT" />
+        <result property="createTime" column="create_time" jdbcType="DATETIME" />
+    </resultMap>
+    
+    <insert id="createUserScore" parameterClass="UserScore">
+    <![CDATA[
+        INSERT INTO user_score (
+        id
+        , biz_id
+        , biz_type
+        , user_id
+        , phone
+        , score
+        , content
+        , type
+        , create_time
+        ) VALUES (
+        #id#
+        , #bizId#
+        , #bizType#
+        , #userId#
+		, #phone#
+		, #score#
+		, #content#
+        , #type#
+        , now()
+        )
+    ]]>
+    </insert>
+    
+    <select id="getById" parameterClass="map" resultMap="UserScoreResult">
+		SELECT * FROM user_score WHERE id = #id:BIGINT#
+	</select>
+    
+    <select id="getUserScoreCount"  parameterClass="map" resultClass="java.lang.Integer">
+    	SELECT COUNT(*) FROM user_score WHERE user_id = #userId#
+    </select>
+    
+   	<select id="queryUserScoreList"  parameterClass="map" resultClass="java.util.HashMap">
+    	SELECT id,user_id,score,IFNULL(content,'') AS content,type,create_time
+    		FROM user_score WHERE user_id = #userId# 
+    		ORDER BY create_time DESC LIMIT #page#, #pageSize#
+    </select>
+    
+    <select id="queryUserScoreRank"  parameterClass="map" resultClass="java.util.HashMap">
+    	<![CDATA[ SELECT s.*,CAST((@row_num:=@row_num+1) AS signed) as rank FROM  
+				 (SELECT SUM(us.score) as total,u.id as user_id,u.name,u.img_url
+	    	 FROM user_score us JOIN user u on (us.user_id=u.id) 
+	    	 GROUP BY us.user_id)as s,(select(@row_num:=0)) b
+	    	 ORDER BY total DESC
+    	 LIMIT #page#, #pageSize#
+    	 ]]>
+    </select>
+    
+    <select id="getScoreRankCount"  parameterClass="map" resultClass="java.lang.Integer">
+    	SELECT COUNT(*) FROM (SELECT SUM(us.score) as total,u.id,u.name,u.img_url
+	    	 FROM user_score us JOIN user u on (us.user_id=u.id) 
+	    	 GROUP BY us.user_id) as s
+    </select>
+    
+   	<select id="getUserScoreTotal"  parameterClass="map" resultClass="java.lang.Integer">
+    	SELECT IFNULL(SUM(score),0) FROM user_score WHERE user_id = #userId#
+    </select>
+    
+    <select id="getUserScoreRank"  parameterClass="map" resultClass="java.lang.Integer">
+    	    	 SELECT CAST(sb.rank AS signed)  FROM (SELECT s.*,(@row_num:=@row_num+1) as rank FROM 
+
+				 (SELECT SUM(us.score) as total,u.id,u.name,u.img_url
+	    	 FROM user_score us JOIN user u on (us.user_id=u.id) 
+	    	 GROUP BY us.user_id)as s,
+				(select(@row_num:=0)) b
+
+	    	 ORDER BY total DESC  )sb  WHERE sb.id=#userId#
+    </select>
+    
+    <select id="getUserScoreByPhone"  parameterClass="map"  resultClass="java.lang.Integer">
+    	    SELECT COUNT(id) FROM user_score WHERE phone = #phone#	AND user_id is null
+    </select>
+    
+    <update id="completion" parameterClass="map" >
+    	  	UPDATE user_score SET 
+    	  		user_id = #userId#
+    	  	WHERE phone = #phone#
+    </update>
+    
+</sqlMap>

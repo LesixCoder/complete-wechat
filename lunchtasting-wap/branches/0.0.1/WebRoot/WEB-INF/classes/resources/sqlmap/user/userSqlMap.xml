@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.User">
+
+	<typeAlias alias="User" type="com.lunchtasting.server.po.lt.User" />
+
+	<resultMap id="UserResult" class="com.lunchtasting.server.po.lt.User">
+		<result property="id" column="id" jdbcType="BIGINT" />
+		<result property="phone" column="phone" jdbcType="VARCHAR" />
+		<result property="name" column="name" jdbcType="VARCHAR" />
+		<result property="password" column="password" jdbcType="VARCHAR" />
+		<result property="imgUrl" column="img_url" jdbcType="VARCHAR" />
+		<result property="sex" column="sex" jdbcType="INT" />
+		<result property="source" column="source" jdbcType="INT" /><!-- 来源  -->
+		<result property="identity" column="identity" jdbcType="INT" />
+		<result property="loginType" column="login_type" jdbcType="INT" />
+		<result property="loginTime" column="login_time" jdbcType="DATETIME" />
+		<result property="createTime" column="create_time" jdbcType="DATETIME" />
+		<result property="updateTime" column="update_time" jdbcType="DATETIME" />
+	</resultMap>
+	
+	<sql id="userQb">
+		phone
+    	, name
+    	, password
+    	, img_url
+    	, sex
+    	, source
+    	, identity
+    	, login_type
+    	, login_time
+    	, update_time
+    	, create_time  
+	</sql>
+	<update id="updateUserResult" parameterClass="User">
+	   UPDATE user 
+	   	 SET
+            <isNotNull property="name">
+                name = #name#,
+            </isNotNull>
+            <isNotNull property="imgUrl">
+                img_url = #imgUrl#,
+            </isNotNull>
+            <isNotNull  property="sex">
+                sex = #sex#,
+            </isNotNull>
+            <isNotNull  property="birth">
+                birth = #birth#,
+            </isNotNull>
+            <isNotNull  property="profession">
+                profession = #profession#,
+            </isNotNull>
+            <isNotNull prepend="," property="feeling">
+                feeling = #feeling#,
+            </isNotNull>
+            <isNotNull prepend="," property="signature">
+                signature = #signature#,
+            </isNotNull>
+            update_time = now()
+        WHERE id = #id#
+	</update>
+	
+	<insert id="create" parameterClass="User">
+    <![CDATA[
+   		INSERT INTO user (
+    	phone
+    	, name
+    	, password
+    	, img_url
+    	, sex
+    	, source
+    	, identity
+    	, update_time
+    	, create_time
+    	) VALUES (
+    	#phone#
+    	, #name#
+    	, #password#
+    	, #imgUrl#
+    	, #sex#
+    	, #source#
+    	, #identity#
+    	, now()
+    	, now()
+    	)
+    ]]>
+	<selectKey resultClass="long" keyProperty="id">
+			SELECT @@IDENTITY
+			AS id
+    </selectKey>
+	</insert>
+
+	<select id="getById" parameterClass="map" resultMap="UserResult">
+		SELECT 		
+			phone
+	    	, name
+	    	, password
+	    	, img_url
+	    	, sex
+	    	, source
+	    	, identity
+	    	, login_type
+	    	, login_time
+	    	, update_time
+	    	, create_time
+		FROM 
+			user
+		WHERE 
+			id = #id:BIGINT#
+	</select>
+
+	<select id="getUserByPhone" parameterClass="map" resultMap="UserResult">
+		SELECT 
+			phone
+	    	, name
+	    	, password
+	    	, img_url
+	    	, sex
+	    	, source
+	    	, identity
+	    	, login_type
+	    	, login_time
+	    	, update_time
+	    	, create_time
+		 FROM 
+		 	user
+		 WHERE 
+		 	phone = #phone#
+	</select>
+
+	<select id="queryUserList" parameterClass="map" resultClass="java.util.HashMap">
+	   SELECT 
+	   		phone
+	    	, name
+	    	, password
+	    	, img_url
+	    	, sex
+	    	, source
+	    	, identity
+	    	, login_type
+	    	, login_time
+	    	, update_time
+	    	, create_time
+	   FROM 
+	   		user
+	   LIMIT 
+	   		#page#, #pageSize#
+	</select>
+</sqlMap>

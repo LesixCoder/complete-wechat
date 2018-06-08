@@ -1,0 +1,174 @@
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.Orders">
+
+	<typeAlias alias="Orders" type="com.lunchtasting.server.po.lt.Orders" />
+
+	<resultMap id="OrdersResult" class="com.lunchtasting.server.po.lt.Orders">
+		<result property="id" column="id"  jdbcType="BIGINT" />
+		<result property="userId"  column="user_id" jdbcType="BIGINT" />
+		<result property="courseId"  column="course_id" jdbcType="BIGINT" />
+		<result property="sellerId"  column="seller_id" jdbcType="BIGINT" />
+		<result property="price" column="price" jdbcType="DOUBLE" />
+		<result property="originalPrice" column="original_price" jdbcType="DOUBLE" />
+		<result property="payPrice" column="pay_price" jdbcType="DOUBLE" />
+		<result property="number" column="number" jdbcType="INT" />
+		<result property="payType" column="pay_type" jdbcType="INT" />
+		<result property="settlementId" column="settlement_id" jdbcType="BIGINT" />
+		<result property="couponId" column="coupon_id" jdbcType="BIGINT" />
+		<result property="status" column="status" jdbcType="INT" />
+		<result property="code" column="code" jdbcType="VARCHAR" />
+		<result property="createTime" column="create_time" jdbcType="DATETIME" />
+	</resultMap>
+	
+    <insert id="create" parameterClass="Orders">
+    <![CDATA[
+        INSERT INTO orders (
+        id
+        , user_id
+        , course_id
+        , seller_id
+        , price
+        , original_price
+        , pay_price
+        , number
+        , pay_type
+        , coupon_id
+        , code
+        , status
+        , create_time
+        ) VALUES (
+        #id#
+        , #userId#
+        , #courseId#
+        , #sellerId#
+        , #price#
+        , #originalPrice#
+        , #payPrice#
+        , #number#
+        , #payType#
+        , #couponId#
+        , #code#
+        , #status#
+        , now()
+        )
+    ]]>
+    </insert>
+	
+	<select id="getById" resultMap="OrdersResult" parameterClass="map">
+		SELECT * FROM orders WHERE id = #id:BIGINT#
+	</select>
+	
+	<select id="getOrderDetail"  parameterClass="map" resultClass="java.util.HashMap" >
+		SELECT a.id AS order_id,a.course_id,a.seller_id,a.code,a.number
+			,a.price,a.pay_price,a.status,a.create_time AS order_create_time
+			,b.img_url AS course_img_url,b.name AS course_name
+			,b.begin_time,b.end_time
+			,IFNULL(c.longitude,0) AS longitude,IFNULL(c.latitude,0) AS latitude
+			,c.name AS seller_name,c.specific_address,c.phone,c.business_hours
+			,IFNULL(d.score,0) AS score
+			,IFNULL(e.id,'') AS refund_id
+			
+			FROM (SELECT * FROM orders WHERE id = #orderId# AND user_id = #userId#) a
+			
+			JOIN course b ON(a.course_id = b.id)
+			
+			JOIN seller c ON(a.seller_id = c.id)
+			
+			LEFT JOIN(SELECT seller_id,FORMAT(AVG(score),1) AS score FROM seller_comment
+				WHERE flag = 0) d ON(a.seller_id = d.seller_id)
+				
+			LEFT JOIN (SELECT id,order_id FROM orders_refund 
+				WHERE order_id = #orderId# AND refund_type = 1) e ON(a.id = e.order_id)
+	</select>
+	
+	<select id="getOrderCount"  parameterClass="map" resultClass="java.lang.Integer">
+		SELECT COUNT(id) FROM orders WHERE user_id = #userId#  
+			<isNotNull property="status">
+   				AND status = #status#
+   			</isNotNull>
+    </select>
+	
+	<select id="queryOrderList"  parameterClass="map" resultClass="java.util.HashMap">
+    	SELECT a.id AS order_id,a.number,a.price,a.pay_price,a.status,a.create_time
+    		,b.id AS course_id,b.name AS course_name,b.img_url AS course_img_url
+    		,b.begin_time,b.end_time
+    		,c.name AS seller_name
+    	
+    		FROM (SELECT * FROM orders WHERE user_id = #userId#  
+    			<isNotNull property="status">
+    				AND status = #status#
+    			</isNotNull>
+    			ORDER BY create_time DESC LIMIT #page#, #pageSize#) a
+    		
+    		LEFT JOIN course b ON(a.course_id = b.id)
+    		
+    		LEFT JOIN seller c ON(b.seller_id = c.id)
+    </select>
+    
+   	<select id="getNoPayOrder"  parameterClass="map" resultClass="java.util.HashMap">
+    	SELECT a.id AS order_id,a.course_id,a.seller_id,a.price,a.pay_price,a.code,a.number,a.pay_type
+    		,IFNULL(b.name,'') AS course_name
+    		
+    		FROM (SELECT * FROM orders 
+    			WHERE id = #orderId# AND user_id = #userId# AND status = 1 ) a
+    			
+    		LEFT JOIN course b ON(a.course_id = b.id)
+    </select>
+    
+    <update id="updateStatus" parameterClass="map">
+    	UPDATE orders SET status = #status# WHERE id = #orderId#
+    </update>
+    
+   	<select id="getByCodeAndPayPrice"  parameterClass="map" resultClass="java.lang.Long" >
+   		SELECT id FROM orders WHERE code = #code# AND pay_price = #payPrice#
+   	</select>
+   	
+   	<select id="getRefundOrder"  parameterClass="map" resultClass="java.util.HashMap">
+   		SELECT a.id AS order_id,a.code,a.price,a.pay_price,a.number,a.pay_type,a.pay_price
+   			,IFNULL(b.list_count,0) AS list_count
+   			,c.name AS course_name
+   			
+   			FROM (SELECT * FROM orders 
+   				WHERE id = #orderId# AND user_id = #userId# AND status = 2 AND pay_type > 0) a
+   			
+   			LEFT JOIN (SELECT COUNT(id) AS list_count,order_id FROM orders_list 
+   					WHERE order_id = #orderId# AND status = 1) b
+   				ON (a.id = b.order_id)
+   				
+   			LEFT JOIN course c ON(a.course_id = c.id)
+   	</select>
+    
+   	<select id="getCommentOrder"  parameterClass="map" resultClass="java.util.HashMap">
+   		SELECT id AS order_id,seller_id FROM orders 
+   			WHERE id = #orderId# AND user_id = #userId# AND status = 3
+   	</select>
+   	
+   	<update id="updateOrderRefund" parameterClass="map">
+   		UPDATE orders SET status = #status#,refund_time = NOW() WHERE id = #orderId#
+   	</update>
+   	
+   	<select id="getOrderByOutTradeNo"  parameterClass="map" resultClass="java.util.HashMap">
+   		SELECT id AS order_id,code,status,number,price FROM orders WHERE code = #outTradeNo#
+	</select>
+	
+	<select id="getByOrderIdAndUserId"  parameterClass="map" resultClass="java.util.HashMap">
+   		SELECT a.id AS order_id,a.course_id,a.seller_id,a.price,a.pay_price,a.code,a.number,a.status
+    		,IFNULL(b.name,'') AS course_name
+    		
+    		FROM (SELECT * FROM orders 
+    			WHERE id = #orderId# AND user_id = #userId# ) a
+    			
+    		LEFT JOIN course b ON(a.course_id = b.id)
+	</select>
+	
+	<update id="updateIsPay" parameterClass="map">
+    	UPDATE orders SET status = #status#,pay_type = #payType# WHERE id = #orderId#
+    </update>
+    
+    <select id="getOrderRefundNumber"  parameterClass="map" resultClass="java.util.HashMap">
+    	SELECT a.id AS order_id,a.number,IFNULL(b.refund_number,0) AS refund_number
+    		FROM (SELECT id,number FROM orders WHERE id = #orderId#) a
+    		LEFT JOIN (SELECT order_id,SUM(number) AS refund_number FROM orders_refund 
+    			WHERE order_id = #orderId# GROUP BY order_id) b ON(a.id = b.order_id)
+    </select>
+</sqlMap>

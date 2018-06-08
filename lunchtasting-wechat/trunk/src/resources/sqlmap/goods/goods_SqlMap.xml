@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.goods.Goods">
+	
+	<select id="queryGoodsList" resultClass="java.util.HashMap">
+        SELECT a.id AS goods_id,a.name,a.content,a.img_url,b.name AS channel_name
+        
+            FROM (SELECT id,name,content,img_url,channel_id FROM goods 
+            	WHERE flag = 0 ORDER BY sort ASC LIMIT #page#, #pageSize# ) a
+            
+            LEFT JOIN goods_channel b ON(a.channel_id = b.id)
+            
+	</select>
+	
+	<select id="getGoodsCount" resultClass="java.lang.Integer">
+		SELECT COUNT(id) FROM goods  WHERE flag = 0
+	</select>
+	
+	<select id="getGoodsDetail"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT a.id AS goods_id,a.name,a.content,a.img_url,a.img_text,a.score
+			,b.price,b.goods_sku_id
+			
+			FROM (SELECT * FROM goods a WHERE id = #goodsId# AND flag = 0 ) a
+			
+			JOIN (SELECT id AS goods_sku_id,goods_id,price 
+				FROM (
+					SELECT id,goods_id,price FROM goods_sku WHERE goods_id = #goodsId# ORDER BY price ASC
+				) AS t GROUP BY goods_id
+			) b ON(a.id = b.goods_id) 
+	</select>
+	
+	<select id="queryGoodsSkuPropertyList" parameterClass="map" resultClass="java.util.HashMap">
+		SELECT b.name,GROUP_CONCAT(c.sku_option_id,'@',c.sku_option_name,'@',c.price,'@',c.sku_img_url SEPARATOR '|') AS property_str
+			
+			FROM (SELECT sku_property_id FROM goods_sku_property WHERE goods_id = #goodsId#) a
+			
+			JOIN sku_property b ON(a.sku_property_id = b.id)
+			
+			JOIN (SELECT t1.id AS sku_option_id,t1.sku_property_id,t1.name AS sku_option_name
+					,t3.price,IFNULL(t3.img_url,'') AS sku_img_url
+					FROM sku_option t1
+			
+					LEFT JOIN goods_sku_option t2 ON(t1.id = t2.sku_option_id)
+			
+					JOIN goods_sku t3 ON(t2.goods_sku_id = t3.id) 
+					GROUP BY t1.id
+				) c ON(b.id = c.sku_property_id)
+			GROUP BY b.id
+	</select>
+	
+	<select id="getGoodsSkuPropertStr" parameterClass="map" resultClass="java.lang.String">
+		SELECT GROUP_CONCAT(b.name SEPARATOR ' ')
+			FROM (SELECT sku_property_id FROM goods_sku_property WHERE goods_id = #goodsId#) a
+			JOIN sku_property b ON(a.sku_property_id = b.id)
+	</select>
+	
+	<select id="queryGoodsSkuList" parameterClass="map" resultClass="java.util.HashMap">
+		SELECT id,sku_option_ids,price,img_url FROM goods_sku WHERE goods_id = #goodsId#
+	</select>
+	
+	<select id="getGoodsPayMap"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT a.id AS goods_sku_id,a.price,a.goods_id,b.img_url AS goods_img_url
+				,b.name AS goods_name,IFNULL(c.goods_property_name,'') AS goods_property_name	
+				,d.name AS channel_name
+					
+			FROM (SELECT * FROM goods_sku WHERE id = #goodsSkuId#) a
+			
+			JOIN goods b ON(a.goods_id = b.id)
+			
+			LEFT JOIN (
+					SELECT t1.goods_sku_id,GROUP_CONCAT(t2.name SEPARATOR ' / ') AS goods_property_name FROM goods_sku_option t1 
+			      	JOIN sku_option t2 ON(t1.sku_option_id = t2.id)
+			      	GROUP BY t1.goods_sku_id
+                 ) c ON(a.id =  c.goods_sku_id)
+           	
+           	LEFT JOIN goods_channel d ON(b.channel_id = d.id)
+	</select>
+	
+	<select id="queryGoodsPropertyList" parameterClass="map" resultClass="java.util.HashMap">
+		SELECT * FROM goods_property WHERE goods_id = #goodsId# AND flag = 0 ORDER BY sort ASC
+	</select>
+	
+	<select id="getGoodsSkuByOptionIds" parameterClass="map" resultClass="java.util.HashMap">
+		SELECT a.goods_sku_id,a.option_str,b.price,b.img_url
+		
+			FROM (SELECT IFNULL(GROUP_CONCAT(sku_option_id),'') AS option_str,goods_sku_id 
+					FROM goods_sku_option WHERE sku_option_id in ($optionIds$) 
+					GROUP BY goods_sku_id) a
+				
+			JOIN goods_sku b ON(a.goods_sku_id = b.id)
+				
+			
+	</select>
+	
+</sqlMap>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.MatchGoods">
+
+    <typeAlias alias="MatchGoods" type="com.lunchtasting.server.po.lt.MatchGoods" />
+
+    <resultMap id="MatchGoodsResult" class="com.lunchtasting.server.po.lt.MatchGoods">
+   		<result property="id" column="id"  jdbcType="BIGINT" />
+        <result property="name" column="name"  jdbcType="VARCHAR" />
+        <result property="content" column="content"  jdbcType="VARCHAR" />
+        <result property="price" column="price"  jdbcType="DOUBLE" />
+        <result property="imgUrl" column="img_url"  jdbcType="VARCHAR" />
+    </resultMap>
+    
+    <select id="getById" parameterClass="map" resultMap="MatchGoodsResult">
+		SELECT * FROM match_goods WHERE id = #id:BIGINT#
+	</select>
+	
+	<select id="queryMatchTicketGoodsList"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT a.ticket_id,a.match_goods_id,a.goods_id,
+				b.name,b.content,b.price,b.img_url
+		 
+			FROM (SELECT * FROM match_ticket_goods WHERE ticket_id = #ticketId#) a
+			
+			JOIN (SELECT * FROM match_goods WHERE flag = 0 ORDER BY sort)  b ON(a.match_goods_id = b.id)	
+	</select>
+	
+	<select id="queryUserSelectGoodsList"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT b.ticket_id,b.match_goods_id,b.goods_id,
+				a.name,a.content,a.price,a.img_url
+						
+			FROM (SELECT * FROM match_goods WHERE id IN($goodsStr$) AND flag = 0 ORDER BY sort ) a
+			
+			JOIN (SELECT * FROM match_ticket_goods WHERE ticket_id = #ticketId#) b ON(a.id = b.match_goods_id)
+	</select>
+	
+	<select id="getUserSelectGoodsPrice"  parameterClass="map" resultClass="java.lang.Double">
+		SELECT SUM(price) FROM match_goods WHERE id IN($goodsStr$) AND flag = 0
+	</select>
+	
+</sqlMap>

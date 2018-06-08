@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.MatchAlbumTag">
+
+    <typeAlias alias="MatchAlbumTag" type="com.lunchtasting.server.po.lt.MatchAlbumTag" />
+	
+	<resultMap id="MatchAlbumTagResult" class="com.lunchtasting.server.po.lt.MatchAlbumTag">
+		<result property="id" column="id"  jdbcType="BIGINT" />
+		<result property="albumId" column="album_id" jdbcType="BIGINT" />
+		<result property="userId" column="user_id" jdbcType="BIGINT" />
+	    <result property="name" column="name" jdbcType="VARCHAR" />
+		<result property="type" column="type" jdbcType="INT" />
+        <result property="createTime" column="create_time" jdbcType="DATETIME" />
+	</resultMap>
+	
+	<insert id="create" parameterClass="MatchAlbumTag">
+    <![CDATA[
+        INSERT INTO match_album_image (
+        id
+        , album_id
+        , user_id
+        , name
+        , type
+        , create_time
+        ) VALUES (
+        #id#
+        , #albumId#
+        , #userId#
+        , #name#
+        , #type#
+        , now()
+        )
+    ]]>
+    </insert>
+	
+	<select id="getById"  parameterClass="map" resultMap="MatchAlbumTagResult">
+        SELECT * FROM match_album_tag where id = #id:BIGINT#
+    </select> 
+	
+	<select id="queryAlbumTagList"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT * FROM match_album_tag WHERE album_id = #albumId# AND flag = 0
+		<isNotEmpty property="userId">
+			OR user_id = #userId#
+		</isNotEmpty>
+		ORDER BY sort ASC
+	</select>
+	
+	<select id="getAlbumTagCount"  parameterClass="map" resultClass="java.lang.Integer">  
+		SELECT COUNT(id) FROM match_album_image WHERE album_id = #albumId# AND flag = 0
+		<isNotEmpty property="userId">
+			OR user_id = #userId#
+		</isNotEmpty>
+	</select> 
+             
+</sqlMap>                            

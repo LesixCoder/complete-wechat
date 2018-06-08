@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.GiftCoupon">
+
+	<typeAlias alias="GiftCoupon" type="com.lunchtasting.server.po.lt.GiftCoupon" />
+
+	<resultMap id="GiftCouponResult" class="com.lunchtasting.server.po.lt.GiftCoupon">
+		<result property="id" column="id" jdbcType="BIGINT" />
+        <result property="discount" column="discount" jdbcType="VARCHAR" />
+        <result property="money" column="money" jdbcType="DOUBLE" />
+        <result property="type" column="type" jdbcType="INT" />
+        <result property="sellerName" column="seller_name" jdbcType="VARCHAR" />
+        <result property="sellerAddress" column="seller_address" jdbcType="VARCHAR" />
+        <result property="sellerLogo" column="seller_logo" jdbcType="VARCHAR" />
+        <result property="beginTime" column="begin_time" jdbcType="DATETIME" />
+        <result property="endTime" column="end_time" jdbcType="DATETIME" />
+        <result property="createTime" column="create_time" jdbcType="DATETIME" />
+	</resultMap>
+	
+	
+	<select id="queryGiftCouponList"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT a.id,a.discount,a.money,a.type,a.num,a.seller_name,a.seller_address
+			,a.seller_logo,a.end_time
+			,DATE_FORMAT(a.begin_time,'%y年%c月%e日') AS str_begin_time
+			,DATE_FORMAT(a.end_time,'%y年%c月%e日') AS str_end_time
+			,IFNULL(b.code_count,0) AS code_count
+			
+			FROM(SELECT * FROM gift_coupon WHERE sort = 0 ORDER BY create_time) a
+			
+			LEFT JOIN (SELECT COUNT(id) code_count,gift_coupon_id FROM gift_coupon_code 
+				WHERE user_id IS NOT NULL GROUP BY gift_coupon_id) b ON(a.id = b.gift_coupon_id)
+	</select>
+	
+	<select id="getGiftCouponDetail"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT a.id,a.discount,a.money,a.type,a.num,a.seller_name,a.seller_address
+			,a.seller_logo,a.explain,a.end_time
+			,DATE_FORMAT(a.begin_time,'%Y年%c月%e日') AS str_begin_time
+			,DATE_FORMAT(a.end_time,'%Y年%c月%e日') AS str_end_time
+			,IFNULL(b.code_count,0) AS code_count
+		
+			FROM (SELECT * FROM gift_coupon WHERE id = #id#) a
+			
+			LEFT JOIN (SELECT COUNT(id) code_count,gift_coupon_id FROM gift_coupon_code 
+				WHERE user_id IS NOT NULL AND gift_coupon_id = #id#  
+				GROUP BY gift_coupon_id) b ON(a.id = b.gift_coupon_id)
+	</select>
+	
+	<select id="queryUserGiftCouponCodeList"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT b.id,b.discount,b.money,b.type,b.num,b.seller_name,b.seller_address
+			,b.seller_logo
+			,DATE_FORMAT(b.begin_time,'%y年%c月%e日') AS str_begin_time
+			,DATE_FORMAT(b.end_time,'%y年%c月%e日') AS str_end_time 
+			,a.code
+		
+			FROM (SELECT gift_coupon_id,code FROM gift_coupon_code 
+				WHERE user_id = #userId#) a
+				
+			JOIN (SELECT * FROM gift_coupon WHERE <![CDATA[end_time > NOW() ]]>) 
+				b ON(a.gift_coupon_id = b.id)
+	</select>
+	
+	<update id="exchangeGiftCoupon" parameterClass="map">
+		UPDATE gift_coupon_code SET user_id = #userId# 
+			WHERE id = (
+				SELECT a.id FROM(
+					SELECT id FROM gift_coupon_code WHERE gift_coupon_id = #giftCouponId# 
+						AND user_id IS NULL LIMIT 1 
+				) a
+             )
+	</update>
+	
+	<select id="getUserCode"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT * FROM gift_coupon_code WHERE gift_coupon_id = #giftCouponId# 
+			AND user_id = #userId# 
+	</select>
+		
+	<insert id="createGiftCouponCode" parameterClass="map">
+		INSERT INTO gift_coupon_code (
+    	id
+        , gift_coupon_id
+        , code
+        , create_time
+        ) VALUES (
+        #id#
+        , #giftCouponId#
+        , #code#
+        , now()
+        )
+	</insert>
+</sqlMap>

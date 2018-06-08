@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.CommonCollect">
+
+	<typeAlias alias="CommonCollect" type="com.lunchtasting.server.po.lt.CommonCollect" />
+
+	<resultMap id="CommonCollectResult" class="com.lunchtasting.server.po.lt.CommonCollect">
+		<result property="id" column="id" jdbcType="BIGINT" />
+		<result property="userId" column="user_id" jdbcType="BIGINT" />
+		<result property="bizId" column="biz_id" jdbcType="BIGINT" />
+		<result property="bizType" column="biz_type" jdbcType="INT" />
+		<result property="createTime" column="create_time" jdbcType="DATETIME" />
+	</resultMap>
+
+
+	<insert id="create" parameterClass="CommonCollect">
+    <![CDATA[
+   		INSERT INTO common_collect (
+    	user_id
+    	, biz_id
+    	, biz_type
+    	, create_time
+    	) VALUES (
+    	#userId#
+    	, #bizId#
+    	, #bizType#
+    	, now()
+    	)
+    ]]>
+	<selectKey resultClass="long" keyProperty="id">
+		SELECT @@IDENTITY
+		AS id
+    </selectKey>
+	</insert>
+    
+    <select id="getCollectId" parameterClass="map" resultClass="java.lang.Long">
+        SELECT id FROM common_collect WHERE user_id = #userId# 
+            AND biz_id = #bizId# AND biz_type = #bizType#
+    </select>
+</sqlMap>

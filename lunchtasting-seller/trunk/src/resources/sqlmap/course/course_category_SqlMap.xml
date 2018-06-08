@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.CourseCategory">
+
+	<typeAlias alias="CourseCategory" type="com.lunchtasting.server.po.lt.CourseCategory" />
+
+	<resultMap id="CourseCategoryResult" class="com.lunchtasting.server.po.lt.CourseCategory">
+		<result column="id" property="id" jdbcType="BIGINT" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="parent_id" property="parentId" jdbcType="INT" />
+		<result column="level" property="level" jdbcType="INT" />
+		<result column="sort" property="sort" jdbcType="INT" />
+		<result column="flag" property="flag" jdbcType="INT" />
+	</resultMap>
+	
+    <!-- 查询列表 -->
+    <select id="queryCourseCategoryListByHead"  parameterClass="map" resultMap="CourseCategoryResult">
+    	select
+		     id
+		    ,name
+		    ,parent_id
+		    ,level
+		    ,flag
+		    ,sort
+		from
+			course_category
+		where
+			flag != 2 and 
+			parent_id = -1
+    </select>
+    <!-- 查询列表 -->
+    <select id="queryCourseCategoryListByBelow"  parameterClass="map" resultMap="CourseCategoryResult">
+    	select
+		     id
+		    ,name
+		    ,parent_id
+		    ,level
+		    ,flag
+		    ,sort	
+		from
+			course_category
+		where
+			flag != 2
+			<isNotEmpty property="parentId">
+			 	and parent_id = #parentId#			
+			</isNotEmpty>
+			<isNull  property="parentId">
+				and parent_id != -1
+			</isNull>
+    </select>
+</sqlMap>

@@ -1,0 +1,261 @@
+* {
+    /* 在X5新内核Blink中，在排版页面的时候，会主动对字体进行放大，会检测页面中的主字体，当某一块字体在我们的判定规则中，认为字号较小，并且是页面中的主要字体，就会采取主动放大的操作。然而这不是我们想要的，可以采取给最大高度解决 */
+    max-height: 100000px;
+}
+
+*:before,
+*:after {
+    box-sizing: border-box;
+    max-height: 100000px;
+}
+
+*,
+*:before,
+*:after {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+html,
+body,
+div,
+span,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+address,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+samp,
+small,
+strong,
+sub,
+sup,
+var,
+b,
+i,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+textarea,
+td {
+    border: 0 none;
+    font-size: inherit;
+    color: inherit;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+}
+
+body {
+    position: relative;
+    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","\5FAE\8F6F\96C5\9ED1",Arial,sans-serif;
+    line-height: 1.5;
+    font-size: .26rem;
+}
+
+input {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.wrapBox {
+    max-width: 100%;
+    line-height: .48rem;
+    margin: 0 auto;
+    background-color: #0e1317;
+    color: #fff;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+}
+.wrapBox_white{
+    background-color: #fff;
+}
+.wrapBox_yellow{
+    background-color: #f8e600;
+    color: #000;
+}
+.wrapBox_black{
+    background-color: #272827;
+}
+.wrapBox_iphone{
+    min-height: 13.34rem;
+}
+/* 颜色 */
+.color-yellow{
+    color: #fbdb2f;
+}
+.color-gray{
+    color: #999;
+}
+.bgcolor-yellow{
+    background-color: #fbdb2f;
+}
+.bgcolor-ccc{
+    background-color: #ccc;
+}
+.block{
+    display: block;
+}
+
+.course_act{
+    font-size: .32rem;
+}
+.act-header,.act-content,.content-gym,.content-public{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.act-header img{
+    display: block;
+}
+.act-header img.act-headImg{
+    width: 6.25rem;
+    margin-top: .2rem;
+}
+.act-header img.act-logo{
+    width: 4.2rem;
+}
+.act-header p{
+    margin: .1rem;
+}
+.act-header p span{
+    position: relative;
+}
+.act-header p span::after{
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 3px;
+    background-color: red;
+}
+.act-header p i{
+    color: red;
+    font-size: 1rem;
+    vertical-align: text-bottom;
+}
+.act-content{
+    padding: 0 .3rem;
+}
+.act-content p{
+    width: 100%;
+}
+.act-content p span,.act-content p input,.act-content p select{
+    display: block;
+    width: 100%;
+}
+.act-content p input,.act-content p select{
+    height: .7rem;
+    line-height: .7rem;
+    padding: 0 .2rem;
+    background-color: #fff;
+    border: 2px solid #000;
+    border-radius: .05rem;
+    font-size: .3rem;
+}
+.act-content p select{
+    appearance:none;
+    -moz-appearance:none;
+    -webkit-appearance:none;
+    background: #fff url("http://ourjs.github.io/static/2015/arrow.png") no-repeat scroll right center;
+    background-size: 4%;
+}
+.act-content p span{
+    font-size: .34rem;
+    padding: .1rem 0;
+}
+.act-content p span i{
+    color: red;
+    vertical-align: text-top;
+}
+.act-signBtn{
+    display: block;
+    height: .7rem;
+    line-height: .7rem;
+    margin: .3rem 0 .5rem;
+    background-color: #000;
+    text-align: center;
+    border-radius: .08rem;
+    font-size: .32rem;
+}
+.content-gym{
+    font-size: .3rem;
+    font-weight: bold;
+}
+.gym-triangle{
+    width: 0;
+    height: 0;
+    border: .15rem solid transparent;
+    border-top: .3rem solid #000;
+}
+.gym-tit{
+    color: rgb(255, 0, 0);
+}
+.gym-map{
+    width: 100%;
+    margin: .2rem 0;
+}
+.gym-address{
+    padding: 0 .3rem;
+    text-align: center;
+}
+.content-public{
+    font-size: .28rem;
+}
+.public-qrcode{
+    width: 4rem;
+    margin: .2rem 0 .1rem;
+}
+.public-text2{
+    color: rgb(255, 0, 0);
+    font-size: .26rem;
+}
+.public-careful{
+    margin: .1rem 0;
+    padding: .02rem .5rem;
+    color: rgb(255, 0, 0);
+    font-size: .32rem;
+    border: 2px solid rgb(255, 0, 0);
+    border-radius: 30%;
+}
+.public-carefulC{
+    width: 80%;
+    list-style-type: square;
+}
+.public-carefulC li{
+    margin: 0 0 .3rem 0;
+}

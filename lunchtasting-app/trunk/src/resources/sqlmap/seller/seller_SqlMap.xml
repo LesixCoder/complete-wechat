@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.Seller">
+
+    <typeAlias alias="Seller" type="com.lunchtasting.server.po.lt.Seller" />
+
+    <resultMap id="SellerResult" class="com.lunchtasting.server.po.lt.Seller">
+        <result property="id" column="id" jdbcType="BIGINT" />
+        <result property="account" column="account" jdbcType="VARCHAR" />
+        <result property="password" column="password" jdbcType="VARCHAR" />
+        <result property="phone" column="phone" jdbcType="VARCHAR" />
+        <result property="name" column="name" jdbcType="VARCHAR" />
+        <result property="introduction" column="introduction" jdbcType="VARCHAR" />
+        <result property="address" column="address" jdbcType="VARCHAR" />
+        <result property="specificAddress" column="specific_address" jdbcType="VARCHAR" />
+        <result property="imgUrl" column="img_url" jdbcType="VARCHAR" />
+        <result property="imgArray" column="img_array" jdbcType="VARCHAR" />
+        <result property="tag" column="tag" jdbcType="VARCHAR" />
+        <result property="businessHours" column="business_hours" jdbcType="VARCHAR" />
+        <result property="areaId" column="area_id" jdbcType="VARCHAR" />
+        <result property="longitude" column="longitude" jdbcType="DOUBLE" />
+        <result property="latitude" column="latitude" jdbcType="DOUBLE" />
+        <result property="updateTime" column="update_time" jdbcType="DATETIME" />
+        <result property="createTime" column="create_time" jdbcType="DATETIME" />
+    </resultMap>
+
+	<insert id="create" parameterClass="Seller">
+    <![CDATA[
+   		INSERT INTO seller (
+    	account
+    	, password
+    	, phone
+    	, name
+    	, introduction
+    	, img_url
+    	, img_array
+    	, longitude
+    	, latitude
+    	, update_time
+    	, create_time
+    	) VALUES (
+    	#account#
+    	, #password#
+    	, #phone#
+    	, #name#
+    	, #introduction#
+    	, #imgUrl#
+    	, #imgArray#
+    	, #longitude#
+    	, #latitude#
+    	, now()
+    	, now()
+    	)
+    ]]>
+	<selectKey resultClass="long" keyProperty="id">
+	   SELECT @@IDENTITY
+	   AS id
+    </selectKey>
+	</insert>
+	
+	<select id="getById" parameterClass="map" resultMap="SellerResult">
+		SELECT * FROM seller WHERE id = #id:BIGINT#
+	</select>
+	
+    <select id="getByAccountAndPwd" parameterClass="map" resultMap="SellerResult">
+       SELECT * FROM seller WHERE account = #account# AND password = #pwd#
+    </select>
+    
+    <select id="getSellerCount"  parameterClass="map" resultClass="java.lang.Integer">
+        SELECT COUNT(id) FROM seller WHERE flag = 0
+        <isNotNull property="areaId">
+            AND area_id = #areaId#
+        </isNotNull>
+    </select>
+    
+    <select id="querySellerList"  parameterClass="map" resultClass="java.util.HashMap" remapResults="true">
+        SELECT id AS seller_id,name,introduction,img_url,IFNULL(tag,'') AS tag,IFNULL(address,'') AS address
+        	<isNotNull property="longitude">
+            ,IFNULL(ROUND(6378.138*2*ASIN(SQRT(POW(SIN((#latitude#*PI()/180-latitude*PI()/180)/2),2)+COS(22.299439*PI()/180)*COS(latitude*PI()/180)*POW(SIN((#longitude#*PI()/180-longitude*PI()/180)/2),2)))*1000),'') AS distance
+           	</isNotNull>
+            FROM seller WHERE flag = 0 
+        <isNotNull property="areaId">
+            AND area_id = #areaId#
+        </isNotNull>
+        <isNotNull property="longitude">
+        	ORDER BY distance+0
+        </isNotNull>
+        LIMIT #page#, #pageSize#
+    </select>
+    
+    <select id="getSellerDetail"  parameterClass="map" resultClass="java.util.HashMap" remapResults="true">
+        SELECT a.id AS seller_id,a.name,IFNULL(a.introduction,'') AS introduction,IFNULL(a.phone,'') AS phone
+        		,IFNULL(a.specific_address,'') AS specific_address,a.img_array,IFNULL(a.business_hours,'') AS business_hours 
+                ,IFNULL(a.longitude,0) AS longitude,IFNULL(a.latitude,0) AS latitude
+       		    <isNotNull property="userId">
+                ,IFNULL(b.biz_id,'') AS is_collect
+                </isNotNull>
+                ,IFNULL(c.score,0) AS score,IFNULL(d.comment_count,0) AS comment_count
+                ,IFNULL(e.course_count,0) AS course_count
+                
+            FROM (SELECT * FROM seller WHERE id = #sellerId#  AND flag = 0 ) a
+           	<isNotNull property="userId">
+           	LEFT JOIN (SELECT biz_id FROM common_collect WHERE user_id = #userId# 
+           		AND biz_id = #sellerId# AND biz_type = 3) b ON (a.id = b.biz_id)
+           	</isNotNull>  
+           	
+           	LEFT JOIN(SELECT seller_id,FORMAT(AVG(score),1) AS score FROM seller_comment
+				WHERE seller_id = #sellerId# AND flag = 0) c ON(a.id = c.seller_id)	
+				
+			LEFT JOIN(SELECT seller_id,COUNT(id) comment_count FROM seller_comment
+				WHERE seller_id = #sellerId# AND flag = 0) d ON(a.id = d.seller_id)
+				
+			LEFT JOIN(SELECT seller_id,COUNT(id) course_count FROM course
+				WHERE seller_id = #sellerId# AND flag = 0 ) e ON(a.id = e.seller_id)
+    </select>
+    
+    <select id="queryRecommendSellerList"  parameterClass="map" resultClass="java.util.HashMap">
+    	SELECT id AS seller_id,name,img_url FROM seller ORDER BY sort ASC LIMIT #size#
+    </select>
+    
+</sqlMap>

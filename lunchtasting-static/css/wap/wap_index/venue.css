@@ -1,0 +1,800 @@
+@charset "utf-8";
+
+/* CSS 初始化 */
+
+body,html,div,h1,h2,h3,h4,h5,p,em,i,b,span,input,textarea,section,figure,figcaption,a,ul,li,ol,header,footer,nav,time,address,img {
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+/*字体库*/
+/*
+@font-face{
+    font-family: myFirstFont;
+    src: url('../../../font/PingFang Bold.ttf'),
+         url('../../../font/PingFang ExtraLight.ttf'),
+         url('../../../font/PingFang Heavy.ttf'),
+         url('../../../font/PingFang Light.ttf'),
+         url('../../../font/PingFang Medium.ttf'),
+         url('../../../font/PingFang Regular.ttf');
+}
+*/
+html{
+    font-size: 625%;
+    overflow-x: hidden; 
+}
+
+body {
+    font-family: "Microsoft YaHei", "SimSun", Verdana, Arial, Helvetica, sans-serif;
+    background-color: #f2f2f2;
+    color: #333;
+    font-size: .16rem;
+    position: relative;
+}
+/* 清除chrome浏览器input[type=number]默认样式 */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
+}
+input[type=number] {  
+    -moz-appearance:textfield;  
+}
+/*去除ios按钮默认样式*/
+input[type='submit'],button,textarea {
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+input,textarea,button{
+    outline: none;
+}
+textarea{
+    resize: none;
+}
+ul,
+ol {
+    list-style: outside none none;
+}
+
+a {
+    text-decoration: none;
+    color: #999;
+}
+em,i,address{
+    font-style: normal;
+}
+img{
+    display: block;
+    max-width: 100%;
+}
+div,figcaption,textarea,input,p,span{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+h1,h2,h3,h4,h5{
+    font-weight: 400;
+}
+.none{
+    display: none;
+}
+.clearfix:after{
+    content: '';
+    height: 0;
+    display: block;
+    clear: both;
+    visibility: hidden;
+}
+/*通用样式*/
+.wrapper-Box{
+    width: 100%;
+    max-width: 6.4rem;
+    margin: 0 auto;
+}
+.filter{
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 5;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    opacity: .5;
+    display: none;
+}
+/*导航栏*/
+.nav{
+    position: fixed;
+    top: 0;
+    z-index: 10;
+    width: 100%;
+    max-width: 6.4rem;
+    height: .5rem;
+    line-height: .5rem;
+    background: #202125;
+}
+.nav .back{
+    position: absolute;
+    left: 3%;
+    top: 0;
+    color: #fff;
+    font-size: .25rem;
+    line-height: .5rem;
+}
+.nav #nav-btn{
+    position: absolute;
+    top: 0;
+    left: 3%;
+    width: .32rem;
+    height: 100%;
+    background: url('../../../image/wap/wap_index/icon-btn.png') no-repeat left center;
+    background-size: 176%;
+    border: none;
+    cursor: pointer;
+    display: none;
+}
+.nav h1{
+    font-size: .2rem;
+    text-align: center;
+    color: #fff;
+}
+.nav ul{
+    position: absolute;
+    top: .5rem;
+    left: 0;
+    z-index: 20;
+    width: 1rem;
+    padding-left: 3%;
+    background: #202125;
+    opacity: .9;
+    display: none;
+}
+.nav ul a{
+    display: block;
+    color: #999;
+    line-height: .6rem;
+}
+.nav ul a:hover{
+    color: #fff; 
+}
+/*详情页-通用*/
+.content-com{
+    margin-top: .5rem;
+    color: #333;
+}
+.header-details{
+    position: relative;
+}
+.header-details > img{
+    width: 100%;
+    height: 3.5rem;
+}
+.header-details > span{
+    display: block;
+    position: absolute;
+    left: 0%; 
+    bottom: 4%;
+    width: 98%;
+    padding-left: 4%;
+    color: #fff;
+    font-size: .22rem;
+    word-break: keep-all;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+/*场馆详情页*/
+.body-details{
+    margin: 0;
+    color: #333;
+}
+.body-details > p:first-child{
+    padding: 3% 2%;
+    font-size: .2rem;
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+}
+.body-details .venue-intro{
+    margin-top: .05rem;
+    padding: 0 2% 5%;
+    background-color: #fff;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    font-size: .16rem;
+}
+.body-details .venue-intro > h3{
+    font-size: .22rem;
+    color: #000;
+    margin-top: 0;
+    border-bottom: 1px solid #999;
+    padding: 4% 0;
+}
+.body-details .venue-intro > h3 >span:first-child{
+    margin-left: .05rem;
+}
+.body-details .venue-intro > h3 >span[lang='jRate']{
+    font-size: .16rem;
+    margin-left: 1%;
+    color: #999;
+}
+.body-details .venue-intro p{	
+    margin-top: 5%;
+    color: #666;
+}
+.body-details .venue-intro p:last-child{
+    padding-top: 5%;
+    border-top: 1px solid #eee;
+}
+.body-details .venue-intro p > a > span,.body-details .venue-intro p > i{
+    display: block;
+    width: 92%;
+    background: url("../../../image/wap/wap_index/icon-address2.png") no-repeat left center;
+    background-size: contain;
+    padding-left: 5%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: .18rem;
+}
+.body-details .venue-intro p:last-child > a > span{
+    background: url("../../../image/wap/wap_index/icon-phoneNum.png") no-repeat left center;
+    background-size: contain;
+}
+.body-details .venue-intro p > a{
+    position: relative;
+    display: block;
+}
+.body-details .venue-intro p > a >i{
+	display: block;
+    position: absolute;
+    right: 1%;
+    top: 35%;
+    width: 0;
+    height: 0;
+    border-width: 4px;
+    border-style: solid;
+    border-color: transparent transparent transparent #000;
+}
+
+/*活动列表*/
+.body-details .venue-intro.venue-act h3 span{
+    padding-left: 3%;
+    border-left: 4px solid #20b3a4;
+}
+.venue-act.venue-intro{
+    padding-bottom: 0;
+}
+.venue-act.venue-intro figure{  
+    height: 1.8rem;
+    margin: .2rem 0;
+    padding-bottom: .2rem;
+    border-bottom: 1px solid #eee;
+    overflow: hidden;
+    color: #9e9e9e;
+}
+.venue-act.venue-intro figure:last-child{
+    border-bottom: none;
+    margin-bottom: 0;
+}
+.venue-act figure img{
+    float: left;
+    width: 2.6rem;
+    height: 100%;
+}
+.venue-act figure figcaption{
+    position: relative;
+    float: left;
+    width: 52%;
+    height: 100%;
+    margin-left: 3%;
+    overflow: hidden;
+}
+.venue-act figure figcaption > h4{
+    color: #000;
+    font-size: .18rem;
+    text-overflow: -o-ellipsis-lastline;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;-webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+.venue-act figure figcaption .fig-top{
+    position: absolute;
+    left: 0;
+    top: 45%;
+    font-size: .16rem;
+}
+.venue-act figure figcaption .fig-top time,.venue-act figure > figcaption .fig-top address{
+    display: inline;
+}
+.venue-act figure figcaption .fig-bottom{
+    position: absolute;
+    left: 0;
+    bottom: 2%;
+    font-size: .14rem;
+}
+.venue-act figure figcaption .fig-bottom > span:first-child{
+    color: #ec2121;
+}
+.venue-act figure figcaption .fig-bottom > span:first-child i{
+    font-size: .2rem;
+}
+.venue-act figure figcaption .fig-bottom > span:last-child{
+    text-decoration: line-through;
+}
+/*新增课程*/
+.body-details .venue-course{
+    position: relative;
+    margin-top: .05rem;
+    padding: .2rem 2% .2rem 0;
+    background-color: #fff;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    font-size: .16rem;
+}
+.venue-course .courseIcon{
+    position: absolute;
+    left: .15rem;
+    top: .2rem;
+    width: .28rem;
+    height: .28rem;
+    
+}
+.venue-course .courseIcon img{
+    width: 100%;
+    height: 100%;
+}
+.venue-course figure{
+    height: 1.3rem;
+    margin-left: .6rem;
+    margin-bottom: .2rem;
+    padding-bottom: .2rem;
+    border-bottom: 1px solid #eee;
+    overflow: hidden;
+    color: #9e9e9e;
+}
+.venue-course figure a{
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+.venue-course figure img{
+    width: 1.7rem;
+    height: 100%;
+}
+.venue-course > figure figcaption{
+    float: left;
+    width: 50%;
+    margin-left: 3%;
+}
+.venue-course > figure a > i{
+    display: block;
+    position: absolute;
+    right: 1%;
+    top: 45%;
+    width: 0;
+    height: 0;
+    border-width: 4px;
+    border-style: solid;
+    border-color: transparent transparent transparent #000;
+}
+.venue-course .readMore{
+    display: block;
+    text-align: center;
+    font-size: .18rem;
+}
+.venue-course .readMore .moreUp,.venue-course .readMore .moreDown{
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: .05rem;   
+    margin-top: .1rem;
+    vertical-align: top;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #666 transparent transparent transparent;
+}
+.venue-course .readMore .moreDown{
+    margin-top: .05rem;
+    vertical-align: top;
+    border-color: transparent transparent #666 transparent;
+}
+/*评论列表*/
+.body-details .venue-comment{
+    margin-top: .05rem;
+    padding: 0 2% 0;
+    background-color: #fff;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    font-size: .16rem;
+}
+.body-details .venue-comment > h3 {
+    padding: 3% 0;
+    color: #252525;
+    font-size: .18rem;
+    border-bottom: 1px solid #999;
+}
+.venue-comment figure{
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid #eee;
+    padding: .12rem 0 .1rem;
+}
+.venue-comment figure > img{
+    float: left;
+    width: .6rem;
+    height: .6rem;
+    border-radius: 100%;
+    margin-top: 1%;
+}
+.venue-comment figure > figcaption{
+    float: left;
+    width: 85%;
+    margin-left: 2%;
+}
+.venue-comment figure > figcaption > h4{
+    font-size: .2rem;
+    color: #32699b;
+}
+.venue-comment figure > figcaption > p{
+    margin-top: .06rem;
+}
+.venue-comment figure > figcaption > p > span{
+    display: inline-block;
+}
+.venue-comment figure > figcaption > p > time{
+    margin-left: .15rem;
+    font-size: .16rem;
+    color: #666;
+    vertical-align: middle;
+}
+.venue-comment figure > figcaption > div{
+    font-size: .18rem;
+    line-height: 0.23rem;
+    overflow: hidden;
+}
+.venue-comment figure > figcaption > div span{
+    display: inline-block;
+    margin: .1rem 0;
+}
+.venue-comment figure > figcaption > div img{
+    float: left;
+    width: 1.2rem;
+    height: 1.2rem;
+    margin: 0 .1rem .1rem 0;
+}
+.venue-comment .checkMore{
+    display: block;
+    position: relative;
+    color: #20b3a4;
+    margin: .15rem 0;
+    padding-left: .05rem;
+    font-size: .18rem;
+}
+.venue-comment .checkMore .moreR{
+    display: block;
+    position: absolute;
+    right: 1%;
+    top: 0.07rem;
+    width: 0;
+    height: 0;
+    border-width: 4px;
+    border-style: solid;
+    border-color: transparent transparent transparent #000;
+}
+
+
+
+/*场馆地图*/
+#mapCon{
+    position: relative;
+    background-color: #fff;
+}
+#venueMap{
+    width: 100%;
+    height: 73%;
+}
+.mapDetails{
+    margin-top: 0%;
+    padding: 0 2%;
+}
+.mapDetails > div > h4{
+    color: #000;
+    font-size: .15rem;
+    margin: 3% 0 1% 0;
+    overflow: hidden;
+	/* word-break: keep-all;
+	    white-space: nowrap;
+	    text-overflow: ellipsis; */
+}
+.mapDetails > div > p{
+    color: #777;
+    font-size: .12rem;
+    overflow: hidden;
+}
+.footer{
+    height: .25rem;
+    margin-top: .05rem;
+    background: #fff;
+}
+
+/*媒体查询，小于640px*/
+@media screen and (max-width:640px){
+    .nav h1{
+        font-size: .18rem;
+    }
+    .header-details > img {
+        height: 2rem;
+    }
+    .header-details > span {
+        font-size: .18rem;
+    }
+    .body-details > p:first-child {
+        font-size: .16rem;
+    }
+    .body-details .venue-intro {
+        font-size: .14rem;
+    }
+    .body-details .venue-intro > h3 {
+        font-size: .18rem;
+    }
+    .body-details .venue-intro p > span {
+        background-size: 5%;
+        padding-left: 7%;
+    }
+    .body-details .venue-intro p:last-child > span {
+        background-size: 5%;
+    }
+    .venue-act.venue-intro figure {
+        height: 1.3rem;
+        margin: .15rem 0;
+        padding-bottom: .15rem;
+    }
+    .venue-act figure > img {
+        width: 1.75rem;
+    }
+    .venue-act figure > figcaption {
+        width: 48%;
+    }
+    .venue-act figure > figcaption > h4 {
+        color: #000;
+        font-size: .15rem;
+    }
+    .body-details .venue-intro p > a > span, .body-details .venue-intro p > i {
+	    padding-left: 7%;
+        font-size: .14rem;
+	}
+    .body-details .venue-intro > h3 >span[lang='jRate'] {
+        font-size: .14rem;
+    }
+    /*新增课程*/
+    .body-details .venue-course {
+        padding: .2rem 2% .15rem 0;
+    }
+    .venue-course .courseIcon {
+        left: .13rem;
+        width: .25rem;
+        height: .25rem;
+    }
+    .venue-course figure {
+        height: 1rem;
+        margin-left: .5rem;
+        margin-bottom: .15rem;
+        padding-bottom: .15rem;
+    }
+    .venue-course figure img {
+        width: 1.4rem;
+    }
+    .venue-course figure figcaption > h4 {
+        font-size: .15rem;
+    }
+    .venue-act figure figcaption .fig-top {
+        font-size: .15rem;
+    }
+    .venue-act figure figcaption .fig-bottom {
+        font-size: .13rem;
+    }
+    .venue-act figure figcaption .fig-bottom > span:first-child i {
+        font-size: .18rem;
+    }
+    .venue-course .readMore {
+        font-size: .15rem;
+    }
+    .venue-course .readMore .moreUp, .venue-course .readMore .moreDown {
+        margin-top: .09rem;
+        border-width: 4px;
+    }
+    .venue-course .readMore .moreDown{
+        margin-top: .04rem;
+    }
+    /*评论列表*/
+    .body-details .venue-comment > h3 {
+        font-size: .15rem;
+    }
+    .venue-comment figure > img {
+        width: .5rem;
+        height: .5rem;
+    }
+    .venue-comment figure > figcaption {
+        width: 82%;
+        margin-left: 3%;
+    }
+    .venue-comment figure > figcaption > h4 {
+        font-size: .17rem;
+    }
+    .venue-comment figure > figcaption > p > time {
+        font-size: .14rem;
+    }
+    .venue-comment figure > figcaption > div{
+        font-size: .15rem;
+    }
+    .venue-comment figure > figcaption > div span {
+        margin: .05rem 0;
+    }
+    .venue-comment figure > figcaption > div img {
+        width: .8rem;
+        height: .8rem;
+        margin: 0 .1rem .1rem 0;
+    }
+    .venue-comment .checkMore {
+        font-size: .15rem;
+    }
+}
+/*媒体查询，小于375px*/
+@media screen and (max-width:375px){
+    .nav h1 {
+        font-size: .16rem;
+    }
+    #venueMap{
+        height: 68%;
+    }
+    .mapDetails{
+
+    }
+    .mapDetails > div > h4{
+        font-size: .15rem;
+    }
+    .mapDetails > div > p{
+        font-size: .12rem;
+    }
+    .header-details > span {
+        font-size: .16rem;
+    }
+    .body-details > p:first-child {
+        font-size: .14rem;
+    }
+    .body-details .venue-intro > h3 {
+        font-size: .16rem;
+    }
+    .body-details .venue-intro p > a > span, .body-details .venue-intro p > i {
+        font-size: .13rem;
+    }
+    /*新增课程*/
+    .body-details .venue-intro > h3 >span[lang='jRate'] {
+        font-size: .13rem;
+    }
+    .venue-course .courseIcon {
+        left: .09rem;
+        width: 0.22rem;
+        height: .22rem;
+    }
+    .venue-course figure {
+        height: .9rem;
+        margin-left: .4rem;
+        margin-bottom: .1rem;
+        padding-bottom: .1rem;
+    }
+    .venue-course figure img {
+        width: 1.2rem;
+    }
+    .venue-course figure figcaption > h4 {
+        font-size: .13rem;
+    }
+    .venue-course figure figcaption .fig-bottom {
+        font-size: .13rem;
+    }
+    .venue-course figure figcaption .fig-bottom > span:first-child i {
+        font-size: .18rem;
+    }
+    .venue-course .readMore {
+        font-size: .13rem;
+    }
+    
+    /*活动列表*/
+    .venue-act.venue-intro figure {
+        height: 1.1rem;
+        margin: .1rem 0;
+    }
+    .venue-act figure > img {
+        width: 1.6rem;
+    }
+    .venue-act figure > figcaption > h4 {
+        font-size: .13rem;
+    }
+    .venue-act figure figcaption .fig-top {
+        font-size: .13rem; 
+    }
+    .venue-act figure figcaption .fig-bottom {
+        font-size: .12rem; 
+    }
+    .venue-act figure figcaption .fig-bottom > span:first-child i {
+        font-size: .16rem;
+    }
+    /*评论列表*/
+    .body-details .venue-comment > h3 {
+        font-size: .14rem;
+    }
+    .venue-comment figure > img {
+        width: .4rem;
+        height: .4rem;
+    }
+    .venue-comment figure > figcaption > h4 {
+        font-size: .15rem;
+    }
+    .venue-comment figure > figcaption > p > time {
+        font-size: .13rem;
+    }
+    .venue-comment figure > figcaption > div {
+        line-height: 0.2rem;
+        font-size: .14rem;
+    }
+    .venue-comment figure > figcaption > div img {
+        width: .7rem;
+        height: .7rem;
+    }
+    .venue-comment .checkMore {
+        font-size: .14rem;
+        margin: .12rem 0;
+    }
+    .venue-comment figure {
+        padding: .1rem 0 .05rem;
+    }
+}
+/*媒体查询，小于320px*/
+@media screen and (max-width:320px){
+    .header-details > img {
+        height: 1.8rem;
+    }
+    .header-details > span {
+        font-size: .15rem;
+    }
+    .venue-act.venue-intro figure {
+        height: 1rem;
+    }
+    .venue-act.venue-intro figure > img {
+        width: 1.4rem;
+    }
+    .venue-act figure > figcaption > h4 {
+        font-size: .14rem;
+    }
+    .venue-act figure figcaption .fig-top {
+        font-size: .13rem;
+    }
+    .venue-act figure figcaption .fig-bottom {
+        font-size: .13rem;
+    }
+    .venue-act figure figcaption .fig-bottom > span:first-child i {
+        font-size: .16rem;
+    }
+    .body-details .venue-intro > h3 {
+        font-size: .15rem;
+    }
+    /*场馆地图*/
+    #venueMap{
+        height: 64%;
+    }
+    .mapDetails{
+    }
+    .mapDetails > div > h4{
+        font-size: .14rem;
+        line-height: .3rem;
+        margin: 2% 0 0% 0;
+    }
+    .mapDetails > div > p{
+        font-size: .12rem;
+    }
+}
+

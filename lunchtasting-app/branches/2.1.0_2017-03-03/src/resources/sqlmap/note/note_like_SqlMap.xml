@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.NoteLike">
+
+    <typeAlias alias="NoteLike" type="com.lunchtasting.server.po.lt.NoteLike" />
+
+    <resultMap id="NoteLikeResult" class="com.lunchtasting.server.po.lt.NoteLike">
+        <result property="id" column="id"  jdbcType="BIGINT" />
+        <result property="userId" column="user_id" jdbcType="BIGINT" />
+        <result property="noteId" column="note_id" jdbcType="BIGINT" />
+        <result property="createTime" column="create_time" jdbcType="DATETIME" />
+    </resultMap>
+    
+    <insert id="create" parameterClass="NoteLike">
+    <![CDATA[
+        INSERT INTO note_like (
+        id
+        , user_id
+        , note_id
+        , create_time
+        ) VALUES (
+        #id#
+        , #userId#
+        , #noteId#
+        , now()
+        )
+    ]]>
+    </insert>
+    
+    <delete id="deleteLike" parameterClass="java.util.Map">
+    	<![CDATA[
+    		DELETE FROM note_like WHERE  id = #id#
+    	  ]]>
+    </delete>
+    
+    <select id="getNoteLike" parameterClass="map" resultMap="NoteLikeResult" >
+    	SELECT id,user_id,note_id,create_time FROM note_like WHERE user_id=#userId# and note_id = #noteId#
+    </select>
+	    
+</sqlMap>

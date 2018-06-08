@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.CourseOrder">
+
+	<typeAlias alias="CourseOrder" type="com.lunchtasting.server.po.lt.CourseOrder" />
+
+	<resultMap id="CourseOrderResult" class="com.lunchtasting.server.po.lt.CourseOrder">
+		<result property="id" column="id"  jdbcType="BIGINT" />
+		<result property="userId" column="user_id"  jdbcType="BIGINT" />
+		<result property="courseId"  column="course_id" jdbcType="BIGINT" />
+		<result property="courseMealId"  column="course_meal_id" jdbcType="BIGINT" />
+		<result property="gymId"  column="gym_id" jdbcType="BIGINT" />
+		<result property="price"  column="price" jdbcType="DOUBLE" />
+		<result property="payPrice"  column="pay_price" jdbcType="DOUBLE" />
+		<result property="code"  column="code" jdbcType="VARCHAR" />
+		<result property="payType"  column="pay_type" jdbcType="INT" />
+		<result property="status" column="status" jdbcType="INT" />
+		<result property="createTime"  column="create_time" jdbcType="DATETIME" />
+	</resultMap>
+    
+	<select id="getById" parameterClass="map" resultMap="CourseOrderResult">
+		SELECT * FROM course_order WHERE id = #id:BIGINT#
+	</select>
+	
+	<select  id="queryCourseOrderList" resultClass="java.util.HashMap">
+		SELECT a.id AS order_id,a.user_id,a.course_id,a.course_meal_id,a.gym_id
+				,a.price,a.pay_price,a.phone,a.code,a.status,a.is_bonus,a.create_time
+				,b.name AS user_name,b.sex AS user_sex
+				,c.name AS course_name
+				,d.name AS meal_name,d.str_time AS meal_str_time
+				,DATE_FORMAT(d.begin_time,'%c月%e日') AS meal_begin_time
+				,DATE_FORMAT(d.end_time,'%c月%e日') AS meal_end_time
+				,d.type AS meal_type
+				,e.name AS gym_name,e.address AS gym_address,e.phone
+		 
+			FROM (SELECT * FROM course_order WHERE status != 1 ORDER BY create_time DESC) a
+			
+			JOIN user b ON(a.user_id = b.id)
+			
+			JOIN course c ON(a.course_id = c.id)
+			
+			JOIN course_meal d ON(a.course_meal_id = d.id)
+			
+			JOIN gym e ON(a.gym_id = e.id)	
+	</select>
+		
+</sqlMap> 

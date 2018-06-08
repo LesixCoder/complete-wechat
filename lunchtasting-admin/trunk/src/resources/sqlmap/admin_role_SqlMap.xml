@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.SysRole">
+
+	<typeAlias alias="SysRole" type="com.lunchtasting.server.po.lt.SysRole" />
+
+	<cacheModel id="menu-cache" type="LRU" readOnly="true" serialize="true">
+	  <flushInterval hours="24" />
+<!-- 	  <flushOnExecute statement="insertStu" /> -->
+<!-- 	  <flushOnExecute statement="updateStu" /> -->
+<!-- 	  <flushOnExecute statement="deleteStu" /> -->
+	  <property value="500" name="size" />
+	</cacheModel>
+
+	<resultMap id="SysRoleResult" class="com.lunchtasting.server.po.lt.SysRole">
+		<result column="id" property="id" jdbcType="BIGINT"/> 
+	 	<result column="role_id" property="roleId" jdbcType="INT"/> 
+	 	<result column="menu_id" property="menuId" jdbcType="VARCHAR"/>
+	 	<result column="is_open" property="isOpen" jdbcType="INT"/>
+	 	<result column="is_add" property="isAdd" jdbcType="INT"/>
+	 	<result column="is_edit" property="isEdit" jdbcType="INT"/> 
+	 	<result column="is_delete" property="isDelete" jdbcType="INT"/>  
+	 	<result column="is_check" property="isCheck" jdbcType="INT"/> 
+	 	<result column="is_print" property="isPrint" jdbcType="INT"/>   
+	 	<result column="is_uncheck" property="isUncheck" jdbcType="INT"/>
+	 	<result column="menu_name" property="menuName" jdbcType="VARCHAR"/>
+	 	<result column="action" property="action" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+<!-- 查询 ById-->
+   <select id="queryRoleById" parameterClass="map"  resultMap="SysRoleResult" cacheModel="menu-cache">
+	 	SELECT
+	 	    s.id,
+	 	    s.role_id,
+	 	    s.is_open,
+	 	    s.is_add,
+			s.is_edit,
+			s.is_delete,
+			s.is_check,
+			s.is_uncheck,
+			s.is_print,
+            s.menu_id,
+			m.menu_name,
+			m.action
+		FROM  
+		    user_admin u , sys_role s ,sys_menu m
+		WHERE s.menu_id = m.menu_id
+		and s.is_open != 0
+		<isNotNull property="userId" prepend="AND">
+		    u.id = #userId#
+		</isNotNull>
+		<isNotNull property="roleId" prepend="AND">
+		    u.role_id = #roleId#
+		</isNotNull>
+		<isNotNull property="roleId" prepend="AND">
+		    s.role_id = #roleId#
+		</isNotNull>
+		
+  </select>
+ 
+</sqlMap>

@@ -1,0 +1,355 @@
+@charset "utf-8";
+
+/* CSS 初始化 */
+
+body,html,div,h1,h2,h3,h4,h5,p,em,i,b,span,input,textarea,section,figure,figcaption,a,ul,li,ol,header,footer,nav,time,address,img {
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+
+html{
+    font-size: 625%;
+    overflow-x: hidden; 
+}
+
+body {
+    font-family: "Microsoft YaHei", "SimSun", Verdana, Arial, Helvetica, sans-serif;
+    background-color: #fff;
+    color: #fff;
+    font-size: .17rem;
+    position: relative;
+    overflow-x: hidden;
+}
+/* 清除chrome浏览器input[type=number]默认样式 */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
+}
+input[type=number] {  
+    -moz-appearance:textfield;  
+}
+/*去除ios按钮默认样式*/
+input[type='submit'],button,textarea {
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+input,textarea,button{
+    outline: none;
+}
+
+a {
+    text-decoration: none;
+    color: #202125;
+}
+em,i,address{
+    font-style: normal;
+}
+img{
+    display: block;
+    max-width: 100%;
+}
+div,figcaption,textarea,input,p,span{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+h1,h2,h3,h4,h5{
+    font-weight: 400;
+}
+.none{
+    display: none;
+}
+.clearfix:after{
+    content: '';
+    height: 0;
+    display: block;
+    clear: both;
+    visibility: hidden;
+}
+/*通用样式*/
+.wrapper-Box{
+    position: relative;
+    width: 100%;
+    max-width: 6.4rem;
+    margin: 0 auto;
+    background-color: #202125;
+    overflow: hidden;
+}
+
+/*赛事介绍顶部logo*/
+.header{
+    padding: 0 0 0 0;
+}
+.header-img{
+    margin-top: -5%;
+}
+.header-img img{
+    width: 100%;
+}
+.header-site{
+    width: 68%;
+    margin: -8% auto 0;
+    font-size: .18rem;
+}
+.header-site address{
+    padding-top: 3%;
+}
+.triangle{
+    padding: 7% 0 0;
+}
+.triangle i{
+    display: block;
+    width: 0;
+    height: 0;
+    border: 18px solid transparent;
+    border-top: 15px solid #ea0707;
+    font-size: .10rem;
+    margin: 0 auto;
+}
+
+/*赛事介绍详情*/
+.intro h3{
+    height: .45rem;
+    line-height: .35rem;
+    margin: 2% 3%;
+    background: url('http://static.mperfit.com/wechat/images/intro/bg_icon.png') no-repeat left center;
+    background-size: contain;
+    font-weight: bold;
+    font-size: .22rem;
+}
+.intro h3 i{
+    display: inline-block;
+    padding-left: 4%;
+    transform: rotate(-12deg);
+    font-weight: 400;
+    font-size: .18rem;
+}
+.intro h3 span{
+    margin-left: 8%;
+    color: #ea0707;
+}
+.intro p{
+    line-height: .35rem;
+    padding: 0 3%;
+    text-indent: 2em;
+}
+.intro img{
+    width: 100%;
+    margin: 5% 0;
+}
+.intro-gift{
+    margin: 6% 0 0 0;
+}
+.intro-gift > span{
+    display: block;
+    margin: -3% 0 5% 0;
+    padding-left: 18%;
+    font-size: .14rem;
+}
+.intro-ul{
+    padding: 4% 5%;
+    background: url("http://static.mperfit.com/wechat/images/intro/bg_text.png") no-repeat center center;
+    list-style: none;
+    line-height: .35rem;
+}
+.intro-ul li{
+    
+}
+.intro-ul li i{
+    margin: 0 3% 0 0;
+    padding: 0px 4px;
+    border: 1px solid #fffdfd;
+    border-radius: 100%;
+    font-size: .12rem;
+}
+.intro-care{
+    padding: 3% 0;
+}
+.intro-care p{
+    text-indent: 0;
+}
+.intro-care p i{
+    color: #ea0707;
+    font-size: .2rem;
+}
+/*点击报名*/
+.footer{
+    padding: 10% 0 15%;
+}
+.footer #signup{
+    display: block;
+    width: 60%;
+    height: .4rem;
+    margin: 0 auto;
+    line-height: .4rem;
+    text-align: center;
+    font-size: .22rem;
+}
+#signup.unchecked{
+    background: #ea0707;
+    color: #fff;
+}
+#signup.checked{
+    background: #999;
+    color: #ccc;
+}
+
+/*查看报名信息*/
+.seeSign{
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    max-width: 6.4rem;
+    width: 92%;
+    font-size: .18rem;
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+}
+.seeSign p{
+    height: .4rem;
+    line-height: .4rem;
+    background: #fff;
+    margin-bottom: 3%;
+    overflow: hidden;
+}
+.seeSign p i,.seeSign p span{
+    float: left;
+}
+.seeSign p i{
+    width: 30%;
+    padding-left: 3%;
+    background: url('http://static.mperfit.com/wechat/images/intro/bg_input.png') no-repeat left center;
+    background-size: 100% 100%;
+}
+.seeSign p span{
+    width: 64%;
+    margin-left: 3%;
+    padding-right: 2%;
+    color: #202125;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.seeSign > span{
+    font-size: .16rem;
+}
+.seeSign > img{
+    width: 30%;
+    margin: 3% auto 0;
+}
+.seeSign p.eqcodeT{
+    text-align: center;
+    background: transparent;
+    margin: 0;
+    font-size: .14rem;
+}
+.footer-bottom{
+    position: fixed;
+    max-width: 6.4rem;
+    width: 100%;
+    bottom: 0;
+    left: 50%;
+    padding: 0;
+    transform: translateX(-50%);
+}
+.footer-bottom img{
+    width: 100%;
+}
+
+/*媒体查询，小于640px*/
+@media screen and (max-width:640px){
+    
+}
+/*媒体查询，小于375px*/
+@media screen and (max-width:375px){
+    body{
+        font-size: .15rem;
+    }
+    .header-site {
+        width: 70%;
+        font-size: .16rem;
+    }
+    .intro h3 {
+        font-size: .2rem;
+    }
+    .intro h3 i {
+        font-size: .16rem;
+    }
+    .intro-gift > span {
+        font-size: .13rem;
+    }
+    .intro-ul {
+        line-height: .32rem;
+    }
+    .intro-care p i {
+        font-size: .18rem;
+    }
+    .footer #signup {
+        height: .35rem;
+        line-height: .35rem;
+        font-size: .2rem;
+    }
+    .seeSign{
+        font-size: .17rem;
+    }
+    .seeSign p{
+        height: .38rem;
+        line-height: .38rem;
+    }
+    .seeSign > span {
+        font-size: .15rem;
+    }
+    .seeSign p.eqcodeT {
+        font-size: .13rem;
+    }
+}
+/*媒体查询，小于320px*/
+@media screen and (max-width:320px){
+    body{
+        font-size: .14rem;
+    }
+    .header-site {
+        width: 72%;
+        font-size: .15rem;
+    }
+    .intro h3 {
+        font-size: .19rem;
+    }
+    .intro h3 i {
+        padding-left: 5%;
+    }
+    .intro p {
+        line-height: .3rem;
+    }
+    .intro-gift > span {
+        font-size: .12rem;
+    }
+    .intro-ul {
+        line-height: .3rem;
+    }
+    .intro-care p i {
+        font-size: .16rem;
+    }
+    .footer #signup {
+        height: .35rem;
+        line-height: .35rem;
+        font-size: .18rem;
+    }
+    .seeSign{
+        font-size: .15rem;
+    }
+    .seeSign p {
+        height: .35rem;
+        line-height: .35rem;
+    }
+    .seeSign > span {
+        font-size: .14rem;
+    }
+    .seeSign p.eqcodeT {
+        font-size: .12rem;
+    }
+}
+

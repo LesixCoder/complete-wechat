@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.OrdersRefund">
+
+	<typeAlias alias="OrdersRefund" type="com.lunchtasting.server.po.lt.OrdersRefund" />
+	
+<!-- 	<resultMap id="OrdersRefund" class="com.lunchtasting.server.po.lt.OrdersRefund">
+		<result property="id" column="id"  jdbcType="BIGINT" />
+		<result property="orderId"  column="order_id" jdbcType="BIGINT" />
+		<result property="orderListIds"  column="order_list_ids" jdbcType="VARCHAR" />
+		<result property="price"  column="price" jdbcType="DOUBLE" />
+		<result property="outRefundNo" column="out_refund_no" jdbcType="VARCHAR" />
+		<result property="payType" column="pay_type" jdbcType="INT" />
+		<result property="status" column="status" jdbcType="INT" />
+		<result property="auditTime" column="audit_time" jdbcType="DATETIME" />
+		<result property="finishTime" column="finish_time" jdbcType="DATETIME" />
+	</resultMap> -->
+
+    <insert id="create" parameterClass="OrdersRefund">
+    <![CDATA[
+        INSERT INTO orders_refund (
+        id
+        , user_id
+        , order_id
+        , order_list_ids
+        , price
+        , out_refund_no
+        , out_refund_id
+        , pay_type
+        , refund_type
+        , number
+        , status
+        , audit_time
+        , finish_time
+        , create_time
+        ) VALUES (
+        #id#
+        , #userId#
+        , #orderId#
+        , #orderListIds#
+        , #price#
+        , #outRefundNo#
+        , #outRefundId#
+        , #payType#
+        , #refundType#
+        , #number#
+        , #status#
+        , #auditTime#
+        , #finishTime#
+        , NOW()
+        )
+    ]]>
+    </insert>
+	
+	<select id="getOrderRefundDetail"  parameterClass="map" resultClass="java.util.HashMap" >
+		SELECT id,price,out_refund_no,pay_type,number,status,create_time
+			 ,audit_time,finish_time
+			FROM orders_refund WHERE id = #refundId#
+	</select>	
+	
+	<select id="queryAuditOrderRefundList"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT a.id AS refund_id,a.number AS refund_number,a.out_refund_no,a.pay_type,a.refund_type,a.order_id,a.order_list_ids
+			,b.code AS out_trade_no
+				
+			FROM (SELECT * FROM orders_refund WHERE status = 2) a
+			JOIN orders b ON(a.order_id = b.id)
+	</select>
+	
+	<update id="updateRefundStatus" parameterClass="map">
+		UPDATE orders_refund SET status = #status#,finish_time = NOW() WHERE id = #refundId#
+	</update>
+	
+	<select id="getOrderRefundCount"  parameterClass="map" resultClass="java.lang.Integer">
+		SELECT COUNT(id) FROM orders_refund WHERE user_id = #userId#  
+    </select>
+	
+	<select id="queryOrderRefundList"  parameterClass="map" resultClass="java.util.HashMap">
+    	SELECT a.id AS order_id,a.number,a.price,a.pay_price,a.status,a.create_time
+    		,b.id AS course_id,b.name AS course_name,b.img_url AS course_img_url
+    		,b.begin_time,b.end_time
+    		,c.name AS seller_name
+    		,tt.status AS refund_status
+    	
+    		FROM (SELECT * FROM orders_refund WHERE user_id = #userId#  
+    			ORDER BY create_time DESC LIMIT #page#, #pageSize#) tt
+    			
+    		JOIN orders a ON(tt.order_id = a.id)
+    		
+    		LEFT JOIN course b ON(a.course_id = b.id)
+    		
+    		LEFT JOIN seller c ON(b.seller_id = c.id)
+    </select>
+</sqlMap>

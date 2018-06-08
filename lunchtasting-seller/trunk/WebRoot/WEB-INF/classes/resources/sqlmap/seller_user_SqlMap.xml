@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.Seller">
+
+	<typeAlias alias="Seller" type="com.lunchtasting.server.po.lt.Seller" />
+
+	<resultMap id="SellerLogin" class="com.lunchtasting.server.po.lt.Seller">
+		<result column="id" property="id"/>
+        <result column="account" property="account"/> 	
+	    <result column="password" property="password"/>
+	</resultMap>
+	<resultMap id="SellerRe" class="com.lunchtasting.server.po.lt.Seller">
+		<result column="id" property="id"/>
+        <result column="account" property="account"/> 	
+	    <result column="password" property="password"/>
+	    <result column="area_id" property="areaId"/>
+	    <result column="name" property="name"/>
+	    <result column="phone" property="phone"/>
+	    <result column="introduction" property="introduction"/>
+	    <result column="img_url" property="imgUrl"/>
+	    <result column="address" property="address"/>
+	    <result column="specific_address" property="specificAddress"/>
+	    <result column="img_array" property="imgArray"/>
+	    <result column="tag" property="tag"/>
+	    <result column="business_hours" property="businessHours"/>
+	    <result column="longitude" property="longitude"/>
+	    <result column="latitude" property="longitude"/>
+	    <result column="update_time" property="updateTime"/>
+	    <result column="create_time" property="createTime"/>
+	    <result column="flag" property="flag"/>
+	</resultMap>
+
+	<!--登录 -->
+   <select id="sellerUsersLogin" parameterClass="map" resultMap="SellerLogin">
+	 	SELECT
+		 	id,
+		 	password,
+			account
+		FROM 
+			 seller
+		WHERE 
+			account = #account#
+			and password = #password#
+ 	</select>
+ 	
+ 	<!-- 查询商家信息byId -->
+ 	<select id="sellerById" parameterClass="map" resultMap="SellerRe">
+ 		SELECT
+			id
+			,account
+			,password
+			,area_id
+			,name
+			,phone
+			,introduction
+			,img_url
+			,address
+			,specific_address
+			,img_array
+			,tag
+			,business_hours
+			,longitude
+			,latitude
+			,flag
+			,create_time
+			,update_time
+		FROM 
+			 seller 
+		WHERE 
+			id = #id#
+ 	</select>
+ 	<!-- 更新 -->
+    <update id="updateSeller" parameterClass="Seller">
+        UPDATE seller SET 
+        <isNotEmpty property="account">
+        	account = #account#,
+		</isNotEmpty>
+        <isNotEmpty property="password">
+        	password = #password#,
+        </isNotEmpty>
+        <isNotNull property="areaId">
+        	area_id = #areaId#,
+        </isNotNull>
+        <isNotEmpty property="name">
+        	name = #name#,
+        </isNotEmpty>
+        <isNotEmpty property="phone">
+        	phone = #phone#,
+        </isNotEmpty>     
+        <isNotNull property="introduction">
+        	introduction = #introduction#,
+        </isNotNull>    
+        <isNotNull property="imgUrl">
+        	img_url = #imgUrl#,
+        </isNotNull>    
+        <isNotNull property="address">
+        	address = #address#,
+        </isNotNull>    
+        <isNotNull property="specificAddress">
+        	specific_address = #specificAddress#,
+        </isNotNull>    
+        <isNotNull property="imgArray">
+        	img_array = #imgArray#,
+        </isNotNull>    
+        <isNotNull property="tag">
+        	tag = #tag#,
+        </isNotNull>    
+        <isNotNull property="businessHours">
+        	business_hours = #businessHours#,
+        </isNotNull>    
+        <isNotNull property="longitude">
+        	longitude = #longitude#,
+        </isNotNull>    
+        <isNotNull property="latitude">
+        	latitude = #latitude#,
+        </isNotNull>    
+        <isNotNull property="flag">
+        	flag = #flag#,
+        </isNotNull>   
+	  		update_time = now()
+  		WHERE 
+  			id = #id#
+    </update>
+</sqlMap>

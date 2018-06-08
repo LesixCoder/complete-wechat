@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.ActivityEnroll">
+
+	<typeAlias alias="ActivityEnroll" type="com.lunchtasting.server.po.lt.ActivityEnroll" />
+
+	<resultMap id="ActivityEnrollResult" class="com.lunchtasting.server.po.lt.ActivityEnroll">
+		<result property="id" column="id"  jdbcType="BIGINT" />
+		<result property="userId"  column="user_id" jdbcType="BIGINT" />
+		<result property="activityId" column="activity_id" jdbcType="BIGINT" />
+	    <result property="name" column="name" jdbcType="VARCHAR" />
+		<result property="phone" column="phone" jdbcType="VARCHAR" />
+		<result property="sex" column="sex" jdbcType="INT" />
+		<result property="age" column="age" jdbcType="INT" />
+		<result property="remark" column="remark" jdbcType="VARCHAR" />
+		<result property="createTime" column="create_time" jdbcType="DATETIME" />
+	</resultMap>
+	
+    <insert id="create" parameterClass="ActivityEnroll">
+    <![CDATA[
+        INSERT INTO activity_enroll (
+        id
+        , user_id
+        , activity_id
+        , name
+        , phone
+        , sex
+        , age
+        , remark
+        , create_time
+        ) VALUES (
+        #id#
+        , #userId#
+        , #activityId#
+        , #name#
+        , #phone#
+        , #sex#
+        , #age#
+        , #remark#
+        , now()
+        )
+    ]]>
+    </insert>
+    
+    <select id="getEnrollCount"  parameterClass="map" resultClass="java.lang.Integer">
+        SELECT COUNT(1) FROM activity_enroll WHERE activity_id = #activityId#
+    </select>
+    
+    <select id="getIsEnroll"  parameterClass="map" resultClass="java.lang.Long">
+        SELECT a.id 
+            FROM (SELECT id,enroll_num FROM activity WHERE id = #activityId# AND flag = 0 
+                    <![CDATA[ AND begin_time < now() AND now() < end_time  ]]> ) a
+            LEFT JOIN (SELECT COUNT(id) AS now_num,activity_id FROM activity_enroll 
+                    WHERE activity_id = #activityId#  GROUP BY activity_id) b ON(a.id = b.activity_id)
+            WHERE <![CDATA[ a.enroll_num > IFNULL(b.now_num,0) ]]>
+    </select>
+    
+    <select id="getEnrollId"  parameterClass="map" 
+    resultClass="java.lang.Long">
+        SELECT id FROM activity_enroll WHERE activity_id = #activityId# AND user_id = #userId#
+    </select>
+    
+    <select id="getUserEnrollerCount"  parameterClass="map" resultClass="java.lang.Integer">
+        SELECT COUNT(id) FROM activity_enroll WHERE user_id = #userId#
+    </select>
+    
+    <select id="queryUserEnrollerList"  parameterClass="map" resultClass="java.util.HashMap">
+        SELECT b.id AS activity_id,b.name,b.address,b.img_url,b.begin_time,b.end_time
+            FROM (SELECT activity_id FROM activity_enroll WHERE user_id = #userId#
+                    ORDER BY create_time DESC LIMIT #page#, #pageSize#) a
+            JOIN (SELECT * FROM activity WHERE flag = 0 ) b ON(a.activity_id = b.id)
+    </select>
+	
+</sqlMap>

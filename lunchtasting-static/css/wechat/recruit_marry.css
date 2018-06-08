@@ -1,0 +1,239 @@
+@charset "utf-8";
+
+/* CSS 初始化 */
+
+body,html,div,h1,h2,h3,h4,h5,p,em,i,b,span,input,textarea,section,figure,figcaption,a,ul,li,ol,header,footer,nav,time,address,img {
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+
+html{
+    font-size: 625%;
+    overflow-x: hidden; 
+}
+
+body {
+    font-family: "Microsoft YaHei", "SimSun", Verdana, Arial, Helvetica, sans-serif;
+    background-color: #fff;
+    color: #202125;
+    font-size: .15rem;
+    position: relative;
+    overflow-x: hidden;
+}
+/* 清除chrome浏览器input[type=number]默认样式 */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
+}
+input[type=number] {  
+    -moz-appearance:textfield;  
+}
+/*去除ios按钮默认样式*/
+input[type='submit'],button,textarea {
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+input,textarea,button{
+    outline: none;
+}
+
+a {
+    text-decoration: none;
+    color: #202125;
+}
+em,i,address{
+    font-style: normal;
+}
+img{
+    display: block;
+    max-width: 100%;
+}
+div,figcaption,textarea,input,p,span{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+h1,h2,h3,h4,h5{
+    font-weight: 400;
+}
+.none{
+    display: none;
+}
+.clearfix:after{
+    content: '';
+    height: 0;
+    display: block;
+    clear: both;
+    visibility: hidden;
+}
+/*通用样式*/
+.wrapper-Box{
+    width: 100%;
+    max-width: 6.4rem;
+    margin: 0 auto;
+}
+
+/*评分*/
+.ratyli{
+    padding-left: 3%;
+    font-size: .16rem;
+}
+.ratyli .rate.rate-full{
+    color: #ec2121;
+}
+.ratyli .rate.rate-empty{
+    color: transparent;
+}
+.ratyli .rate{
+    padding-right: 1%;
+}
+/*匹配*/
+.marry-list{
+    margin-bottom: 3%;
+    background: #f4f4f4;
+    overflow: hidden;
+}
+.marry-list:last-child{
+    margin-bottom: 0%;
+}
+.marry-list > img{
+    float: left;
+    width: 40%;
+}
+.marry-list > figcaption{
+    float: right;
+    width: 60%;
+    padding: 0 2% 0 3%;
+}
+.list-name{
+    position: relative;
+    padding: 3% 0;
+}
+.list-name .name-left,.list-name .name-right{
+    display: inline-block;
+    width: 80%;
+}
+.list-name .name-right{
+    position: absolute;
+    top: 50%;
+    right: 3%;
+    width: 28%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+.name-left > h4{
+    padding: 0 0 5% 0;
+    font-size: .2rem;
+}
+.name-left > span{
+    padding: 3px 5px;
+    background: #86d0c9;
+    color: #fff;
+}
+.marry-Wman .name-left > span{
+    background: #fd9c9c;
+}
+.name-right a{
+    display: block;
+    width: 100%;
+    height: .25rem;
+    line-height: .25rem;
+    border: 1px solid #ec2121;
+    border-radius: 5px;
+    color: #ec2121;
+    text-align: center;
+    font-size: .16rem;
+}
+.list-label{
+    padding: 2% 0 5% 0;
+}
+    
+.list-label i{
+    display: inline-block;
+    padding: 3px 5px;
+    background: #cac1c2;
+    color: #fff;
+}
+.marry-Wman .list-label i{
+    background: #eca330;
+}
+.list-label i:nth-child(2){
+    background: #936bb2;
+}
+.marry-Wman .list-label i:nth-child(2){
+    background: #6fae73;
+}
+.list-label i:nth-child(3){
+    background: #f29b76;
+}
+.marry-Wman .list-label i:nth-child(3){
+    background: #778ecb;
+}
+.list-text{
+    padding-bottom: 2%;
+    color: #666;
+    font-size: .16rem;
+}
+.list-text p{
+    padding: 0 0 2% 0;
+}
+.footer{
+    padding: 4% 0;
+}
+.footer p{
+    text-align: center;
+    font-size: .16rem;
+}
+
+/*媒体查询，小于640px*/
+@media screen and (max-width:640px){
+    
+}
+/*媒体查询，小于375px*/
+@media screen and (max-width:375px){
+    body{
+        font-size: .14rem;
+    }
+    .name-left > h4 {
+        font-size: .18rem;
+    }
+    .list-text {
+        font-size: .15rem;
+    }
+    .name-right a{
+        font-size: .15rem;
+    }
+    .footer p {
+        font-size: .14rem;
+    }
+    /*评分*/
+    .ratyli{
+        font-size: .14rem;
+    }
+}
+/*媒体查询，小于320px*/
+@media screen and (max-width:320px){
+    body{
+        font-size: .12rem;
+    }
+    .name-left > h4 {
+        font-size: .16rem;
+    }
+    .list-text {
+        font-size: .13rem;
+    }
+    .name-right a{
+        font-size: .13rem;
+    }
+    .footer p {
+        font-size: .12rem;
+    }
+    /*评分*/
+    .ratyli{
+        font-size: .12rem;
+    }
+}
+

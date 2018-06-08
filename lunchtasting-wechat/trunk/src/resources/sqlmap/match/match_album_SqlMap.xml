@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.MatchAlbum">
+
+    <typeAlias alias="MatchAlbum" type="com.lunchtasting.server.po.lt.MatchAlbum" />
+	
+	<resultMap id="MatchAlbumResult" class="com.lunchtasting.server.po.lt.MatchAlbum">
+		<result property="id" column="id"  jdbcType="BIGINT" />
+		<result property="matchId" column="match_id" jdbcType="BIGINT" />
+	    <result property="name" column="name" jdbcType="VARCHAR" />
+		<result property="description" column="description" jdbcType="VARCHAR" />
+		<result property="imgUrl" column="img_url" jdbcType="VARCHAR" />
+		<result property="channelType" column="channel_type" jdbcType="VARCHAR" />
+		<result property="isLogo" column="is_logo" jdbcType="BIGINT" />
+		<result property="createTime" column="create_time" jdbcType="DATETIME" />
+	</resultMap>
+	
+	<select id="getById"  parameterClass="map" resultMap="MatchAlbumResult">
+        SELECT * FROM match_album where id = #id:BIGINT#
+    </select> 
+	
+	<select id="queryAlbumList"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT a.*,IFNULL(b.cnt,0) AS image_count,c.address
+		
+			FROM (SELECT * FROM match_album WHERE flag = 0
+			<isNotNull property="name">
+				AND name LIKE CONCAT('%', #name#, '%')  
+			</isNotNull>
+			ORDER BY create_time DESC LIMIT #page#, #pageSize# ) a
+			
+			LEFT JOIN (SELECT COUNT(id) cnt,album_id 
+				FROM match_album_image GROUP BY album_id) b ON(a.id = b.album_id)
+			
+			JOIN matchs c ON(a.match_id = c.id)
+	</select>
+	
+	<select id="getAlbumCount"  parameterClass="map" resultClass="java.lang.Integer">  
+		SELECT COUNT(id) FROM match_album WHERE flag = 0
+		<isNotNull property="name">
+			AND name LIKE CONCAT('%', #name#, '%')  
+		</isNotNull>
+	</select>	
+	
+	
+	<select id="queryAlbumImageList"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT * FROM match_album_image WHERE album_id = #albumId# AND flag = 0
+		<isNotNull property="code">
+			AND code LIKE CONCAT('%', #code#, '%')  
+		</isNotNull>
+		ORDER BY create_time DESC
+		LIMIT #page#, #pageSize# 
+	</select>
+	
+	<select id="getAlbumImageCount"  parameterClass="map" resultClass="java.lang.Integer">  
+		SELECT COUNT(id) FROM match_album_image WHERE album_id = #albumId# AND flag = 0
+		<isNotNull property="code">
+			AND code LIKE CONCAT('%', #code#, '%')  
+		</isNotNull>
+	</select>
+	
+	<select id="queryAlbumTagImageList"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT b.*
+			FROM(SELECT * FROM match_album_tag_middle WHERE tag_id = #tagId# 
+				LIMIT #page#, #pageSize#) a
+			
+			JOIN (SELECT * FROM match_album_image WHERE album_id = #albumId# AND flag = 0)
+				 b ON(a.image_id = b.id)
+	</select>
+	
+	<select id="getAlbumTagImageCount"  parameterClass="map" resultClass="java.lang.Integer">  
+		SELECT COUNT(id) FROM match_album_tag_middle WHERE tag_id = #tagId# 
+	</select>
+	
+	<insert id="createAlbumImage" parameterClass="map">
+    <![CDATA[
+        INSERT INTO match_album_image (
+        id
+        , album_id
+        , match_id
+        , code
+        , img_url
+        , width
+        , height
+        , create_time
+        ) VALUES (
+        #id#
+        , #albumId#
+        , #matchId#
+        , #code#
+        , #imgUrl#
+        , #width#
+        , #height#
+        , now()
+        )
+    ]]>
+    </insert>
+	
+	<select id="getAlbumImageMap"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT * FROM match_album_image WHERE id = #imageId#
+	</select>	
+</sqlMap>

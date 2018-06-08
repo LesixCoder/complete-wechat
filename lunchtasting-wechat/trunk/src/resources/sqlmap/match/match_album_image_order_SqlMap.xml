@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.MatchAlbumImageOrder">
+
+    <typeAlias alias="MatchAlbumImageOrder" type="com.lunchtasting.server.po.lt.MatchAlbumImageOrder" />
+
+    <resultMap id="MatchAlbumImageOrderResult" class="com.lunchtasting.server.po.lt.MatchAlbumImageOrder">
+       	<result property="id" column="id"  jdbcType="BIGINT" />
+		<result property="userId" column="user_id"  jdbcType="BIGINT" />
+		<result property="imageId"  column="image_id" jdbcType="BIGINT" />
+		<result property="price"  column="price" jdbcType="DOUBLE" />
+		<result property="code"  column="code" jdbcType="VARCHAR" />
+		<result property="payType"  column="pay_type" jdbcType="INT" />
+		<result property="status" column="status" jdbcType="INT" />
+		<result property="createTime"  column="create_time" jdbcType="DATETIME" />
+    </resultMap>
+
+	<insert id="create" parameterClass="MatchAlbumImageOrder">
+    <![CDATA[
+   		INSERT INTO match_album_image_order (
+   		id
+    	, user_id
+    	, image_id
+    	, price
+    	, code
+    	, pay_type
+    	, status
+    	, create_time
+    	, update_time
+    	) VALUES (
+    	#id#
+    	, #userId#
+    	, #imageId#
+    	, #price#
+    	, #code#
+    	, #payType#
+    	, #status#
+    	, now()
+    	, now()
+    	)
+    ]]>
+	</insert>
+	
+	<select id="getById"  parameterClass="map" resultMap="MatchAlbumImageOrderResult">
+        SELECT * FROM match_album_image_order where id = #id:BIGINT#
+    </select> 
+	
+	<update id="updateOrderPay" parameterClass="map">
+		UPDATE match_album_image_order SET status = 2,update_time = NOW() WHERE id = #orderId# 
+	</update>
+	
+</sqlMap>

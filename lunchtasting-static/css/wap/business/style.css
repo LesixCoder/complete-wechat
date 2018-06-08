@@ -1,0 +1,132 @@
+@charset "utf-8";
+
+/* CSS 初始化 */
+
+body,html,div,h1,h2,h3,h4,h5,p,em,i,b,span,input,textarea,section,figure,figcaption,a,ul,li,ol,header,footer,nav,time,address,img {
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+
+html{
+    font-size: 625%;
+    overflow-x: hidden;
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    font-family: "Microsoft YaHei", Arial;
+    background-color: #fff;
+    color: #fff;
+    font-size: .16rem;
+    position: relative;
+    overflow-y: hidden;
+}
+/* 清除chrome浏览器input[type=number]默认样式 */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
+}
+input[type=number] {  
+    -moz-appearance:textfield;  
+}
+/*去除ios按钮默认样式*/
+input[type='submit'],button,textarea {
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+input,textarea,button{
+    outline: none;
+}
+
+img{
+    display: block;
+    max-width: 100%;
+}
+div,figure,figcaption,textarea,input,p,span{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.box{
+    position: relative;
+    max-width: 6.4rem;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    background: url("../../../image/wap/business/yaoqing.jpg") no-repeat;
+    background-size: contain;
+}
+#name,#time{
+    position: absolute;
+    left: 51%;
+    transform: translateX(-50%);
+    border: none;
+    background-color: transparent;
+    text-align: center;
+}
+#name{
+    top: 55%;
+    left: 52%;
+    font-size: .32rem;
+    font-weight: bold;
+    color: #fff;
+    font-family: "Microsoft YaHei";
+    letter-spacing: .05rem;
+}
+#time{
+    top: 84%;
+    font-size: .28rem;
+    color: #a0a095;
+    font-family: "Arial";
+    letter-spacing: .01rem;
+}
+
+/*媒体查询，小于640px*/
+@media screen and (max-width:640px){
+    #name {
+        top: 38.5%;
+        font-size: .24rem;
+    }
+    #time {
+        top: 59.5%;
+        font-size: .22rem;
+    }
+}
+/*媒体查询，小于375px*/
+@media screen and (max-width:375px){
+    #name {
+        top: 41%;
+        font-size: .22rem;
+    }
+    #time {
+        top: 63%;
+        font-size: .2rem;
+    }
+}
+/*媒体查询，小于360px*/
+@media screen and (max-width:360px){
+    #name {
+        top: 38.5%;
+        font-size: .21rem;
+    }
+    #time {
+        top: 59%;
+        font-size: .18rem;
+    }
+}
+/*媒体查询，小于320px*/
+@media screen and (max-width:320px){
+    #name {
+        top: 38.5%;
+        font-size: .18rem;
+    }
+    #time {
+        top: 59%;
+        font-size: .16rem;
+    }
+}
+

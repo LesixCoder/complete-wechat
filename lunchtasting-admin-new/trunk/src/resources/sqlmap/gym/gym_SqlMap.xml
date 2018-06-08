@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.gym.Gym">
+
+	<typeAlias alias="Gym" type="com.lunchtasting.server.po.lt.gym.Gym" />
+
+	<resultMap id="GymResult" class="com.lunchtasting.server.po.lt.gym.Gym">
+		<result property="id" column="id" jdbcType="BIGINT" />
+        <result property="phone" column="phone" jdbcType="VARCHAR" />
+        <result property="name" column="name" jdbcType="VARCHAR" />
+        <result property="introduce" column="introduce" jdbcType="VARCHAR" />
+        <result property="address" column="address" jdbcType="VARCHAR" />
+        <result property="simpleAddress" column="simple_address" jdbcType="VARCHAR" />
+        <result property="imgUrl" column="img_url" jdbcType="VARCHAR" />
+        <result property="imgArray" column="img_array" jdbcType="VARCHAR" />
+        <result property="imgText" column="img_text" jdbcType="VARCHAR" />
+        <result property="businessHours" column="business_hours" jdbcType="VARCHAR" />
+        <result property="areaId" column="area_id" jdbcType="VARCHAR" />
+        <result property="longitude" column="longitude" jdbcType="DOUBLE" />
+        <result property="latitude" column="latitude" jdbcType="DOUBLE" />
+        <result property="createTime" column="create_time" jdbcType="DATETIME" />
+	</resultMap>
+	
+	<insert id="create" parameterClass="Gym">
+    <![CDATA[
+        INSERT INTO gym (
+        id
+        , name
+        , phone
+        , address
+        , simple_address
+        , introduce
+        , img_url
+        , img_array
+        , longitude
+        , latitude
+        , create_time
+        ) VALUES (
+        #id#
+        , #name#
+        , #phone#
+        , #address#
+        , #simpleAddress#
+        , #introduce#
+        , #imgUrl#
+        , #imgArray#
+        , #longitude#
+        , #latitude#
+        , now()
+        )
+    ]]>
+    </insert>
+    
+    <update id="update" parameterClass="Gym">
+    <![CDATA[ UPDATE gym ]]>
+		<dynamic prepend="set">
+			<isNotEmpty prepend="," property="name">
+				name = #name#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="phone">
+				phone = #phone#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="address">
+				address = #address#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="simpleAddress">
+				simple_address = #simpleAddress#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="introduce">
+				introduce = #introduce#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="imgUrl">
+				img_url = #imgUrl#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="imgArray">
+				img_array = #imgArray#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="longitude">
+				longitude = #longitude#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="latitude">
+				latitude = #latitude#
+			</isNotEmpty>
+		</dynamic>
+		WHERE id = #id#
+    </update>
+	
+	<select id="getById" resultMap="GymResult" parameterClass="map">
+		SELECT * FROM gym WHERE id = #id:BIGINT#
+	</select>
+	
+	<select id="queryGymList"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT * FROM gym
+	</select>
+	
+	<select id="querySimpleGymList" resultClass="java.util.HashMap" >
+		SELECT id,name FROM gym WHERE is_open = 0 AND flag = 0
+	</select>
+	
+	<select id="getEditGym"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT * FROM gym WHERE id = #gymId#
+	</select>
+	
+	<update id="updateFlag" parameterClass="map">
+		UPDATE gym SET flag = #flag# WHERE id = #gymId#
+	</update>
+</sqlMap>

@@ -1,0 +1,161 @@
+@charset "utf-8";
+
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    box-sizing: border-box;
+    -webkit-overflow-scrolling: touch;
+    overflow-scrolling: touch;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    tap-highlight-color: rgba(0, 0, 0, 0)
+}
+
+@font-face {
+    font-family: 'hyshuaixian';
+    src: url('../../fonts/HYSHUAIXIANTIW.TTF') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html {
+    font-size: 625%;
+}
+
+body {
+    line-height: 1.5;
+    font-family: 'hyshuaixian', 'Microsoft YaHei', 'arial';
+    background: #ffda2a;
+    color: #272827;
+    font-size: .48rem;
+}
+
+
+/* 清除chrome浏览器input[type=number]默认样式 */
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
+}
+input[type="submit"],
+input[type="reset"],
+input[type="button"],
+button {
+-webkit-appearance: none;
+}
+input,textarea,button{
+    outline:none;
+}
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+a {
+    text-decoration: none;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+em,
+i,
+address {
+    font-style: normal;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-weight: 400;
+}
+
+.clearfix:after {
+    content: '';
+    height: 0;
+    display: block;
+    clear: both;
+    visibility: hidden;
+}
+.none{
+    display: none;
+}
+.filter{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    background: rgba(0,0,0,.7);
+    display: none;
+}
+.wrapper-box {
+    position: relative;
+    width: 7.5rem;
+    margin: 0 auto;
+    background: #ffda2a;
+}
+/*信息*/
+.regInfo-tit{
+    position: relative;
+    width: 100%;
+    height: 3.2rem;
+    line-height: 3.4rem;
+    margin: 0 auto;
+    text-align: center;
+    color: #fff;
+    background: url('../../images/intro/regInfo-logo.png') no-repeat -15px 0px;
+    background-size: 100% 100%;
+}
+.regInfo-tit > a {
+    position: absolute;
+    top: 8%;
+    right: 0;
+}
+.regInfo-box{
+    width: 90%;
+    margin: 0 auto;
+    padding: 8% 8% 5%;
+    border: 2px solid #fff;
+    font-size: .32rem;
+    background: #ffed95;
+}
+.regInfo-box > p{
+    width: 100%;
+    height: .8rem;
+    line-height: .8rem;
+    margin-bottom: 5%;
+    border: 1px solid #272827;
+    background: #fff;
+}
+.regInfo-box > p i,.regInfo-box > p span{
+    display: inline-block;
+}
+.regInfo-box > p i{
+    width: 36%;
+    padding: 0 0 0 6%;
+    text-align: right;
+}
+.regInfo-box > p span{
+    width: 64%;
+}
+.prompt{
+    padding: 3% 5%;
+    font-size: .35rem;
+}
+.eqcode{
+    width: 30%;
+    margin: 0 auto;
+}
+.eqcodeT{
+    display: block;
+    margin: 3% 0 0 0;
+    padding: 0 0 5% 0;
+    text-align: center;
+    font-size: .3rem;
+}

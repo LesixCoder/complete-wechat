@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.gym.Coach">
+
+	<typeAlias alias="Coach" type="com.lunchtasting.server.po.lt.gym.Coach" />
+	
+	<resultMap id="CoachResult" class="com.lunchtasting.server.po.lt.gym.Coach">
+		<result property="id" column="id" jdbcType="BIGINT" />
+		<result property="gymId" column="gym_id" jdbcType="BIGINT" />
+		<result property="name" column="name" jdbcType="VARCHAR" />
+        <result property="sex" column="sex" jdbcType="INT" />
+        <result property="phone" column="phone" jdbcType="VARCHAR" />
+        <result property="imgUrl" column="img_url" jdbcType="VARCHAR" />
+        <result property="age" column="age" jdbcType="INT" />
+       	<result property="birth" column="birth" jdbcType="VARCHAR" />
+       	<result property="certificate" column="certificate" jdbcType="VARCHAR" />
+       	<result property="coachYear" column="coach_year" jdbcType="INT" />
+	</resultMap>
+	
+	<insert id="create" parameterClass="Coach">
+    <![CDATA[
+        INSERT INTO coach (
+        id
+        , name
+        , gym_id
+        , sex
+        , phone
+        , age,
+        , birth
+        , coach_year
+        , certificate
+        , img_url
+        , create_time
+        ) VALUES (
+        #id#
+        , #name#
+        , #gymId#
+        , #sex#
+        , #phone#
+        , #age#,
+        , #birth#
+        , #coachYear#
+        , #certificate#
+        , #imgUrl#
+        , now()
+        )
+    ]]>
+    </insert>
+	
+	<update id="update" parameterClass="Coach">
+    <![CDATA[ UPDATE coach ]]>
+		<dynamic prepend="set">
+			<isNotEmpty prepend="," property="name">
+				name = #name#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="gymId">
+				gym_id = #gymId#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="sex">
+				sex = #sex#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="phone">
+				phone = #phone#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="age">
+				age = #age#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="birth">
+				birth = #birth#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="coachYear">
+				coachYear = #coachYear#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="certificate">
+				certificate = #certificate#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="imgUrl">
+				imgUrl = #imgUrl#
+			</isNotEmpty>
+		</dynamic>
+		WHERE id = #id#
+    </update>
+	
+	<select id="getById" parameterClass="map" resultMap="CoachResult">
+		SELECT * FROM coach WHERE id = #id:BIGINT#
+	</select>
+	
+	<select id="queryCoachList"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT a.*,b.name,b.address,IFNULL(c.album_count,0) AS album_count
+		 
+			FROM (SELECT * FROM coach LIMIT #page#,#pageSize# ) a
+			
+			LEFT JOIN gym b ON(a.gym_id = b.id)
+			
+			LEFT JOIN (SELECT COUNT(id) album_count,coach_id 
+				FROM coach_album GROUP BY coach_id) c ON(a.id = c.coach_id)
+	</select>
+	
+	<select id="querySimpleCoachList"  resultClass="java.util.HashMap">
+		SELECT id,name FROM coach WHERE flag = 0
+	</select>
+	
+	<select id="getEditCoach"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT * FROM coach WHERE id = #coachId#
+	</select>
+	
+	<update id="updateFlag" parameterClass="map">
+		UPDATE coach SET flag = #flag# WHERE id = #coachId#
+	</update>
+	
+	<select id="queryCoachAlbumList"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT * FROM coach_album WHERE coach_id = #coachId#
+	</select>
+	
+	 <insert id="addCoachAlbum" parameterClass="map">
+    	INSERT INTO coach_album (
+    	id
+        , coach_id
+        , img_url
+        ) VALUES (
+        #id#
+        , #coachId#
+        , #imgUrl#
+        )
+    </insert>
+    
+    <delete id="removeCoachAlbum" parameterClass="map">
+    	DELETE FROM coach_album WHERE id = #coachAlbumId#
+    </delete>
+</sqlMap>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.Article">
+
+	<typeAlias alias="Article" type="com.lunchtasting.server.po.lt.Article" />
+
+	<resultMap id="ArticleResult" class="com.lunchtasting.server.po.lt.Article">
+		<result property="id" column="id"  jdbcType="BIGINT" />
+		<result property="name" column="name" jdbcType="VARCHAR" />
+		<result property="content" column="content" jdbcType="VARCHAR" />
+		<result property="imgText" column="img_text" jdbcType="VARCHAR" />
+		<result property="imgUrl" column="img_url" jdbcType="VARCHAR" />
+		<result property="type" column="type" jdbcType="VARCHAR" />
+	    <result property="tag" column="tag" jdbcType="VARCHAR" />
+		<result property="createTime" column="create_time" jdbcType="DATETIME" />
+		<result property="updateTime" column="update_time" jdbcType="DATETIME" />
+	</resultMap>
+	
+    <insert id="create" parameterClass="Activity">
+    <![CDATA[
+        INSERT INTO article (
+        name
+        , content
+        , img_text
+        , img_url
+        , type
+        , tag
+        , update_time
+        , create_time
+        ) VALUES (
+        #name#
+        , #content#
+        , #imgText#
+        , #imgUrl#
+        , #type#
+        , #tag#
+        , now()
+        , now()
+        )
+    ]]>
+    <selectKey resultClass="long" keyProperty="id">
+       SELECT @@IDENTITY
+       AS id
+    </selectKey>
+    </insert>
+	
+	<select id="getById" parameterClass="map" resultMap="ArticleResult">
+		SELECT * FROM article WHERE id = #id:BIGINT#
+	</select>
+    
+    <select id="getArticleCount"  parameterClass="map" resultClass="java.lang.Integer">
+        SELECT COUNT(id) FROM article WHERE type = 0 AND flag = 0
+    </select>
+    	
+	<select id="queryArticleList"  parameterClass="map" resultClass="java.util.HashMap">
+        SELECT 2 AS biz_type,id AS biz_id,name,content,img_url,IFNULL(tag,'') AS tag
+            FROM article WHERE type = 0 AND flag = 0
+            ORDER BY create_time DESC
+            LIMIT #page#, #pageSize# 
+	</select>
+    
+    <select id="getArticleDetail"  parameterClass="map" resultClass="java.util.HashMap" remapResults="true" >
+        SELECT a.id AS article_id,a.name,a.content,a.img_url,a.img_text,IFNULL(a.tag,'') AS tag
+        		<isNotNull property="userId">
+        		,IFNULL(b.biz_id,'') AS is_collect
+        		</isNotNull>
+            FROM (SELECT * FROM article WHERE id = #articleId# AND flag = 0) a
+           	<isNotNull property="userId">
+            LEFT JOIN (SELECT biz_id FROM common_collect WHERE user_id = #userId# 
+            		AND biz_id = #articleId# AND biz_type = 2) b ON (a.id = b.biz_id)
+            </isNotNull>
+    </select>
+    
+    <select id="getDarenArticleCount"  parameterClass="map" resultClass="java.lang.Integer">
+        SELECT COUNT(1) FROM article WHERE type = 1 AND flag = 0
+    </select>
+        
+    <select id="queryDarenArticleList"  parameterClass="map" resultClass="java.util.HashMap">
+        SELECT id AS article_id,name,content,img_url,IFNULL(tag,'') AS tag
+            FROM article WHERE type = 1 AND flag = 0
+            ORDER BY create_time DESC
+            LIMIT #page#, #pageSize# 
+    </select>
+    
+</sqlMap>

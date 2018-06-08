@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="com.lunchtasting.server.po.lt.ActivityEnroll">
+<typeAlias alias="ActivityEnroll" type="com.lunchtasting.server.po.lt.ActivityEnroll" />
+	<resultMap id = "ActivityEnrollResult" class="com.lunchtasting.server.po.lt.ActivityEnroll">
+		<result property="id"  column="id" jdbcType="BIGUINT"/>
+		<result property="userId" column="user_id" jdbcType="BIGUINT" />
+		<result property="activityId" column="activity_id" jdbcType="BIGUINT"/>	
+		<result property="name" column="name" jdbcType="VARCHAR"/>	
+		<result property="phone" column="phone" jdbcType="VARCHAR"/>	
+		<result property="createTime" column="create_time" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<sql id="qb">
+		id
+    	, user_id
+    	, activity_id
+    	, name
+    	, phone
+    	, create_time
+	</sql>
+	
+	<insert id="create" parameterClass="ActivityEnroll">
+		<![CDATA[
+			INSERT INTO activity_enroll(
+		    	user_id
+		    	, activity_id
+		    	, name
+		    	, phone
+		    	, create_time				
+			) VALUES (
+				#userId#
+				, #activityId#
+				, #name#
+				, #phone#
+				, now()
+			)
+		]]>
+		<selectKey resultClass="long" keyProperty="id">
+			SELECT @@IDENTITY
+			AS id
+    	</selectKey>
+	</insert>
+	
+	<select id="queryActivityByMapCount" parameterClass="map" resultClass="int">
+		 SELECT 
+			count(*)
+	  	 FROM 
+	   		activity_enroll
+	   	 WHERE
+	   	 	1=1
+	   	 	<isNotEmpty prepend="AND" property="userId">
+	   	 		user_id = #userId#
+	   	 	</isNotEmpty>
+	   	 	<isNotEmpty prepend="AND" property="activityId">
+	   	 		activity_id = #activityId#
+	   	 	</isNotEmpty>
+	   	 	<isNotEmpty prepend="AND" property="name">
+	   	 		name = #name#
+	   	 	</isNotEmpty>
+	   	 	<isNotEmpty prepend="AND" property="phone">
+	   	 		phone = #phone#
+	   	 	</isNotEmpty>
+	</select>
+</sqlMap>

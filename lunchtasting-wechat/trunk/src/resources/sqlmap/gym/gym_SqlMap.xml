@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.lunchtasting.server.po.lt.gym.Gym">
+
+	<typeAlias alias="Gym" type="com.lunchtasting.server.po.lt.gym.Gym" />
+
+	<resultMap id="GymResult" class="com.lunchtasting.server.po.lt.gym.Gym">
+		<result property="id" column="id" jdbcType="BIGINT" />
+        <result property="phone" column="phone" jdbcType="VARCHAR" />
+        <result property="name" column="name" jdbcType="VARCHAR" />
+        <result property="introduce" column="introduce" jdbcType="VARCHAR" />
+        <result property="address" column="address" jdbcType="VARCHAR" />
+        <result property="simpleAddress" column="simple_address" jdbcType="VARCHAR" />
+        <result property="imgUrl" column="img_url" jdbcType="VARCHAR" />
+        <result property="imgArray" column="img_array" jdbcType="VARCHAR" />
+        <result property="imgText" column="img_text" jdbcType="VARCHAR" />
+        <result property="businessHours" column="business_hours" jdbcType="VARCHAR" />
+        <result property="areaId" column="area_id" jdbcType="VARCHAR" />
+        <result property="longitude" column="longitude" jdbcType="DOUBLE" />
+        <result property="latitude" column="latitude" jdbcType="DOUBLE" />
+        <result property="createTime" column="create_time" jdbcType="DATETIME" />
+	</resultMap>
+	
+	<select id="getById" resultMap="GymResult" parameterClass="map">
+		SELECT * FROM gym WHERE id = #id:BIGINT#
+	</select>
+	
+	<select id="queryGymList"  parameterClass="map" resultClass="java.util.HashMap" remapResults="true">
+		SELECT * FROM gym WHERE is_open = 0 AND flag = 0
+	</select>
+	
+	<select id="getGymDetail"  parameterClass="map" resultClass="java.util.HashMap">
+		SELECT * FROM gym WHERE id = #gymId# AND is_open = 0 AND flag = 0
+	</select>
+	
+	<select id="queryCourseGymList" parameterClass="map" resultClass="java.util.HashMap">
+		SELECT a.gym_id,a.course_id,b.name AS gym_name,b.img_url AS gym_img_url
+			,GROUP_CONCAT(c.course_meal_str SEPARATOR '|') AS course_meal_str
+		
+			FROM(SELECT * FROM course_gym_middle WHERE course_id = #courseId# ) a
+			
+			JOIN (SELECT * FROM gym WHERE flag = 0) b
+				ON (a.gym_id = b.id) 
+			
+			LEFT JOIN (
+					SELECT t1.gym_id,GROUP_CONCAT(t1.id,'@',t1.name,'@',t1.price,'@'
+						,t1.str_time,'@',t1.people_number,'@',t1.course_number,'@'
+						,DATE_FORMAT(t1.begin_time,'%c月%e日'),'@'
+						,DATE_FORMAT(t1.end_time,'%c月%e日'),'@'
+						,IFNULL(t2.order_count,0),'@'
+						,t3.id,'@',IFNULL(t3.img_url,''),'@',t3.name,'@',t1.type,'@',t1.market_price
+						SEPARATOR '|') AS course_meal_str
+					
+						FROM (SELECT * FROM course_meal WHERE course_id = #courseId# 
+							AND begin_time > NOW() AND flag = 0 ) t1
+						
+						LEFT JOIN (SELECT course_meal_id,COUNT(id) AS order_count FROM course_order 
+							WHERE course_id = #courseId#  AND status = 2)	
+							t2 ON(t1.id = t2.course_meal_id)
+							
+						LEFT JOIN coach t3 ON(t1.coach_id = t3.id)
+						
+						GROUP BY t1.id
+					) c ON(b.id = c.gym_id)
+	</select>
+
+</sqlMap>
